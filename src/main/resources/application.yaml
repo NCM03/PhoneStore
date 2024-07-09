@@ -1,0 +1,30 @@
+#spring.application.name=PhoneStore
+
+server:
+  port: 8081
+  servlet:
+    context-path: /
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  application:
+    name: PhoneStore
+  datasource:
+    url: "jdbc:mysql://localhost:3306/usermanage"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    username: root
+    password: Hungba9b2003
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+jwt:
+  signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
+  valid-duration: 3600 # in seconds
+  refreshable-duration: 36000 # in seconds
