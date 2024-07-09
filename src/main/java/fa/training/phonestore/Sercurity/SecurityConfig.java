@@ -1,5 +1,6 @@
 package fa.training.phonestore.Sercurity;
 
+import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,19 +17,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
+            AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
 
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers(HttpMethod.GET, "/Account/Login").permitAll()
-                .requestMatchers("/Account/getAll").permitAll()
+                .requestMatchers( "/Account/save").permitAll()
+                .requestMatchers( "/Account/Login").permitAll()
+                .requestMatchers("/Account/getAll").hasAuthority("admin")
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
+                .addFilter(authenticationFilter)
+
+                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
