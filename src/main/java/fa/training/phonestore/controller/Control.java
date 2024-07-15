@@ -12,8 +12,5 @@ public class Control {
     public String home() {
         return "index";
     }
-    @GetMapping("/shop-grid")
-    public String showShopGrid() {
-        return "shop-grid"; // This should correspond to shop-grid.html in the templates folder
-    }
+
 }

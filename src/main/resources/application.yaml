@@ -1,30 +1,32 @@
-#spring.application.name=PhoneStore
-
 server:
   port: 8080
   servlet:
     context-path: /
 
 spring:
+  aop:
+    auto: true
+    proxy-target-class: true
+  application:
+    name: PhoneStore
+    availability:
+      enabled: true
+  datasource:
+    url: "jdbc:sqlserver://localhost:1433;databaseName=PhoneStore;encrypt=true;trustServerCertificate=true;"
+    driver-class-name: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    username: sa
+    password: 1  # Thay your_password_here bằng mật khẩu thực tế của bạn
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    show-sql: true
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
-  application:
-    name: PhoneStore
-  datasource:
-    url: "jdbc:mysql://localhost:3306/usermanage"
-    driverClassName: "com.mysql.cj.jdbc.Driver"
-    username: root
-    password: Hungba9b2003
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
   web:
     resources:
       static-locations: classpath:/static/
-
-jwt:
-  signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
-  valid-duration: 3600 # in seconds
-  refreshable-duration: 36000 # in seconds
+#debug: true

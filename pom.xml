@@ -43,11 +43,7 @@
 <!--            <groupId>org.springframework.security</groupId>-->
 <!--            <artifactId>spring-security-crypto</artifactId>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>org.projectlombok</groupId>-->
 <!--            <artifactId>lombok</artifactId>-->
@@ -61,12 +57,25 @@
 <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.6.0.jre11</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.2.224</version>
             <scope>test</scope>
         </dependency>
 <!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-core</artifactId>-->
+<!--            <version>6.5.2.Final</version>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
+
+        <!--        <dependency>-->
 <!--            <groupId>org.testcontainers</groupId>-->
 <!--            <artifactId>junit-jupiter</artifactId>-->
 <!--            <scope>test</scope>-->
@@ -116,9 +125,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.2.7.Final</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
