@@ -1,8 +1,12 @@
 package fa.training.phonestore.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fa.training.phonestore.Entity.EntityConstraint.Username;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.lang.annotation.Annotation;
 
 @Entity
 @Data
@@ -13,6 +17,7 @@ public class Account {
 @Column(name = "AccountID")
     private int accountId;
 @Column(name = "Username")
+
 private String username;
 @Column(name = "Password")
 private String password;

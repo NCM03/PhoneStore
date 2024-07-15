@@ -23,17 +23,25 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers( "/Account/save").permitAll()
-                .requestMatchers( "/Account/Login").permitAll()
-                .requestMatchers("/Account/getAll").hasAuthority("admin")
+                .requestMatchers( "/Account/Admin").hasAuthority("admin")
+                .requestMatchers("/Login", "/logout", "/ValidAuthenticate").permitAll()
+                .requestMatchers("/Account/getAll").hasAuthority("user")
+
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.sendRedirect("/AccessDenied");
+                }).authenticationEntryPoint((request, response, authException) -> {
+                    response.sendRedirect("/ValidAuthenticate");
+                })
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
 
                 .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
         return http.build();
     }

@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,30 +24,45 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private CustomAuthenticationManager authenticationManager;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+    protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+        String url = request.getRequestURI();
+        if (url.equals("/Login") || url.startsWith("/Login/")) {
+            return false;
+        }
+        return super.requiresAuthentication(request, response);
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        if (!requiresAuthentication(request, response)) {
+            return null;
+        }
         try {
-
             Account account = new ObjectMapper().readValue(request.getInputStream(), Account.class);
-
             Authentication auth = new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword());
             return authenticationManager.authenticate(auth);
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Failed to parse authentication request body", e);
         }
     }
 
     @Override
-    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
         Account account = (Account) auth.getPrincipal();
         String token = JWT.create()
                 .withSubject(auth.getName())
-                .withClaim("role", account.getRole().getRoleName())  // Thêm role vào token
+                .withClaim("role", account.getRole().getRoleName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstraints.TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(SecurityConstraints.SECRET_KEY));
         response.addHeader(SecurityConstraints.AUTHORIZATION, SecurityConstraints.BEARER + token);
+        // Trả về token trong response body
+        response.setContentType("application/json");
+        response.getWriter().write("{\"token\":\"" + SecurityConstraints.BEARER + token + "\", \"role\":\"" + account.getRole().getRoleName() + "\"}");
+        response.getWriter().flush();
     }
 
-    public void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(failed.getMessage());
         response.getWriter().flush();

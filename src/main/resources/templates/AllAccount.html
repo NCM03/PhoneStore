@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManageAccount</title>
+</head>
+<body>
+<h1>Account List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Account ID</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Sử dụng Thymeleaf để lặp qua danh sách các tài khoản -->
+    <tr th:each="account : ${accountList}">
+        <td th:text="${account.accountId}"></td>
+        <td th:text="${account.username}"></td>
+        <td th:text="${account.status} ? 'Active' : 'Inactive'"></td>
+        <button type="submit">Reset</button>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

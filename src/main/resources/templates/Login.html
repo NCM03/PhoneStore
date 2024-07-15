@@ -5,55 +5,32 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<form id="loginForm">
-  <input type="text" id="username" placeholder="Username" /><br />
-  <input type="password" id="password" placeholder="Password" /><br />
+<form id="loginForm" method="POST" th:object="${dto}" th:action="@{/Login}">
+  <input type="text" placeholder="Name" th:field="*{username}">
+  <p style="color: red" th:errors="*{username}"></p>
+
+  <input type="password" placeholder="Password" th:field="*{password}">
+  <p style="color: red" th:errors="*{password}"></p>
+
   <button type="submit">Login</button>
 </form>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+  $(document).ready(function() {
+    $('#loginForm').submit(function(event) {
+      var username = $('#username').val();
+      var password = $('#password').val();
 
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
+      if (username.length < 6) {
+        alert('Username must be at least 6 characters long.');
+        event.preventDefault();
+      }
 
-      var data = {
-        username: username,
-        password: password
-      };
-
-      fetch('/Account/Login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-              .then(function(response) {
-                if (!response.ok) {
-                  throw new Error('Đăng nhập thất bại');
-                }
-                return response.json();
-              })
-              .then(function(data) {
-                var token = data.token;
-
-                // Lưu token vào localStorage
-                sessionStorage.setItem('accessToken', token);
-
-                // Chuyển hướng hoặc thực hiện các hành động khác sau khi đăng nhập thành công
-                // Ví dụ: chuyển hướng đến trang /Account/getAll
-                window.location.href = '/Account/getAll';
-              })
-              .catch(function(error) {
-                console.error('Đăng nhập thất bại:', error);
-                alert('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.');
-              });
+      if (password.length < 8 || !/[A-Z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        alert('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.');
+        event.preventDefault();
+      }
     });
   });
-
 </script>
 
 </body>
