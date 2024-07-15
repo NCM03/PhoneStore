@@ -39,9 +39,5 @@ public class Customer {
     @Column(name = "Address")
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "AccountID",insertable=false, updatable=false)
-    private Account account;
-
     // Getters and setters
 }

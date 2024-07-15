@@ -19,13 +19,8 @@ public class Feedback {
     @Column(name = "FeedbackID")
     private Integer feedbackId;
 
-    @ManyToOne
-    @JoinColumn(name = "CustomerID", nullable = false)
-    private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "ProductID", nullable = false)
-    private Product product;
+    @Column(name = "CustomerID")
+    private int ctomerID;
 
     @Column(name = "Comment", length = 255)
     private String comment;

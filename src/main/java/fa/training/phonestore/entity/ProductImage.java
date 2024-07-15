@@ -19,11 +19,10 @@ public class ProductImage {
     @Column(name = "ImageID")
     private Integer imageId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductSupID", nullable = false)
-    private ProductSupport productSupport;
+    @Column(name = "ProductSupID", nullable = false)
+    private int ProductSupID;
 
-    @Column(name = "ImageURL", columnDefinition = "VARBINARY(MAX)")
-    private byte[] imageURL;
+    @Column(name = "ImageURL")
+    private String imageURL;
 
 }

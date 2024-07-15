@@ -25,21 +25,21 @@ public class InvoiceItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "InvoiceItemID")
-    private Integer invoiceItemId;
+    private int invoiceItemId;
 
-    @ManyToOne
-    @JoinColumn(name = "InvoiceID", nullable = false)
-    private Invoice invoice;
-
-    @Column(name = "ProductName", nullable = false)
-    private String productName;
+    @Column(name = "InvoiceID")
+    private int invoiceID;
+    @Column(name = "ProductSupID", nullable = false)
+    private int productSupID;
 
     @Column(name = "Quantity", nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @Column(name = "Price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "Total", nullable = false, precision = 10, scale = 2)
-    private BigDecimal total;
+    @Column(name = "Discount", nullable = false, precision = 5, scale = 2)
+    private BigDecimal disCount;
+
+
 }

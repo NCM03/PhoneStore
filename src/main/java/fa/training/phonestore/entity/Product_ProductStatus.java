@@ -13,18 +13,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "Product_ProductStatus")
 public class Product_ProductStatus {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="Product_ProductStatusID")
+    private int id;
+    @Column(name = "ProductSupID")
+    private int productID;
 
-    @EmbeddedId
-    private ProductProductStatusId id;
-
-    @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name = "ProductID")
-    private Product product;
-
-    @ManyToOne
-    @MapsId("statusId")
-    @JoinColumn(name = "StatusID")
-    private ProductStatus productStatus;
+    @Column(name = "StatusID")
+    private int statusID;
 
 }

@@ -22,9 +22,8 @@ public class ProductSupport {
     @Column(name = "productSupID")
     private int productSupId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productID")
-    private Product product;
+    @Column(name = "productID")
+    private int  productID;
 
     @Column(name = "ProductSupName")
     private String productSupName;

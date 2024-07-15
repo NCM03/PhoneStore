@@ -16,7 +16,7 @@ public class ProductStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "StatusID")
+    @Column(name = "StatusID", nullable = false)
     private Integer statusId;
 
     @Column(name = "StatusName", nullable = false, length = 50)

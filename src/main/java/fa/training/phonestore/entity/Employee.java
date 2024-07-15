@@ -37,8 +37,6 @@ public class Employee {
     @Column(name = "Gender", length = 10)
     private String gender;
 
-    @Column(name = "LastName", length = 50)
-    private String lastName;
 
     @Column(name = "Address", length = 255)
     private String address;
@@ -48,10 +46,5 @@ public class Employee {
 
     @Column(name = "AgencyID")
     private Integer agencyId;
-
-    @ManyToOne
-    @JoinColumn(name = "AccountID",insertable=false, updatable=false)
-    private Account account;
-
 }
 

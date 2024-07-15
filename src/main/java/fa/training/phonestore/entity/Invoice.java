@@ -31,10 +31,8 @@ public class Invoice {
     @Column(name = "InvoiceID")
     private Integer invoiceId;
 
-    @ManyToOne
-    @JoinColumn(name = "CustomerID", nullable = false)
-    private Customer customer;
-
+    @Column(name ="CustomerID")
+    private int customerID;
     @Column(name = "InvoiceType", nullable = false)
     private Integer invoiceType;
 
@@ -45,13 +43,7 @@ public class Invoice {
     @Column(name = "incurred", nullable = false, precision = 10, scale = 2)
     private BigDecimal incurred;
 
-    @Column(name = "InvoiceStatus", nullable = false)
-    private Boolean invoiceStatus;
-
     @Column(name = "incurredDescription", length = 2000)
     private String incurredDescription;
-
-    @OneToMany(mappedBy = "invoice")
-    private List<InvoiceItem> invoiceItems;
 }
 

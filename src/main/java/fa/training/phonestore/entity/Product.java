@@ -25,7 +25,7 @@ public class Product {
     private String productName;
 
     @Column(name = "ImageData")
-    private byte[] imageData;
+    private String imageData;
 
     @Column(name = "Comment")
     private String comment;
@@ -33,11 +33,9 @@ public class Product {
     @Column(name = "WarrantyPeriod")
     private Date warrantyPeriod;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CategoryID")
-    private Category category;
+    @Column(name = "CategoryID")
+    private int categoryId;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductSupport> productSupports;
-    // Getters and setters
+    @Column(name = "Rating")
+    private double rating;
 }
