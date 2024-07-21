@@ -20,9 +20,15 @@ public class ProductImage {
     private Integer imageId;
 
     @Column(name = "ProductSupID", nullable = false)
-    private int ProductSupID;
+    private int productSupID;
 
     @Column(name = "ImageURL")
     private String imageURL;
+
+    @Column(name = "ProductID")
+    private int productID;
+    @ManyToOne
+    @JoinColumn(name = "ProductSupID", nullable = true, insertable = false, updatable = false)
+    private ProductSupport productSupport;
 
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,5 +53,14 @@ public class ProductSupport {
     @Column(name = "Color")
     private String color;
 
-    // Getters and setters
+    @OneToMany(mappedBy = "productSupport", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages;
+
+    public ProductImage getFirstProductImage(List <ProductImage> productImages) {
+        if (productImages != null && !productImages.isEmpty()) {
+            return productImages.get(0);
+        }
+        return null; // or throw an exception if preferred
+    }
+
 }

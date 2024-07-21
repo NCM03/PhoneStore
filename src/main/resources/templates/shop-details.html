@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap-grid.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap-reboot.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+<style>
+    .active {
+        /*background-color: red;*/
+        color: red;
+        /*border-color: #007bff;*/
+    }
+</style>
+<!-- Include the menu -->
+<div th:replace="~{menu.html :: body}"></div>
+<!-- Hero Section Begin -->
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>All departments</span>
+                    </div>
+                    <ul>
+                        <li><a href="#">Fresh Meat</a></li>
+                        <li><a href="#">Vegetables</a></li>
+                        <li><a href="#">Fruit & Nut Gifts</a></li>
+                        <li><a href="#">Fresh Berries</a></li>
+                        <li><a href="#">Ocean Foods</a></li>
+                        <li><a href="#">Butter & Eggs</a></li>
+                        <li><a href="#">Fastfood</a></li>
+                        <li><a href="#">Fresh Onion</a></li>
+                        <li><a href="#">Papayaya & Crisps</a></li>
+                        <li><a href="#">Oatmeal</a></li>
+                        <li><a href="#">Fresh Bananas</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <div class="hero__search__categories">
+                                All Categories
+                                <span class="arrow_carrot-down"></span>
+                            </div>
+                            <input type="text" placeholder="What do yo u need?">
+                            <button type="submit" class="site-btn">SEARCH</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>+65 11.188.888</h5>
+                            <span>support 24/7 time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large"
+                             th:src="@{/img/ProductImg/__${Product.getImageData()}__}"
+                             alt="Product details image">
+                        <!--                             th:src="@{/static/img/ProductImg/__${Product.getImageData()}__}"-->
+                    </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        <!--                        <img data-imgbigurl="/img/ProductImg/image1.jpg"-->
+                        <!--                             src="/img/ProductImg/image1.jpg" alt="">-->
+                        <img th:each="image: ${ProductImage}"
+
+                             th:if="${image.getImageURL() == 'image1.jpg'}"
+                             th:src="@{/img/ProductImg/__${image.getImageURL()}__}"
+                             th:attr="data-imgbigurl=@{/img/ProductImg/__${image.getImageURL()}__}"
+                             alt="">
+                        <img th:each="image: ${ProductImage}"
+                             th:attr="data-imgbigurl=${image.getImageURL()}"
+                             th:unless="${image.getImageURL() == 'image1.jpg'}"
+                             th:src="${image.getImageURL()}"
+                             alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text ">
+                    <h1 th:text="${Product.getProductName()}"></h1>
+                    <div style="display: flex; flex-direction: column;">
+                        <p>ID sản phẩm: <span th:text="${Product.getProductId()}"></span></p>
+                        <div style="font-size: 150%; display: flex; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                            <b style="width:30%;font-family: 'Arial'">Dung lượng: </b>
+                            <button style="margin-right: 10px;background-color: white; border-radius: 5px; border-color: #808080;"
+                                    th:each="capacity : ${uniqueCapacities}"
+                                    th:text="${capacity}"
+                                    th:attr="onclick=|selectButton(this, 'capacity')|">
+                            </button>
+                        </div>
+                        <div style="font-size: 150%; display: grid; grid-template-columns: 30% 1fr; align-items: center; margin-bottom: 10px; gap: 10px;">
+
+                            <b style="align-self: start;font-family: 'Arial';">Màu sắc:</b>
+
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                <button style="background-color: white; border-radius: 5px; border-color: #808080;"
+                                        th:each="productSup : ${ProductSup}"
+                                        th:text="${productSup.color}"
+                                        th:attr="data-id=${productSup.getProductImages()[0].getImageURL()}, onclick=|selectButton(this,'color')|">
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--                    <div class="product__details__rating">-->
+                    <!--                        <i class="fa fa-star"></i>-->
+                    <!--                        <i class="fa fa-star"></i>-->
+                    <!--                        <i class="fa fa-star"></i>-->
+                    <!--                        <i class="fa fa-star"></i>-->
+                    <!--                        <i class="fa fa-star-half-o"></i>-->
+                    <!--                        <span>(18 reviews)</span>-->
+                    <!--                    </div>-->
+                    <span style="font-size: 25px">Giá:</span> <span class="product__details__price"
+                                                                    th:each="productSup, iterStat : ${ProductSup}"
+                                                                    th:if="${iterStat.index == 0}"
+                                                                    th:text="${productSup.getPrice()}"> </span><span
+                        class="product__details__price"> VNĐ</span>
+                    <p>Comment: <span th:text="${Product.getComment()}"></span></p>
+                    <!--                    <div class="product__details__quantity">-->
+                    <!--                        <div class="quantity">-->
+                    <!--                            <div class="pro-qty">-->
+                    <!--                                <input type="text" value="1">-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <input type="text" value="1">
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .product__details__quantity {
+                            display: inline-block;
+                            margin-right: 10px; /* Điều chỉnh khoảng cách giữa các div nếu cần thiết */
+                        }
+                    </style>
+                    <form>
+                    <button href="#" type="submit" class="primary-btn">ADD TO CARD</button>
+                    <button href="#" type="submit" class="primary-btn">BUY</button>
+                    </form>
+                    <ul>
+
+                        <li><b style="font-family: 'Arial'">Thông số kĩ thuật: </b></li>
+                        <li><b>Availability</b> <span>In Stock</span></li>
+                        <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+                        <li><b>Weight</b> <span>0.5 kg</span></li>
+                        <li><b>Share on</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container" style="display:flex">
+                <div class="item" style="margin-right :20px">
+                    <img alt="image" loading="lazy" width="24" height="24" decoding="async" data-nimg="1" class="h-6"
+                         srcset="https://cdn2.fptshop.com.vn/svg/Type_Bao_hanh_chinh_hang_4afa1cb34d.svg?w=32&amp;q=60 1x, https://cdn2.fptshop.com.vn/svg/Type_Bao_hanh_chinh_hang_4afa1cb34d.svg?w=48&amp;q=60 2x"
+                         src="https://cdn2.fptshop.com.vn/svg/Type_Bao_hanh_chinh_hang_4afa1cb34d.svg?w=48&amp;q=60"
+                         style="color: transparent;">
+                    <span class="text-textOnWhitePrimary f1-regular pc:b2-regular">Hàng chính hãng - Bảo hành (tháng): 12</span>
+                </div>
+                <div class="item">
+                    <img alt="image" loading="lazy" width="24" height="24" decoding="async" data-nimg="1" class="h-6"
+                         srcset="https://cdn2.fptshop.com.vn/svg/Type_Giao_hang_toan_quoc_318e6896b4.svg?w=32&amp;q=60 1x, https://cdn2.fptshop.com.vn/svg/Type_Giao_hang_toan_quoc_318e6896b4.svg?w=48&amp;q=60 2x"
+                         src="https://cdn2.fptshop.com.vn/svg/Type_Giao_hang_toan_quoc_318e6896b4.svg?w=48&amp;q=60"
+                         style="color: transparent;">
+                    <span class="text-textOnWhitePrimary f1-regular pc:b2-regular">Giao hàng toàn quốc</span>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                               aria-selected="true">Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                               aria-selected="false">Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                               aria-selected="false">Reviews <span>(1)</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Vivamus
+                                    suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam
+                                    vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur arcu erat,
+                                    accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a
+                                    pellentesque nec, egestas non nisi. Vestibulum ac diam sit amet quam vehicula
+                                    elementum sed sit amet dui. Vestibulum ante ipsum primis in faucibus orci luctus
+                                    et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
+                                    vel, ullamcorper sit amet ligula. Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
+                                    Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed
+                                    porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula elementum
+                                    sed sit amet dui. Proin eget tortor risus.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                                    sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                                    eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                                    sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
+                                    diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                                    ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                                    Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                                    Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                                    sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                                    eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                                    sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
+                                    diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                                    ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                                    Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                                    Proin eget tortor risus.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+
+<!-- Related Product Section Begin -->
+<section class="related-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>Related Product</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-1.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-2.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-3.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-7.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related Product Section End -->
+
+<!-- Footer Section Begin -->
+<footer class="footer spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <div class="footer__about__logo">
+                        <a href="/"><img src="/img/logo.png" alt=""></a>
+                    </div>
+                    <ul>
+                        <li>Address: 60-49 Road 11378 New York</li>
+                        <li>Phone: +65 11.188.888</li>
+                        <li>Email: hello@colorlib.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                <div class="footer__widget">
+                    <h6>Useful Links</h6>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">About Our Shop</a></li>
+                        <li><a href="#">Secure Shopping</a></li>
+                        <li><a href="#">Delivery infomation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Our Sitemap</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#">Who We Are</a></li>
+                        <li><a href="#">Our Services</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Innovation</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="footer__widget">
+                    <h6>Join Our Newsletter Now</h6>
+                    <p>Get E-mail updates about our latest shop and special offers.</p>
+                    <form action="#">
+                        <input type="text" placeholder="Enter your mail">
+                        <button type="submit" class="site-btn">Subscribe</button>
+                    </form>
+                    <div class="footer__widget__social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="footer__copyright">
+                    <div class="footer__copyright__text">
+                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                            All rights reserved | This template is made with <i class="fa fa-heart"
+                                                                                aria-hidden="true"></i> by <a
+                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                    </div>
+                    <div class="footer__copyright__payment"><img src="/img/payment-item.png" alt=""></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://kit.fontawesome.com/a1f1039e75.js" crossorigin="anonymous"></script>
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        // Get all capacity and color buttons-->
+<!--        const capacityButtons = document.querySelectorAll('.capacity-button');-->
+<!--        const colorButtons = document.querySelectorAll('.color-button');-->
+<!--        const carouselImages = document.querySelectorAll('.carousel-image');-->
+<!--        const mainImage = document.getElementById('mainImage');-->
+<!--        let selectedCapacity = null;-->
+<!--        let selectedColor = null;-->
+
+<!--        // Add event listeners to capacity buttons-->
+<!--        capacityButtons.forEach(button => {-->
+<!--            button.addEventListener('click', function () {-->
+<!--                selectedCapacity = button.innerText;-->
+<!--                updateCarouselImages('capacity', selectedCapacity);-->
+<!--            });-->
+<!--        });-->
+
+<!--        // Add event listeners to color buttons-->
+<!--        colorButtons.forEach(button => {-->
+<!--            button.addEventListener('click', function () {-->
+<!--                selectedColor = button.innerText;-->
+<!--                updateCarouselImages('color', selectedColor);-->
+<!--            });-->
+<!--        });-->
+
+<!--        function updateCarouselImages(type, value) {-->
+<!--            carouselImages.forEach(image => {-->
+<!--                const imageUrl = image.getAttribute('src');-->
+<!--                if (imageUrl.includes(value)) {-->
+<!--                    mainImage.setAttribute('src', imageUrl);-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Add event listeners to add to cart and buy now buttons-->
+<!--        document.getElementById('addToCartButton').addEventListener('click', function () {-->
+<!--            if (selectedCapacity && selectedColor) {-->
+<!--                addToCart(selectedCapacity, selectedColor);-->
+<!--            } else {-->
+<!--                alert('Please select both capacity and color.');-->
+<!--            }-->
+<!--        });-->
+
+<!--        document.getElementById('buyNowButton').addEventListener('click', function () {-->
+<!--            if (selectedCapacity && selectedColor) {-->
+<!--                buyNow(selectedCapacity, selectedColor);-->
+<!--            } else {-->
+<!--                alert('Please select both capacity and color.');-->
+<!--            }-->
+<!--        });-->
+
+<!--        function addToCart(capacity, color) {-->
+<!--            // Implement your add to cart logic here-->
+<!--            alert(`Added to cart: Capacity - ${capacity}, Color - ${color}`);-->
+<!--        }-->
+
+<!--        function buyNow(capacity, color) {-->
+<!--            // Implement your buy now logic here-->
+<!--            alert(`Buying now: Capacity - ${capacity}, Color - ${color}`);-->
+<!--        }-->
+<!--    });-->
+
+<!--</script>-->
+<script>
+
+    function selectButton(button, group) {
+        console.log('Button clicked:', button);
+        const buttons = document.querySelectorAll(`button[onclick*='${group}']`);
+        buttons.forEach(btn => btn.classList.remove('active'));
+        var productSupImgUrl = button.getAttribute('data-id');
+        console.log('ProductSupImgUrl: ' + productSupImgUrl);
+        const mainImage = document.querySelector('.product__details__pic__item--large');
+        button.classList.add('active');
+        if (mainImage && productSupImgUrl.startsWith('image')) {
+            mainImage.src = `/img/ProductImg/${productSupImgUrl}`
+        }
+        else if (mainImage ) {
+            mainImage.src = `${productSupImgUrl}`;
+        }
+
+    }
+</script>
+</body>
+
+</html>

@@ -23,5 +23,13 @@ public class HomeController {
         model.addAttribute("list", categories);
         return "index";
     }
+    @GetMapping("/shop-grid")
+    public String shopDetails(Model model) {
+        return "shop-grid";
+    }
+    @GetMapping("/shopping-cart")
+    public String shopCart(Model model) {
+        return "shoping-cart";
+    }
 
 }

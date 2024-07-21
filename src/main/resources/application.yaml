@@ -26,7 +26,16 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
-  web:
-    resources:
-      static-locations: classpath:/static/
+    mode: HTML5
+    cache: false
+#  web:
+#    resources:
+#      static-locations: classpath:/static/
 #debug: true
+#logging:
+#  file:
+#    name: logs/spring-boot-app.log
+#  level:
+#    root: INFO
+#    org.springframework.web: DEBUG
+#    org.thymeleaf: DEBUG
