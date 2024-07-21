@@ -24,16 +24,20 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers( "/Account/Admin").hasAuthority("admin")
-                .requestMatchers("/Login", "/logout", "/ValidAuthenticate").permitAll()
-                .requestMatchers("/Account/getAll").hasAuthority("user")
+                        .requestMatchers("/Login", "/logout", "/ValidAuthenticate"
+                            ,"/Account/checkUsername","/Account/Register"
+                            ,"/getPassword","forgotpassword","/GetBackPass").permitAll()
+                .requestMatchers("/Account/getAll","/Account/ChangePassword","/Customer/Profile").hasAuthority("customer")
 
                 .anyRequest().authenticated()
+
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.sendRedirect("/AccessDenied");
-                }).authenticationEntryPoint((request, response, authException) -> {
-                    response.sendRedirect("/ValidAuthenticate");
+                })
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendRedirect("/Login");
                 })
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)

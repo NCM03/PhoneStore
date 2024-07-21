@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface AccountService {
-    Account save(Account account);
+Account searchUser(String username);
     Account getUser(String username);
     List<Account> findAll();
-    Account findById(Long id);
+   Account save(Account account);
     Account update(Account account);
-
+Account seachAccountById(int id);
 
 }

@@ -5,11 +5,13 @@ spring:
         name: PhoneStore
     datasource:
         password: sa
-        url: jdbc:sqlserver://localhost:1433;databaseName=PhoneShop;encrypt=true;trustServerCertificate=true
+        url: jdbc:sqlserver://localhost:1433;databaseName=PhoneStore1;encrypt=true;trustServerCertificate=true
         username: sa
     jpa:
         hibernate:
             ddl-auto: none
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.SQLServerDialect

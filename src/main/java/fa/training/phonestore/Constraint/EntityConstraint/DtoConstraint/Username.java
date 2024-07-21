@@ -1,6 +1,5 @@
-package fa.training.phonestore.Entity.EntityConstraint;
-import fa.training.phonestore.Validators.PasswordValidator;
-import fa.training.phonestore.Validators.UsernameValidator;
+package fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint;
+import fa.training.phonestore.Validators.DtoValidator.UsernameValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;
@@ -10,8 +9,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy =  PasswordValidator.class)
-public @interface Password {
+@Constraint(validatedBy =  UsernameValidator.class)
+
+public @interface Username {
     String message() default "Invalid Data";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

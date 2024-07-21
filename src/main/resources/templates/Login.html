@@ -5,18 +5,44 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+
 <form id="loginForm" method="POST" th:object="${dto}" th:action="@{/Login}">
-  <input type="text" placeholder="Name" th:field="*{username}">
+  <input type="text" id="username" placeholder="Name" th:field="*{username}">
   <p style="color: red" th:errors="*{username}"></p>
 
-  <input type="password" placeholder="Password" th:field="*{password}">
+  <input type="password" id="password" placeholder="Password" th:field="*{password}">
   <p style="color: red" th:errors="*{password}"></p>
-
+  <button type="button" id="showRegister">Register</button>
   <button type="submit">Login</button>
 </form>
+
+<form id="registerForm" style="display: none;" method="POST" th:object="${dto}" th:action="@{/Account/Register}">
+  <input type="text" id="regUsername" placeholder="Username" th:field="*{username}">
+  <p style="color: red" id="regUsernameError"></p>
+  <input type="password" id="regPassword" placeholder="Password"th:field="*{password}">
+  <input type="password" id="confirmPassword" placeholder="Confirm Password">
+  <button type="submit">Register</button>
+  <button type="button" id="returnToLogin">Return to Login</button>
+</form>
+
+<div th:if="${not #strings.isEmpty(successFullMessage)}" class="alert alert-success">
+  <p th:text="${successFullMessage}"></p>
+</div>
+
+
 <script>
-  $(document).ready(function() {
-    $('#loginForm').submit(function(event) {
+  $(document).ready(function () {
+    $('#showRegister').click(function () {
+      $('#loginForm').hide();
+      $('#registerForm').show();
+    });
+
+    $('#returnToLogin').click(function () {
+      $('#registerForm').hide();
+      $('#loginForm').show();
+    });
+
+    $('#loginForm').submit(function (event) {
       var username = $('#username').val();
       var password = $('#password').val();
 
@@ -30,7 +56,57 @@
         event.preventDefault();
       }
     });
+
+    $('#registerForm').submit(function (event) {
+      var regUsername = $('#regUsername').val();
+      var regPassword = $('#regPassword').val();
+      var confirmPassword = $('#confirmPassword').val();
+
+      if (regUsername.length < 6) {
+        alert('Username must be at least 6 characters long.');
+        event.preventDefault();
+      }
+
+      if (regPassword.length < 8 || !/[A-Z]/.test(regPassword) || !/[!@#$%^&*(),.?":{}|<>]/.test(regPassword)) {
+        alert('Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.');
+        event.preventDefault();
+      }
+
+      if (regPassword !== confirmPassword) {
+        alert('Passwords do not match.');
+        event.preventDefault();
+      }
+    });
   });
+  $(document).ready(function () {
+    $('#regUsername').on('input', function () {
+      var username = $(this).val();
+      if (username.length >= 6) {
+        $.ajax({
+          url: '/Account/checkUsername',
+          method: 'POST',
+          data: {username: username},
+          success: function (response) {
+            if (response === true
+
+
+            ) {
+              $('#regUsernameError').text('Username already exists').show();
+            } else {
+              $('#regUsernameError').text('').hide();
+            }
+          },
+          error: function () {
+            console.error('Error checking username');
+            $('#regUsernameError').text('Error checking username').show();
+          }
+        });
+      } else {
+        $('#regUsernameError').text('').hide();
+      }
+    });
+  });
+
 </script>
 
 </body>

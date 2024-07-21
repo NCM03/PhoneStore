@@ -2,6 +2,7 @@ package fa.training.phonestore.Controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fa.training.phonestore.Entity.Account;
 import fa.training.phonestore.Entity.DTO;
 import fa.training.phonestore.Sercurity.SecurityConstraints;
 import fa.training.phonestore.Service.AccountService;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     AccountService accountService;
     @Autowired
@@ -51,17 +55,23 @@ public class LoginController {
         if(result.hasErrors()) {
             return new ModelAndView("Login");
         }
-        // Tạo một HttpEntity chứa DTO
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<DTO> httpRequest = new HttpEntity<>(dto, headers);
+        Account account=new Account();
+        account=accountService.searchUser(dto.getUsername());
+        if(account!=null){
+        if(!bCryptPasswordEncoder.matches(dto.getPassword().toString(), account.getPassword())){
+            result.rejectValue("password", "error.user", "Password is invalid.Try Agian");
+            return new ModelAndView("Login");
+        }else{
+            // Tạo một HttpEntity chứa DTO
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<DTO> httpRequest = new HttpEntity<>(dto, headers);
 
-        try {
-            // Sử dụng RestTemplate để gửi request POST đến /authenticate
-            ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
+            try {
+                // Sử dụng RestTemplate để gửi request POST đến /authenticate
+                ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
 
-            if (response.getStatusCode() == HttpStatus.OK) {
-                // Đọc token từ response body
+
                 String responseBody = response.getBody();
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode root = mapper.readTree(responseBody);
@@ -71,27 +81,28 @@ public class LoginController {
                 // Lưu token vào session
                 HttpSession session = request.getSession(true);
                 session.setAttribute("jwtToken", token);
-
+                session.setAttribute("account", account);
                 if ("admin".equals(role)) {
 
                     return new ModelAndView("redirect:/Account/Admin");
-                } else if ("user".equals(role)) {
+                } else if ("customer".equals(role)) {
 
-                    return new ModelAndView("redirect:/user");
+                    return new ModelAndView("redirect:/Customer/Profile");
                 } else {
 
                     return new ModelAndView("redirect:/default");
                 }
-            } else {
-                // Xử lý lỗi đăng nhập
-                result.rejectValue("username", "error.user", "Invalid username or password");
+
+            } catch (Exception e) {
+                // Xử lý lỗi kết nối hoặc lỗi khác
+                result.rejectValue("username", "error.user", "An error occurred during authentication");
                 return new ModelAndView("Login");
-            }
-        } catch (Exception e) {
-            // Xử lý lỗi kết nối hoặc lỗi khác
-            result.rejectValue("username", "error.user", "An error occurred during authentication");
+            }}
+        }else{
+            result.rejectValue("username", "error.user", "Username is invalid");
             return new ModelAndView("Login");
         }
+
     }
     }
 
