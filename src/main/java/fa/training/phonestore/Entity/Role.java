@@ -1,5 +1,5 @@
 // Role.java
-package fa.training.phonestore.Entity;
+package fa.training.phonestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
