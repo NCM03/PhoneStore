@@ -3,7 +3,7 @@ package fa.training.phonestore.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-
+import fa.training.phonestore.entity.Role;
 @Entity
 @Data
 @Table(name = "Account")
