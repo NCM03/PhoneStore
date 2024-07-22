@@ -1,4 +1,4 @@
-package fa.training.phonestore.Respository;
+package fa.training.phonestore.repository;
 
 import fa.training.phonestore.entity.Account;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface AccountRespository extends CrudRepository<Account, Long> {
     @EntityGraph(attributePaths = {"role"})
     Optional<Account> findByUsername(String username);
+    Account findAccountByUsername(String username);
+    Account findAccountByAccountId(int accountId);
 }

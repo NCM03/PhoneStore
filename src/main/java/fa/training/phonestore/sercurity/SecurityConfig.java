@@ -1,16 +1,21 @@
 package fa.training.phonestore.sercurity;
 
+import fa.training.phonestore.exception.EntityNotFoundException;
+import fa.training.phonestore.service.CustomUserDetailService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @AllArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
     CustomAuthenticationManager customAuthenticationManager;
+    CustomUserDetailService customerUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -20,17 +25,36 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers( "/Account/save").permitAll()
-                .requestMatchers( "/Account/Login").permitAll()
-                .requestMatchers("/Account/getAll").hasAuthority("admin")
+                .requestMatchers( "/Account/Admin","/Account/take-Activities").hasAuthority("admin")
+                        .requestMatchers("/Login", "/logout", "/ValidAuthenticate"
+                            ,"/Account/checkUsername","/Account/Register"
+                            ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password").permitAll()
+                .requestMatchers("/Account/getAll","/Account/ChangePassword","/Customer/Profile").hasAuthority("customer")
                 .anyRequest().authenticated()
                 .and()
+                .exceptionHandling()
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.sendRedirect("/AccessDenied");
+                })
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendRedirect("/Login");
+                })
+
+                .and()
+
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
 
                 .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
+
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .rememberMe()
+//                .rememberMeParameter("remember-me")
+//                .key("remember-me-key")
+//                .tokenValiditySeconds((int) SecurityConstraints.REMEMBER_ME_EXPIRATION / 1000)
+        ;
 
         return http.build();
     }

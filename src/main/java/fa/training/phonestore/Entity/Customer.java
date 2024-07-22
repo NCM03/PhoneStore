@@ -1,4 +1,4 @@
-package fa.training.phonestore.entity;
+package fa.training.phonestore.Entity;
 
 import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerDateOfBirth;
 import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerName;

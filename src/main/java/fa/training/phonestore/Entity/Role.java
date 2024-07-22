@@ -12,7 +12,6 @@ import java.util.Set;
 @Data
 @Table(name = "Role")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class Role {
     @Id
     @Column(name = "RoleID")
