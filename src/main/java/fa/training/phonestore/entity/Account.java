@@ -18,7 +18,7 @@ private String username;
 private String password;
 @ManyToOne
 @JoinColumn(name = "RoleID")
-private fa.training.phonestore.Entity.Role role;
+private Role role;
 @Column(name = "is_active")
 private boolean status;
 }
