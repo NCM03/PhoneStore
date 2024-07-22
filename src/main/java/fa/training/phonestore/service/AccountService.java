@@ -1,6 +1,6 @@
-package fa.training.phonestore.Service;
+package fa.training.phonestore.service;
 
-import fa.training.phonestore.Entity.Account;
+import fa.training.phonestore.entity.Account;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

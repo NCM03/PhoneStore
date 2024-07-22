@@ -1,4 +1,4 @@
-package fa.training.phonestore.Sercurity;
+package fa.training.phonestore.sercurity;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

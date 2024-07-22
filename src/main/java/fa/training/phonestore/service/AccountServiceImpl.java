@@ -1,9 +1,8 @@
-package fa.training.phonestore.Service;
+package fa.training.phonestore.service;
 
-import fa.training.phonestore.Entity.Account;
+import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.Respository.AccountRespository;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

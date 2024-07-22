@@ -1,10 +1,10 @@
-package fa.training.phonestore.Sercurity;
+package fa.training.phonestore.sercurity;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import fa.training.phonestore.Entity.Account;
+import fa.training.phonestore.entity.Account;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

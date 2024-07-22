@@ -1,18 +1,16 @@
-package fa.training.phonestore.Controller;
+package fa.training.phonestore.controller;
 
-import fa.training.phonestore.Entity.Account;
+import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.Entity.DTO;
-import fa.training.phonestore.Service.AccountService;
+import fa.training.phonestore.service.AccountService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;

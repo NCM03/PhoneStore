@@ -1,4 +1,4 @@
-package fa.training.phonestore.Sercurity;
+package fa.training.phonestore.sercurity;
 
 import fa.training.phonestore.Exception.EntityNotFoundException;
 import jakarta.servlet.*;

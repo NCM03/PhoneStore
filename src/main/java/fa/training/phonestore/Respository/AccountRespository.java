@@ -1,6 +1,6 @@
 package fa.training.phonestore.Respository;
 
-import fa.training.phonestore.Entity.Account;
+import fa.training.phonestore.entity.Account;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
