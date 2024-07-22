@@ -1,0 +1,28 @@
+server:
+    port: 2612
+spring:
+    application:
+        name: PhoneStore
+    datasource:
+        password: sa
+        url: jdbc:sqlserver://localhost:1433;databaseName=PhoneStore1;encrypt=true;trustServerCertificate=true
+        username: sa
+    jpa:
+        hibernate:
+            ddl-auto: none
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.SQLServerDialect
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: sieunhantanh2003@gmail.com
+        password: eqik fdhn ytoo cxfq
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true

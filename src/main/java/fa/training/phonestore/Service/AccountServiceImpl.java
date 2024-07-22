@@ -30,12 +30,13 @@ public class AccountServiceImpl implements AccountService{
 
         if (account.isPresent()) {
             return account.get();
-        } else throw new EntityNotFoundException();
+        } else {
+            return null;
+        }
 
     }
 @Transactional
     public Account getUser(String username) {
-
         Optional<Account> user = accountRespository.findByUsername(username);
         return unwrapUsser(user, 404L);
     }
@@ -44,13 +45,22 @@ public class AccountServiceImpl implements AccountService{
         return (List<Account>) accountRespository.findAll();
     }
 
-    @Override
-    public Account findById(Long id) {
-        return accountRespository.findById(id).orElse(null);
-    }
+//    @Override
+//    public Account findById(Long id) {
+//        return accountRespository.findById(id).orElse(null);
+//    }
 
     @Override
     public Account update(Account account) {
         return accountRespository.save(account);
+    }
+
+    @Override
+    public Account searchUser(String username) {
+        return accountRespository.findAccountByUsername(username);
+    }
+    @Override
+    public Account seachAccountById(int id){
+        return accountRespository.findAccountByAccountId(id);
     }
 }

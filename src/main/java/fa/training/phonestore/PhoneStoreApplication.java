@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class PhoneStoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PhoneStoreApplication.class, args);
+            SpringApplication.run(PhoneStoreApplication.class, args);
     }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){

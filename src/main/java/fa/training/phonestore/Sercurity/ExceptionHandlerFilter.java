@@ -17,14 +17,12 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
 
-        }catch (EntityNotFoundException e){
+        }catch (EntityNotFoundException e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.getWriter().write("Username does not exist");
             response.getWriter().flush();
-        }
-        catch (RuntimeException e) {
+        }catch (RuntimeException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("BADREQUEST");
             response.getWriter().flush();
         }
     }
