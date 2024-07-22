@@ -20,8 +20,15 @@
     <tr th:each="account : ${accountList}">
         <td th:text="${account.accountId}"></td>
         <td th:text="${account.username}"></td>
-        <td th:text="${account.status} ? 'Active' : 'Inactive'"></td>
-        <button type="submit">Reset</button>
+        <td th:text="${account.isActive} ? 'Active' : 'Inactive'"></td>
+      <td>  <form th:action="@{/Account/reset-password}" method="post">
+          <input type="hidden" name="accountId" th:value="${account.accountId}" />
+          <button type="submit">Reset</button>
+      </form></td>
+        <td>  <form th:action="@{/Account/take-Activities}" method="post">
+            <input type="hidden" name="accountId" th:value="${account.accountId}" />
+            <button type="submit">Reset</button>
+        </form></td>
     </tr>
     </tbody>
 </table>

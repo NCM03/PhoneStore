@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -39,6 +41,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
         try {
             Account account = new ObjectMapper().readValue(request.getInputStream(), Account.class);
+//            boolean rememberMe = Boolean.parseBoolean(request.getParameter("remember-me"));
             Authentication auth = new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword());
             return authenticationManager.authenticate(auth);
         } catch (IOException e) {
@@ -48,6 +51,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(auth.getName());
+//        boolean rememberMe = Boolean.parseBoolean(request.getParameter("remember-me"));
+//        long expirationTime = rememberMe ? SecurityConstraints.REMEMBER_ME_EXPIRATION : SecurityConstraints.TOKEN_EXPIRATION;
+
         Account account = (Account) auth.getPrincipal();
         String token = JWT.create()
                 .withSubject(auth.getName())

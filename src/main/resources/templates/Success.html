@@ -37,7 +37,9 @@
     <button type="submit" id="saveButton" style="display: none;">Save</button>
 </form>
 <button type="button" onclick="toggleEdit()">Edit</button>
-
+<div th:if="${not #strings.isEmpty(successFullMessage)}" class="alert alert-success">
+    <p th:text="${successFullMessage}"></p>
+</div>
 <script th:inline="javascript">
     /* JavaScript để toggle readonly và hiển thị nút Save */
     function toggleEdit() {
