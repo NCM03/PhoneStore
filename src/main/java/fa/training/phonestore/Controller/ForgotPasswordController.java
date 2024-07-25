@@ -1,10 +1,10 @@
-package fa.training.phonestore.Controller;
+package fa.training.phonestore.controller;
 
-import fa.training.phonestore.Entity.Account;
-import fa.training.phonestore.Entity.Customer;
+import fa.training.phonestore.entity.Account;
+import fa.training.phonestore.entity.Customer;
 import fa.training.phonestore.Entity.DTO;
-import fa.training.phonestore.Service.AccountService;
-import fa.training.phonestore.Service.CustomerService;
+import fa.training.phonestore.service.AccountService;
+import fa.training.phonestore.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 

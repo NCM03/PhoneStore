@@ -1,11 +1,11 @@
-package fa.training.phonestore.Controller;
+package fa.training.phonestore.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fa.training.phonestore.Entity.Account;
+import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.Entity.DTO;
-import fa.training.phonestore.Sercurity.SecurityConstraints;
-import fa.training.phonestore.Service.AccountService;
+import fa.training.phonestore.sercurity.SecurityConstraints;
+import fa.training.phonestore.service.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -69,7 +69,7 @@ public class LoginController {
 
             try {
                 // Sử dụng RestTemplate để gửi request POST đến /authenticate
-                ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
+                ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/authenticate", httpRequest, String.class);
 
 
                 String responseBody = response.getBody();

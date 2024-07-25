@@ -1,6 +1,6 @@
-package fa.training.phonestore.Controller;
+package fa.training.phonestore.controller;
 
-import fa.training.phonestore.Service.AccountService;
+import fa.training.phonestore.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

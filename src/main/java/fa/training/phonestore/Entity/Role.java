@@ -1,5 +1,5 @@
 // Role.java
-package fa.training.phonestore.Entity;
+package fa.training.phonestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -12,7 +12,6 @@ import java.util.Set;
 @Data
 @Table(name = "Role")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class Role {
     @Id
     @Column(name = "RoleID")
