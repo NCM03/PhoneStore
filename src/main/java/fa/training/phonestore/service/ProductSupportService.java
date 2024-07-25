@@ -9,6 +9,7 @@ import fa.training.phonestore.service.imp.ProductSupportServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +26,18 @@ public class ProductSupportService implements ProductSupportServiceImp {
     }
 
     @Override
-    public Page<ProductSupport> getHomeLastestProduct(){
-        return productSupportRepository.listLastestProduct(PageRequest.of(0, 6));
+    public List<ProductSupport> getHomeLastestProduct(){
+        return productSupportRepository.listLastestProduct();
+    }
+
+    @Override
+    public Page<ProductSupport> getSearchProduct(String keyword,int page,int size) {
+        return productSupportRepository.Search(keyword,PageRequest.of(page, size));
+    }
+
+    @Override
+    public List<ProductSupport> getSearchList(String keyword) {
+        return productSupportRepository.searchList(keyword);
     }
 
 

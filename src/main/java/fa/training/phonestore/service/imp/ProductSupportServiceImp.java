@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ProductSupportServiceImp {
     Page<ProductSupport> findProductSupportByProductId(int productId);
-    Page<ProductSupport> getHomeLastestProduct();
-
+    List<ProductSupport> getHomeLastestProduct();
+    Page<ProductSupport> getSearchProduct(String keyword,int page,int size);
+    List<ProductSupport> getSearchList(String keyword);
 }

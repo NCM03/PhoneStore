@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
@@ -22,13 +24,25 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             , nativeQuery = true)
     Page<Product> listProductsFeature(Pageable pageable);
 
-    @Query(value = "SELECT * FROM Product WHERE Product.Comment"
+    @Query(value = "SELECT * FROM Product WHERE Product.Comment IS NOT NULL"
             , nativeQuery = true)
     Page<Product> listReviewProducts(Pageable pageable);
 
-    @Query(value = "SELECT * FROM Product \n" +
-            "WHERE Product.Rating > 4.5",
+    @Query(value = "SELECT * FROM Product WHERE Product.Rating >= 4.5 " +
+            "ORDER BY Product.Rating OFFSET 0 ROWS FETCH NEXT 2 ROWS ONLY",
             nativeQuery = true
     )
-    Page<Product> listTopRateProduct(Pageable pageable);
+    List<Product> listTopRateProductSection1();
+
+    @Query(value = "SELECT * FROM Product WHERE Product.Rating >= 4.5 " +
+            "ORDER BY Product.Rating OFFSET 2 ROWS FETCH NEXT 2 ROWS ONLY",
+            nativeQuery = true
+    )
+    List<Product> listTopRateProductSection2();
+
+    @Query(value = "SELECT * FROM Product WHERE Product.Rating >= 4.5 " +
+            "ORDER BY Product.Rating OFFSET 4 ROWS FETCH NEXT 2 ROWS ONLY",
+            nativeQuery = true
+    )
+    List<Product> listTopRateProductSection3();
 }

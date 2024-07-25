@@ -10,7 +10,9 @@ import java.util.List;
 public interface ProductServiceImp {
 //    Page<Product> getHomeFeatureProduct();
 //    List<Product> getHomeLastestProduct();
-    Page<Product> getHomeTopRateProduct();
+    List<Product> getHomeTopRateProductSection1();
+    List<Product> getHomeTopRateProductSection2();
+    List<Product> getHomeTopRateProductSection3();
     Page<Product> getHomeReviewProduct();
 
 }

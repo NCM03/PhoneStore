@@ -23,23 +23,24 @@ public class ProductService implements ProductServiceImp {
     };
 
     @Override
-    public Page<Product> getHomeTopRateProduct() {
-        return productRepository.listTopRateProduct(PageRequest.of(0, 6));
+    public List<Product> getHomeTopRateProductSection1() {
+        return productRepository.listTopRateProductSection1();
+    }
+
+    @Override
+    public List<Product> getHomeTopRateProductSection2() {
+        return productRepository.listTopRateProductSection2();
+    }
+
+    @Override
+    public List<Product> getHomeTopRateProductSection3() {
+        return productRepository.listTopRateProductSection3();
     }
 
     @Override
     public Page<Product> getHomeReviewProduct() {
-        return productRepository.listTopRateProduct(PageRequest.of(0, 6));
+        return productRepository.listReviewProducts(PageRequest.of(0, 6));
     }
-//
-//    @Override
-//    public List<Product> getProductByName(String name) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<Product> getAllProductByCategoryID(int categoryID) {
-//        return null;
-//    }
+
 
 }
