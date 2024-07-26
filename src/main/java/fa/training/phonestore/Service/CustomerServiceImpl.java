@@ -15,7 +15,15 @@ public class CustomerServiceImpl implements CustomerService{
     public Customer getCustomer(Account account) {
         return customerRespository.getCustomersByAccount(account);
     }
-
+    @Override
+    public boolean existsByEmail(String email) {
+        return customerRespository.existsByEmail(email);
+    }
+public Customer saveCustomer(Account account) {
+        Customer customer = new Customer();
+        customer.setAccount(account);
+        return customerRespository.save(customer);
+    }
     @Override
     public Customer saveCustomer(Customer customer) {
         return customerRespository.save(customer);

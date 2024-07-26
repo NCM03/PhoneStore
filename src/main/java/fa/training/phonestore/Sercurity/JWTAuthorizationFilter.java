@@ -6,6 +6,7 @@
     import com.auth0.jwt.interfaces.DecodedJWT;
     import jakarta.servlet.FilterChain;
     import jakarta.servlet.ServletException;
+    import jakarta.servlet.http.Cookie;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
     import jakarta.servlet.http.HttpSession;
@@ -23,32 +24,51 @@
     public class JWTAuthorizationFilter extends OncePerRequestFilter {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            HttpSession session = request.getSession(false);
-            String header = null;
-            if (session != null) {
-                Object tokenObj = session.getAttribute("jwtToken");
-                if (tokenObj != null) {
-                    header = tokenObj.toString();
+            String token = extractToken(request);
+
+            if (token != null) {
+                try {
+                    Algorithm algorithm = Algorithm.HMAC512(SecurityConstraints.SECRET_KEY);
+                    DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
+                    String role = jwt.getClaim("role").asString();
+
+                    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } catch (JWTVerificationException exception) {
+                    SecurityContextHolder.clearContext();
                 }
-            }
-            if (header == null || !header.startsWith(SecurityConstraints.BEARER)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            try {
-                String token = header.replace(SecurityConstraints.BEARER, "");
-                Algorithm algorithm = Algorithm.HMAC512(SecurityConstraints.SECRET_KEY);
-                DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
-                String role = jwt.getClaim("role").asString();
-
-                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
-                Authentication authentication = new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (JWTVerificationException exception) {
-                SecurityContextHolder.clearContext();
             }
 
             filterChain.doFilter(request, response);
+        }
+
+        private String extractToken(HttpServletRequest request) {
+            // Kiểm tra token trong header
+            String header = request.getHeader(SecurityConstraints.AUTHORIZATION);
+            if (header != null && header.startsWith(SecurityConstraints.BEARER)) {
+                return header;
+            }
+
+            // Kiểm tra token trong session
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                Object tokenObj = session.getAttribute("jwtToken");
+                if (tokenObj != null) {
+                    return tokenObj.toString();
+                }
+            }
+
+            // Kiểm tra token trong cookie
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("remember-me-token".equals(cookie.getName())) {
+                        return cookie.getValue();
+                    }
+                }
+            }
+
+            return null;
         }
     }
