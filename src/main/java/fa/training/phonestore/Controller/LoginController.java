@@ -6,13 +6,14 @@ import fa.training.phonestore.Entity.Account;
 import fa.training.phonestore.Entity.DTO;
 import fa.training.phonestore.Sercurity.SecurityConstraints;
 import fa.training.phonestore.Service.AccountService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,15 +36,32 @@ public class LoginController {
     RestTemplate restTemplate ;
     @Autowired
     private HttpSession httpSession;
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    @GetMapping("/Logout123")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        // Xóa token JWT khỏi cookie nếu có
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("remember-me-token".equals(cookie.getName())) {
+                    cookie.setValue("");
+                    cookie.setPath("/");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+
+        // Xóa session
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.removeAttribute("jwtToken");
             session.invalidate();
         }
+
+        // Chuyển hướng đến trang đăng nhập hoặc trang chủ
         return "redirect:/Login";
     }
+
     @GetMapping("/Login")
     public String getlogin(Model m) {
         DTO dto= new DTO();
@@ -51,58 +69,77 @@ public class LoginController {
         return "Login";
     }
     @PostMapping("/Login")
-    public ModelAndView submitGrade(@Valid @ModelAttribute("dto") @RequestBody DTO dto, BindingResult result, HttpServletRequest request) {
-        if(result.hasErrors()) {
-            return new ModelAndView("Login");
-        }
-        Account account=new Account();
-        account=accountService.searchUser(dto.getUsername());
-        if(account!=null){
-        if(!bCryptPasswordEncoder.matches(dto.getPassword().toString(), account.getPassword())){
-            result.rejectValue("password", "error.user", "Password is invalid.Try Agian");
-            return new ModelAndView("Login");
-        }else{
-            // Tạo một HttpEntity chứa DTO
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<DTO> httpRequest = new HttpEntity<>(dto, headers);
-
-            try {
-                // Sử dụng RestTemplate để gửi request POST đến /authenticate
-                ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
-
-
-                String responseBody = response.getBody();
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode root = mapper.readTree(responseBody);
-                String token = root.path("token").asText();
-                String role = root.path("role").asText(); // Đọc vai trò từ token
-
-                // Lưu token vào session
-                HttpSession session = request.getSession(true);
-                session.setAttribute("jwtToken", token);
-                session.setAttribute("account", account);
-                if ("admin".equals(role)) {
-
-                    return new ModelAndView("redirect:/Account/Admin");
-                } else if ("customer".equals(role)) {
-
-                    return new ModelAndView("redirect:/Customer/Profile");
-                } else {
-
-                    return new ModelAndView("redirect:/default");
-                }
-
-            } catch (Exception e) {
-                // Xử lý lỗi kết nối hoặc lỗi khác
-                result.rejectValue("username", "error.user", "An error occurred during authentication");
+    public ModelAndView submitGrade(@Valid @ModelAttribute("dto") @RequestBody DTO dto,
+                                    BindingResult result,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            if (result.hasErrors()) {
                 return new ModelAndView("Login");
-            }}
-        }else{
-            result.rejectValue("username", "error.user", "Username is invalid");
+            }
+            Account account = accountService.searchUser(dto.getUsername());
+            if (account != null) {
+                if (!bCryptPasswordEncoder.matches(dto.getPassword(), account.getPassword())) {
+
+                    result.rejectValue("password", "error.user", "Password is invalid. Try Again");
+                    return new ModelAndView("Login");
+                } else {
+                    if (account.isActive() == false) {
+                        redirectAttributes.addFlashAttribute("FailedFullMessage", "Your account is block.Please Contact to admin");
+                        return new ModelAndView("redirect:/Login");
+
+                    }
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<DTO> httpRequest = new HttpEntity<>(dto, headers);
+
+                    try {
+                        ResponseEntity<String> authResponse = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
+                        String responseBody = authResponse.getBody();
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode root = mapper.readTree(responseBody);
+                        String token = root.path("token").asText();
+                        token = token.replace(SecurityConstraints.BEARER, "");
+                        String role = root.path("role").asText();
+
+
+                        // Xử lý Remember Me
+                        boolean rememberMe = "on".equals(request.getParameter("remember-me"));
+                        if (rememberMe) {
+                            // Tạo cookie với token JWT
+                            Cookie rememberMeCookie = new Cookie("remember-me-token", token);
+                            rememberMeCookie.setMaxAge(7 * 24 * 60 * 60); // Cookie tồn tại 7 ngày
+                            rememberMeCookie.setPath("/");
+                            rememberMeCookie.setHttpOnly(true); // Tăng cường bảo mật
+                            response.addCookie(rememberMeCookie);
+                        } else {
+                            HttpSession session = request.getSession(true);
+                            session.setAttribute("jwtToken", token);
+                            session.setAttribute("account", account);
+                        }
+                        if ("admin".equals(role)) {
+                            return new ModelAndView("redirect:/Account/Admin");
+                        } else if ("customer".equals(role)) {
+                            return new ModelAndView("redirect:/Customer/Profile");
+                        } else {
+                            return new ModelAndView("redirect:/default");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace(); // In ra stack trace để debug
+                        result.rejectValue("username", "error.user", "An error occurred during authentication");
+                        return new ModelAndView("Login");
+                    }
+                }
+            } else {
+                result.rejectValue("username", "error.user", "Username is invalid");
+                return new ModelAndView("Login");
+            }
+        }catch (Exception e){
+            result.rejectValue("username", "error.user", "Failed, Please try again");
             return new ModelAndView("Login");
         }
-
     }
     }
 

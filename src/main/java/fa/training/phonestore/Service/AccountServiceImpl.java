@@ -5,6 +5,8 @@ import fa.training.phonestore.Respository.AccountRespository;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +43,13 @@ public class AccountServiceImpl implements AccountService{
         return unwrapUsser(user, 404L);
     }
     @Override
-    public List<Account> findAll() {
-        return (List<Account>) accountRespository.findAll();
+    public Page<Account> findAccountsByUsername(String username, Pageable pageable) {
+        return accountRespository.findByUsernameContaining(username, pageable);
     }
+   @Override
+   public Page<Account> findAllAccounts(Pageable pageable) {
+       return accountRespository.findAll(pageable);
+   }
 
 //    @Override
 //    public Account findById(Long id) {

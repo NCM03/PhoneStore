@@ -3,7 +3,10 @@ package fa.training.phonestore.Controller;
 import fa.training.phonestore.Entity.Account;
 import fa.training.phonestore.Entity.Customer;
 
+import fa.training.phonestore.Helper.HelperToken;
 import fa.training.phonestore.Service.CustomerService;
+import fa.training.phonestore.Utils.JwtUtils;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -24,31 +27,50 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
+    JwtUtils jwtUtils =new JwtUtils();
+    HelperToken helperToken;
     @GetMapping("/Customer/Profile")
     public String getProfile(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession(true);
-        Account account = (Account) session.getAttribute("account");
-        if (account != null) {
-            Customer customer = customerService.getCustomer(account);
-            model.addAttribute("customer", customer);
-            return "Success";
-        } else {
-            return "Success";
-        }
+try {
+
+
+    String token = helperToken.getToken(request);
+    if (token == null) {
+        return "redirect:/Login";
+    }
+    Account account = jwtUtils.decodeToken(token);
+
+    if (account != null) {
+        Customer customer = customerService.getCustomer(account);
+        model.addAttribute("customer", customer);
+        return "Profile";
+    } else {
+        return "redirect:/Login";
+    }
+} catch (Exception e){
+    return "redirect:/Login";
+}
     }
 
     @PostMapping("/Customer/UpdateProfile")
     public String updateProfile(@Valid Customer customer, BindingResult result, RedirectAttributes redirectAttributes) {
         {
-            if (result.hasErrors()) {
-                return "Success";
-            } else {
-                customerService.saveCustomer(customer);
+            try {
+                if (result.hasErrors()) {
+                    return "Profile";
+                } else {
 
-                redirectAttributes.addFlashAttribute("successFullMessage", "Update profile successfully!");
+                    customerService.saveCustomer(customer);
+
+                    redirectAttributes.addFlashAttribute("successFullMessage", "Update profile successfully!");
+                    return "redirect:/Customer/Profile";
+                }
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Update profile failed!");
                 return "redirect:/Customer/Profile";
             }
         }
     }
-}
+    }
+
 

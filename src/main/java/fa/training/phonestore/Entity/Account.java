@@ -32,7 +32,7 @@ public class Account {
     public void prePersist() {
         if (role == null) {
             Role defaultRole = new Role();
-            defaultRole.setRoleId(3); // Thiết lập RoleID mặc định là 3
+            defaultRole.setRoleId(2); // Thiết lập RoleID mặc định là 3
             this.role = defaultRole;
         }
         setActive(true);
