@@ -45,11 +45,9 @@ public class HomeController {
         List<ProductSupport> lastestProduct = productSupportService.getHomeLastestProduct();
         Page<Product> reviewProduct = productService.getHomeReviewProduct();
         List<Product> RatingProduct1 = productService.getHomeTopRateProductSection1();
-        List<Product> RatingProduct2 = productService.getHomeTopRateProductSection2();
         model.addAttribute("lastestProduct", lastestProduct);
         model.addAttribute("reviewProduct", reviewProduct);
         model.addAttribute("ratingProduct1", RatingProduct1);
-        model.addAttribute("ratingProduct2", RatingProduct2);
         return "index";
     }
 

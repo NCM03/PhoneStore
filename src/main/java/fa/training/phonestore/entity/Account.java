@@ -1,33 +1,40 @@
 package fa.training.phonestore.entity;
 
-import jakarta.annotation.Nonnull;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Password;
+import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Username;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Table(name = "Account")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AccountID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int accountId;
-
-    @Column(name = "Username", nullable = false)
+    @Column(name = "Username")
+@Username
     private String username;
-
-    @Column(name = "Password", nullable = false)
+    @Column(name = "Password")
+    @Password
     private String password;
+    @ManyToOne
+    @JoinColumn(name = "RoleID")
+    private Role role;
+    @Column(name = "IsActive")
+        private boolean isActive;
 
-    @Column(name = "RoleID", nullable = false)
-    private int roleId;
-
-    @Column(name = "IsActive", nullable = false)
-    private boolean isActive;
+    @PrePersist
+    public void prePersist() {
+        if (role == null) {
+            Role defaultRole = new Role();
+            defaultRole.setRoleId(2); // Thiết lập RoleID mặc định là 3
+            this.role = defaultRole;
+        }
+        setActive(true);
+    }
 }

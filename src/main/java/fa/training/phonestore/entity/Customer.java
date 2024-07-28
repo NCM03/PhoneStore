@@ -1,43 +1,50 @@
 package fa.training.phonestore.entity;
 
+import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerDateOfBirth;
+import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerName;
+
+import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
+import fa.training.phonestore.Constraint.EntityConstraint.Gender;
+import fa.training.phonestore.Constraint.EntityConstraint.Phone;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "Customer")
+@Data
+@NoArgsConstructor
 public class Customer {
-
     @Id
+    @Column(name="CustomerID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CustomerID")
     private int customerId;
-
-    @Column(name = "CustomerName", nullable = false)
-    private String customerName;
-
-    @Column(name = "Age")
-    private int age;
-
-    @Column(name = "Gender")
-    private String gender;
-
     @Column(name = "Phone")
+    @Phone(message="Phone has wrong format")
     private String phone;
-
-    @Column(name = "DateOfBirth")
+    @Column(name="Email")
+    @EmailConstraint(message = "Email has wrong format")
+    private String email;
+    @Column(name="CustomerName")
+    @CustomerName(message ="Wrong format name")
+    private String name;
+    @Column(name="Gender")
+    @Gender(message="Male or Female or Other")
+    private String gender;
+    @Column(name="DateOfBirth")
+@CustomerDateOfBirth(message="Need 18 years old")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
-
-    @Column(name = "Address")
+    @NotBlank(message="Address is not blank")
+    @Column(name="Address")
     private String address;
-
-    // Getters and setters
+    @OneToOne
+    @JoinColumn(name = "AccountID")
+    private Account account;
+    @Column(name="Age")
+    @Min(18)
+    private int age;
 }
