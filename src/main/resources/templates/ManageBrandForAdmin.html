@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Brands</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    <style>
+        #app {
+            display: flex;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            transition: width 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .sidebar:hover, .sidebar.active {
+            width: 250px;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            white-space: nowrap;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+            border-radius: 4px;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #212529;
+            border-radius: 4px;
+        }
+
+        .content {
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .intro {
+            padding: 20px;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex" id="app">
+    <div id="sidebarContainer">
+        <div th:insert="~{sidebar :: sidebar}"></div>
+    </div>
+    <div class="content flex-grow-1 p-3">
+        <h1 class="text-center">Manage Brands</h1>
+        <section class="intro">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="table-responsive bg-white">
+                            <div class="mb-3">
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#AddBrandModal">
+                                    <i class="bi bi-plus-circle"></i> Add Brand
+                                </button>
+                                <form th:action="@{/Admin/ManageBrand}" method="get" class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <input type="text" class="form-control" id="searchTerm" name="searchTerm"
+                                               th:value="${searchTerm}" placeholder="Search by brand name">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <label for="size" class="col-form-label">Items per page:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select id="size" name="size" class="form-select" onchange="this.form.submit()">
+                                            <option value="5" th:selected="${size == 5}">5</option>
+                                            <option value="10" th:selected="${size == 10}">10</option>
+                                            <option value="20" th:selected="${size == 20}">20</option>
+                                            <option value="50" th:selected="${size == 50}">50</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="successAlert" class="alert alert-success" style="display: none;" role="alert"></div>
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <a th:href="@{/Admin/ManageBrand(page=0,size=${size},sortField='brandID',sortDir=${sortField == 'brandID' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
+                                            Brand ID
+                                            <i th:if="${sortField == 'brandID'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a th:href="@{/Admin/ManageBrand(page=0,size=${size},sortField='brandName',sortDir=${sortField == 'brandName' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
+                                            Brand Name
+                                            <i th:if="${sortField == 'brandName'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                        </a>
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="brand : ${brandList}" th:data-brand-id="${brand.brandID}">
+                                    <td th:text="${brand.brandID}"></td>
+                                    <td th:text="${brand.brandName}"></td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm update-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#updateModal"
+                                                th:data-brand-id="${brand.brandID}"
+                                                th:data-brand-name="${brand.brandName}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="@{/Admin/ManageBrand(page=${currentPage - 1},size=${size},sortField=${sortField},sortDir=${sortDir},searchTerm=${searchTerm})}"
+                                           tabindex="-1">Previous</a>
+                                    </li>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                        th:classappend="${i == currentPage} ? 'active'">
+                                        <a class="page-link"
+                                           th:href="@{/Admin/ManageBrand(page=${i},size=${size},sortField=${sortField},sortDir=${sortDir},searchTerm=${searchTerm})}"
+                                           th:text="${i + 1}"></a>
+                                    </li>
+                                    <li class="page-item"
+                                        th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                                        <a class="page-link"
+                                           th:href="@{/Admin/ManageBrand(page=${currentPage + 1},size=${size},sortField=${sortField},sortDir=${sortDir},searchTerm=${searchTerm})}">Next</a>
+                                    </li>
+                                </ul>
+
+                            </nav>
+
+                            <div class="text-center mt-3">
+                                <p>Showing page [[${currentPage + 1}]] of [[${totalPages}]]</p>
+                                <p>Total items: [[${totalItems}]]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="modal fade" id="AddBrandModal" tabindex="-1" aria-labelledby="AddBrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddBrandModalLabel">Add New Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="AddBrandForm">
+                    <div class="mb-3">
+                        <label for="addBrandName" class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="addBrandName" name="brandName" required>
+                        <div id="brandNameError1" class="text-danger"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="AddBrandForm" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="updateModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm" method="post">
+                    <input type="hidden" id="updateBrandID" name="brandID">
+                    <div class="mb-3">
+                        <label for="updateBrandName" class="form-label">Brand Name</label>
+                        <input type="text" class="form-control" id="updateBrandName" name="brandName">
+                        <div id="brandNameError" class="text-danger"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var updateModal = document.getElementById('updateModal');
+        var updateForm = document.getElementById('updateForm');
+        var brandNameError = document.getElementById('brandNameError');
+        var successAlert = document.getElementById('successAlert');
+
+        updateModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var brandID = button.getAttribute('data-brand-id');
+            var brandName = button.getAttribute('data-brand-name');
+
+            document.getElementById('updateBrandID').value = brandID;
+            document.getElementById('updateBrandName').value = brandName;
+
+            brandNameError.innerText = '';
+        });
+
+        updateModal.addEventListener('hidden.bs.modal', function(event) {
+            brandNameError.innerText = '';
+        });
+
+        updateForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var brandID = document.getElementById('updateBrandID').value;
+            var brandName = document.getElementById('updateBrandName').value;
+
+            brandNameError.innerText = '';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Admin/updateBrand', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('X-CSRF-TOKEN', 'your-csrf-token-here'); // Replace with actual CSRF token
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+
+                        if (response.status === 'success') {
+                            var bootstrapModal = bootstrap.Modal.getInstance(updateModal);
+                            bootstrapModal.hide();
+
+                            successAlert.innerText = 'Brand updated successfully';
+                            successAlert.style.display = 'block';
+
+                            var updatedRow = document.querySelector(`tr[data-brand-id="${brandID}"]`);
+                            if (updatedRow) {
+                                updatedRow.querySelector('td:nth-child(2)').innerText = brandName;
+                            }
+
+                            setTimeout(function() {
+                                successAlert.style.display = 'none';
+                            }, 3000);
+                        } else {
+                            if (response.errors.brandName) {
+                                brandNameError.innerText = response.errors.brandName;
+                            }
+                        }
+                    } else {
+                        alert('There was an error processing your request. Please try again.');
+                    }
+                }
+            };
+
+            var data = JSON.stringify({ brandID: brandID, brandName: brandName });
+            xhr.send(data);
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var addBrandModal = document.getElementById('AddBrandModal');
+        var addBrandForm = document.getElementById('AddBrandForm');
+        var brandNameError1 = document.getElementById('brandNameError1');
+        var successAlert = document.getElementById('successAlert');
+
+        addBrandModal.addEventListener('show.bs.modal', function(event) {
+            // Reset form and errors when modal is shown
+            addBrandForm.reset();
+            brandNameError1.innerText = '';
+        });
+
+        addBrandForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var brandName = document.getElementById('addBrandName').value;
+
+            brandNameError1.innerText = '';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Admin/addBrand', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('X-CSRF-TOKEN', 'your-csrf-token-here'); // Replace with actual CSRF token
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+
+                        if (response.status === 'success') {
+                            // Set a flag in local storage to indicate success
+                            localStorage.setItem('brandAdded', 'true');
+
+                            // Reload the page
+                            window.location.reload();
+                        } else {
+                            if (response.errors.brandName) {
+                                brandNameError1.innerText = response.errors.brandName;
+                            }
+                        }
+                    } else {
+                        alert('There was an error processing your request. Please try again.');
+                    }
+                }
+            };
+
+            var data = JSON.stringify({ brandName: brandName });
+            xhr.send(data);
+        });
+
+        // Display success alert if flag is set
+        if (localStorage.getItem('brandAdded') === 'true') {
+            successAlert.innerText = 'Brand added successfully';
+            successAlert.style.display = 'block';
+
+            // Clear the flag
+            localStorage.removeItem('brandAdded');
+
+            setTimeout(function() {
+                successAlert.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
+
+</body>
+</html>
