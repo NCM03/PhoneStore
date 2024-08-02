@@ -1,0 +1,44 @@
+server:
+  port: 2612
+  servlet:
+    context-path: /
+  error:
+    include-binding-errors: always
+
+spring:
+  aop:
+    auto: true
+    proxy-target-class: true
+  application:
+    name: PhoneStore
+    availability:
+      enabled: true
+  datasource:
+    url: "jdbc:sqlserver://localhost:1433;databaseName=PhoneStore;encrypt=true;trustServerCertificate=true;"
+    driver-class-name: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    username: sa
+    password: sa  # Thay your_password_here bằng mật khẩu thực tế của bạn
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+    show-sql: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  web:
+    resources:
+      static-locations: classpath:/static/
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sieunhantanh2003@gmail.com
+    password: eqik fdhn ytoo cxfq
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
