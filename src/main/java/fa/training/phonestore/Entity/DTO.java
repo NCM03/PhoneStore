@@ -1,4 +1,4 @@
-package fa.training.phonestore.Entity;
+package fa.training.phonestore.entity;
 
 import fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint.Password;
 import jakarta.validation.constraints.Size;

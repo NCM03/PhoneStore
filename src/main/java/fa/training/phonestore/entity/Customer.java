@@ -6,6 +6,7 @@ import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.Cus
 import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
 import fa.training.phonestore.Constraint.EntityConstraint.Gender;
 import fa.training.phonestore.Constraint.EntityConstraint.Phone;
+import fa.training.phonestore.entity.Account;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

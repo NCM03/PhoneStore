@@ -1,5 +1,7 @@
 package fa.training.phonestore.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -15,19 +17,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_support")
-public class ProductSupport {
+@Table(name = "product_info")
+public class ProductInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productSupID")
-    private int productSupId;
+    @Column(name = "productInfoID")
+    private int productInfoId;
 
-    @Column(name = "productID")
-    private int  productID;
-
-    @Column(name = "ProductSupName")
-    private String productSupName;
+    @Column(name = "ProductInfoName")
+    private String productInfoName;
 
     @Column(name = "Price")
     private BigDecimal price;
@@ -39,7 +38,7 @@ public class ProductSupport {
     private int quantity;
 
     @Column(name = "ImportDate")
-    private Date importDate;
+    private LocalDateTime importDate;
 
     @Column(name = "QuantitySold")
     private int quantitySold;
@@ -52,15 +51,22 @@ public class ProductSupport {
 
     @Column(name = "Color")
     private String color;
+    @Column(name = "ProductInfoStatus")
+    private String productInfoStatus;
 
-    @OneToMany(mappedBy = "productSupport", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "ProductID", nullable = false)
+    @JsonBackReference
+    private Product product;
+
+    @OneToMany(mappedBy = "productInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ProductImage> productImages;
 
-    public ProductImage getFirstProductImage(List <ProductImage> productImages) {
+    public ProductImage getFirstProductImage(List<ProductImage> productImages) {
         if (productImages != null && !productImages.isEmpty()) {
             return productImages.get(0);
         }
         return null; // or throw an exception if preferred
     }
-
 }

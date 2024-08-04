@@ -1,4 +1,4 @@
-package fa.training.phonestore.Service;
+package fa.training.phonestore.service;
 
 public interface MessageService {
 }

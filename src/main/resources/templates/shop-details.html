@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Ogani Template">
@@ -459,71 +458,6 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="https://kit.fontawesome.com/a1f1039e75.js" crossorigin="anonymous"></script>
-
-<!--<script>-->
-<!--    document.addEventListener('DOMContentLoaded', function () {-->
-<!--        // Get all capacity and color buttons-->
-<!--        const capacityButtons = document.querySelectorAll('.capacity-button');-->
-<!--        const colorButtons = document.querySelectorAll('.color-button');-->
-<!--        const carouselImages = document.querySelectorAll('.carousel-image');-->
-<!--        const mainImage = document.getElementById('mainImage');-->
-<!--        let selectedCapacity = null;-->
-<!--        let selectedColor = null;-->
-
-<!--        // Add event listeners to capacity buttons-->
-<!--        capacityButtons.forEach(button => {-->
-<!--            button.addEventListener('click', function () {-->
-<!--                selectedCapacity = button.innerText;-->
-<!--                updateCarouselImages('capacity', selectedCapacity);-->
-<!--            });-->
-<!--        });-->
-
-<!--        // Add event listeners to color buttons-->
-<!--        colorButtons.forEach(button => {-->
-<!--            button.addEventListener('click', function () {-->
-<!--                selectedColor = button.innerText;-->
-<!--                updateCarouselImages('color', selectedColor);-->
-<!--            });-->
-<!--        });-->
-
-<!--        function updateCarouselImages(type, value) {-->
-<!--            carouselImages.forEach(image => {-->
-<!--                const imageUrl = image.getAttribute('src');-->
-<!--                if (imageUrl.includes(value)) {-->
-<!--                    mainImage.setAttribute('src', imageUrl);-->
-<!--                }-->
-<!--            });-->
-<!--        }-->
-
-<!--        // Add event listeners to add to cart and buy now buttons-->
-<!--        document.getElementById('addToCartButton').addEventListener('click', function () {-->
-<!--            if (selectedCapacity && selectedColor) {-->
-<!--                addToCart(selectedCapacity, selectedColor);-->
-<!--            } else {-->
-<!--                alert('Please select both capacity and color.');-->
-<!--            }-->
-<!--        });-->
-
-<!--        document.getElementById('buyNowButton').addEventListener('click', function () {-->
-<!--            if (selectedCapacity && selectedColor) {-->
-<!--                buyNow(selectedCapacity, selectedColor);-->
-<!--            } else {-->
-<!--                alert('Please select both capacity and color.');-->
-<!--            }-->
-<!--        });-->
-
-<!--        function addToCart(capacity, color) {-->
-<!--            // Implement your add to cart logic here-->
-<!--            alert(`Added to cart: Capacity - ${capacity}, Color - ${color}`);-->
-<!--        }-->
-
-<!--        function buyNow(capacity, color) {-->
-<!--            // Implement your buy now logic here-->
-<!--            alert(`Buying now: Capacity - ${capacity}, Color - ${color}`);-->
-<!--        }-->
-<!--    });-->
-
-<!--</script>-->
 <script>
 
     function selectButton(button, group) {

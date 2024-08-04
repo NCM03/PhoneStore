@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="Ogani Template" name="description">
+    <meta content="Ogani, unica, creative, html" name="keywords">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap Bundle with Popper.js -->
+
+    <!-- Css Styles -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/elegant-icons.css" rel="stylesheet" type="text/css">
+    <link href="/css/nice-select.css" rel="stylesheet" type="text/css">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/owl.carousel.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/slicknav.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="path/to/your-script.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+</head>
+<body>
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        padding: 0.2em 2em;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    table th {
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    table th,
+    table td {
+        padding: 0.4em;
+    }
+
+    table.fold-table > tbody > tr.view td,
+    table.fold-table > tbody > tr.view th {
+        cursor: pointer;
+    }
+
+    table.fold-table > tbody > tr.view td:last-child {
+        cursor: default; /* Đặt con trỏ của ô cuối cùng thành mặc định */
+    }
+
+    table.fold-table > tbody > tr.view td:first-child,
+    table.fold-table > tbody > tr.view th:first-child {
+        position: relative;
+        padding-left: 20px;
+    }
+
+    table.fold-table > tbody > tr.view td:first-child:before,
+    table.fold-table > tbody > tr.view th:first-child:before {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        width: 9px;
+        height: 16px;
+        margin-top: -8px;
+        font: 16px fontawesome;
+        color: #999;
+        content: "";
+        transition: all 0.3s ease;
+    }
+
+    table.fold-table > tbody > tr.view:nth-child(4n-1) {
+        background: #eee;
+    }
+
+    table.fold-table > tbody > tr.view:hover {
+        background: #e1e1e1;
+    }
+
+    table.fold-table > tbody > tr.view.open {
+        background: #7fad39;
+        color: white;
+    }
+
+    table.fold-table > tbody > tr.view.open td:first-child:before,
+    table.fold-table > tbody > tr.view.open th:first-child:before {
+        transform: rotate(-180deg);
+        color: #333;
+    }
+
+    table.fold-table > tbody > tr.fold {
+        display: none;
+    }
+
+    table.fold-table > tbody > tr.fold.open {
+        display: table-row;
+    }
+
+    .fold-content {
+        padding: 0.5em;
+    }
+
+    .fold-content h3 {
+        margin-top: 0;
+    }
+
+    .fold-content > table {
+        border: 2px solid #ccc;
+    }
+
+    .fold-content > table > tbody tr:nth-child(even) {
+        background: #eee;
+    }
+
+</style>
+<script>
+    function changeMess() {
+        $.ajax({
+            url: '/changeMess',
+            type: 'POST',
+            data: formData,
+            processData: false, // Để jQuery không xử lý dữ liệu
+            contentType: false, // Để jQuery không set contentType
+            success: function (data) {
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+            }
+        });
+    }
+</script>
+<div th:insert="~{menu :: header}"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="wrapper" style="height: 100%">
+                <aside class="expand" id="sidebar">
+                    <div class="d-flex">
+                        <button class="toggle-btn" type="button">
+                            <i class="fa-solid fa-bars"></i>
+                            <span class="sidebar-logo">
+                                <a href="#" style="margin-left: 10px;">Quản lý</a>
+                            </span>
+                        </button>
+                    </div>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-item">
+                            <a aria-controls="manage-order" aria-expanded="false"
+                               class="sidebar-link collapsed has-dropdown"
+                               data-bs-target="#manage-order" data-bs-toggle="collapse" href="#">
+                                <i class="fas fa-edit"></i>
+                                <span>Quản lý đơn hàng</span>
+                            </a>
+                            <ul class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"
+                                id="manage-order">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Tất cả</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Giao hàng</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Trả hàng/ Hoàn tiền</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Bảo hành/ Sửa chữa</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a aria-controls="manage-product" aria-expanded="false"
+                               class="sidebar-link collapsed has-dropdown"
+                               data-bs-target="#manage-product" data-bs-toggle="collapse" href="#">
+                                <i class="fas fa-basket-shopping"></i>
+                                <span>Quản lý sản phẩm</span>
+                            </a>
+                            <ul class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar"
+                                id="manage-product">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Tất cả sản phẩm</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#" id="addProductBtn">Thêm sản phẩm</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a aria-controls="finance" aria-expanded="false" class="sidebar-link collapsed has-dropdown"
+                               data-bs-target="#finance" data-bs-toggle="collapse" href="#">
+                                <i class="fa-solid fa-coins"></i>
+                                <span>Tài chính</span>
+                            </a>
+                            <ul class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" id="finance">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Doanh thu</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" href="#">Số dư tài khoản</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box-body">
+                <div id="example1_wrapper">
+                    <div class="row">
+                        <div class="col-sm-6" style="display: flex; align-items: center;">
+                            Show
+                            <select name="page">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select> entries
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="dataTables_filter d-flex justify-content-end" id="example1_filter">
+                                <label class="d-flex align-items-center">
+                                    Search:
+                                    <input aria-controls="example1" class="form-control input-sm ml-2" placeholder=""
+                                           type="search">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="fold-table table table-bordered table-striped dataTable">
+                                <thead>
+                                <tr>
+                                    <th style="width: 15%">Ảnh</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th>Số lượng</th>
+                                    <th>Đánh giá</th>
+                                    <th>Cập nhật</th>
+                                </tr>
+                                </thead>
+                                <tbody th:each="product : ${product}">
+                                <tr class="view">
+                                    <td>
+                                        <img style="width: 80%"
+                                             th:src="@{/img/ProductImg/__${product.getImageData()}__}">
+                                    </td>
+                                    <td th:text="${product.getProductName()}"></td>
+                                    <td>
+            <span th:each="category : ${category}"
+                  th:if="${category.getCategoryId()} == ${product.getCategoryId()}"
+                  th:text="${category.getName()}"></span>
+                                    </td>
+                                    <td class="" th:text="${product.getTotalQuantity()}"></td>
+                                    <td class="">
+    <span th:each="star : ${#numbers.sequence(1, T(java.lang.Math).floor(product.rating))}">
+        <i class="fa-solid fa-star"></i>
+    </span>
+                                        <span th:if="${product.rating % 1 >= 0.5}">
+        <i class="fa-solid fa-star-half"></i>
+    </span>
+                                        <span th:text="' (' + ${product.rating} + ')'"></span>
+                                    </td>
+                                    <td class="none-view">
+                                        <div style="display: flex;gap: 10px;">
+                                            <button class="btn btn-warning" onclick="openEditProductModal(this)"
+                                                    th:data-id="${product.getProductId()}">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr class="fold">
+                                    <td colspan="7">
+                                        <div class="fold-content">
+                                            <h3 th:text="${product.getProductName()}"></h3>
+                                            <p th:text="'Mô tả: ' + ${product.getComment()}"></p>
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 20%">Ảnh</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>thông số kĩ thuật</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Tình trạng</th>
+                                                    <th>Cập nhật</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody th:each="productInfos : ${productInfo}"
+                                                       th:if="${productInfos.getProduct().getProductId()} == ${product.getProductId()}">
+                                                <tr>
+                                                    <td><img style="width: 40%"
+                                                             th:src="@{/img/ProductImg/__${productInfos.getProductImages()[0].getImageURL()}__}">
+                                                    </td>
+                                                    <td th:text="${productInfos.getProductInfoName()}"></td>
+                                                    <td>
+                                                        <div th:text="'Ram: ' + ${productInfos.getRam()}"></div>
+                                                        <div th:text="'Dung lượng: ' + ${productInfos.getCapacity()}"></div>
+                                                        <div th:text="'Màu: ' + ${productInfos.getColor()}"></div>
+                                                    </td>
+                                                    <td th:text="${productInfos.getQuantity()}"></td>
+                                                    <td th:text="${productInfos.getProductInfoStatus()}"></td>
+
+                                                    <td>
+                                                        <div style="display: flex; gap: 10px;">
+                                                            <button class="btn btn-warning"
+                                                                    onclick="openEditProductInfoModal(this)"
+                                                                    th:data-id="${productInfos.getProductInfoId()}">
+                                                                <i class="fa-solid fa-pen"></i>
+                                                            </button>
+                                                            <button class="btn btn-danger"><i
+                                                                    class="fa-solid fa-trash"></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="display: flex; justify-content: center;">
+                    <div>
+                        <ul style="text-align: center; align-items: center;color: #777;
+                            cursor: not-allowed;
+                            background-color: #fff;
+                            border-color: #ddd
+                             ;border: 1px solid #ddd">
+                            <li class="btn" style="border-color: #252525">Previous</a></li>
+                            <li class="btn" style="border-color: #252525"><a>1</a></li>
+                            <li class="btn" style="border-color: #252525"><a>2</a></li>
+                            <li class="btn" style="border-color: #252525"><a>3</a></li>
+                            <li class="btn" style="border-color: #252525"><a>4</a></li>
+                            <li class="btn" style="border-color: #252525"><a>5</a></li>
+                            <li class="btn" style="border-color: #252525"><a>6</a></li>
+                            <li class="btn" style="border-color: #252525"><a>Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    sưả saản phẩm chinhs-->
+    <div class="modal fade" id="editProductModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chỉnh sửa sản phẩm</h5>
+                    <button aria-label="Close" class="btn-close" onclick="closeEditProduct(this)" type="button">X
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="edit_mainProduct" enctype="multipart/form-data" id="editProduct"
+                          method="post" onsubmit="return confirmSave();"
+                          role="form" th:object="${productEdit}">
+                        <div class="form-group">
+                            <input class="form-control" hidden id="editProductId"
+                                   name="editProductId" type="text">
+                            <label>Hình ảnh sản phẩm chính:</label>
+                            <br>
+                            <img alt="Hình ảnh sản phẩm" id="imgProductEditShow" src=""
+                                 style="width: 300px; height: 300px;" th:field="*{productId}">
+                            <input name="editImgProduct" type="file">
+                        </div>
+                        <div class="form-group">
+                            <label for="productName">Tên sản phẩm</label>
+                            <input class="form-control" id="editProductName" name="editNameProduct"
+                                   placeholder="Nhập tên sản phẩm"
+                                   required
+                                   th:field="*{productName}"
+                                   type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Mô tả sản phẩm</label>
+                            <input class="form-control"
+                                   id="editComment" name="editComment" placeholder="Nhập mô tả sản phẩm"
+                                   required
+                                   th:field="*{comment}"
+                                   type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="category-select" style="width:20%">Danh mục sản phẩm: </label>
+                            <select aria-label="Default select example" class="form-select" id="editCategory"
+                                    name="editCategory"
+                                    th:field="*{categoryId}">
+                                <option th:each="category: ${category}" th:text="${category.getName()}"
+                                        th:value="${category.getCategoryId()}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="brand-select" style="width:20%">Hãng: </label>
+                            <select aria-label="Default select example" class="form-select" id="editBrand"
+                                    name="editBrand"
+                                    th:field="*{brandId}">
+                                <option th:each="brand: ${brand}" th:text="${brand.getName()}"
+                                        th:value="${brand.getBrandId()}"></option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeEditProduct(this)" type="button">Đóng
+                            </button>
+                            <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal sửa sản phẩm phụ-->
+    <div class="modal fade" id="editProductInfoModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chỉnh sửa sản phẩm</h5>
+                    <button aria-label="Close" class="btn-close" onclick="closeEditProductInfo(this)" type="button">X
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/edit_productInfo" enctype="multipart/form-data" id="editProductInfoForm"
+                          method="post"
+                          onsubmit="return confirmSave()" th:object="${productInfoEdit}">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Hình ảnh sản phẩm chính:</label>
+                                <br>
+                                <img alt="Hình ảnh sản phẩm" id="imgProductEditInfoShow" src=""
+                                     style=" width: 300px; height: 300px;">
+                                <input name="editImgProductInfo" type="file">
+                            </div>
+
+                            <input hidden id="oldImgInfoId" name="oldImgInfoId"
+                                   type="number">
+                            <input hidden id="oldImgInfo" name="oldImgInfo"
+                                   type="text">
+                            <input hidden id="editProductInfoId" name="editProductInfoId" th:field="*{productInfoId}"
+                                   type="text">
+                            <div class="form-group">
+                                <label for="productName">Tên sản phẩm</label>
+                                <input class="form-control" id="editProductInfoName" name="editComment"
+                                       placeholder="Nhập mô tả sản phẩm"
+                                       required
+                                       th:field="*{productInfoName}"
+                                       type="text">
+                                <br>
+
+                                <!--                                <input class="product-image" name="editProductInfoImg" type="file">-->
+                            </div>
+                            <!--                        <div class="do-not-clone" id="editAdditionalImages"></div>-->
+                            <!--                        <button class="btn btn-secondary" type="button">Thêm ảnh</button>-->
+                            <br>
+                            <label>Ram:</label>
+                            <select aria-label="Default select example" class="form-select" id="editProductInfoRam"
+                                    name="editProductInfoRam" th:field="*{ram}">
+                                <option th:text="'2 GB'" th:value="2">2 GB</option>
+                                <option th:text="'4 GB'" th:value="4">4 GB</option>
+                                <option th:text="'6 GB'" th:value="6">6 GB</option>
+                                <option th:text="'8 GB'" th:value="8">8 GB</option>
+                                <option th:text="'12 GB'" th:value="12">12 GB</option>
+                                <option th:text="'16 GB'" th:value="16">16 GB</option>
+                            </select>
+
+                            <label style="margin-left: 20px">Dung lượng:</label>
+                            <select aria-label="Default select example" class="form-select" id="editProductInfoCapacity"
+                                    name="editProductInfoCapacity" th:field="*{capacity}">
+                                <option th:text="'16 GB'" th:value="16">16 GB</option>
+                                <option th:text="'32 GB'" th:value="32">32 GB</option>
+                                <option th:text="'64 GB'" th:value="64">64 GB</option>
+                                <option th:text="'128 GB'" th:value="128">128 GB</option>
+                                <option th:text="'256 GB'" th:value="256">256 GB</option>
+                                <option th:text="'512 GB'" th:value="512">512 GB</option>
+                                <option th:text="'1 T'" th:value="1000">1 T</option>
+                            </select>
+                            <br>
+                            <div class="form-group">
+                                <label for="brand-select">Nhập mô tả sản phẩm: </label>
+                                <input class="form-control" id="editProductInfoDescription"
+                                       name="editProductInfoDescription"
+                                       placeholder="Nhập mô tả sản phẩm"
+                                       style="width:50%"
+                                       th:field="*{description}"
+                                       type="text">
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="color">Màu sắc:</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" id="editProductInfoColor"
+                                                       name="editProductInfoColor"
+                                                       placeholder="Nhập màu"
+                                                       required th:field="*{color}" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="quantity">Số lượng:</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" id="editProductInfoQuantity"
+                                                       name="ProductInfoQuantity"
+                                                       placeholder="Nhập số lượng sản phẩm"
+                                                       required th:field="*{quantity}" type="number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="price">Giá (VNĐ):</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" id="editProductInfoPrice"
+                                                       name="price" placeholder="Nhập giá sản phẩm"
+                                                       required th:field="*{price}" type="number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeEditProductInfo(this)" type="button">Đóng
+                            </button>
+                            <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal thêm sản phẩm  -->
+    <div aria-hidden="true" aria-labelledby="productModalLabel" class="modal fade" id="productModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Thêm sản phẩm</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" onclick="closeAdd()"
+                            type="button"><i
+                            class="fas fa-xmark"></i></button>
+
+                </div>
+                <form action="add-product" enctype="multipart/form-data" id="uploadForm" method="post" role="form"
+                      th:object="${productForm}">
+                    <input id="productsInput" name="products" type="hidden">
+                    <div class="modal-body">
+                        <input hidden multiple name="files" type="file">
+                        <div class="form-group">
+                            <label>Hình ảnh sản phẩm chính:</label>
+                            <br>
+                            <input multiple name="imgProduct" required type="file">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="productName">Tên sản phẩm</label>
+                            <input class="form-control" id="productName" name="nameProduct"
+                                   placeholder="Nhập tên sản phẩm"
+                                   required
+                                   th:field="*{productName}" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Mô tả sản phẩm</label>
+                            <input class="form-control" id="comment" name="comment" placeholder="Nhập mô tả sản phẩm"
+                                   required
+                                   th:field="*{comment}" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="category-select" style="width:20%">Danh mục sản phẩm: </label>
+                            <select aria-label="Default select example" class="form-select" id="category-select"
+                                    name="category">
+                                <option th:each="category: ${category}" th:text="${category.getName()}"
+                                        th:value="${category.getCategoryId()}"></option>
+                                <!--                                <option value="other">Other</option>-->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="brand-select" style="width:20%">Hãng: </label>
+                            <select aria-label="Default select example" class="form-select" id="brand-select"
+                                    name="brand">
+                                <option th:each="brand: ${brand}" th:text="${brand.getName()}"
+                                        th:value="${brand.getBrandId()}"></option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="brand-input-group" style="display: none;">
+                            <label for="newbrandInput">Nhập danh mục mới:</label>
+                            <input class="form-control" id="newbrandInput" name="newbrand"
+                                   placeholder="Enter custom brand">
+                        </div>
+
+                        <!--                        nhóm phân loại -->
+                        <div class="form-group technic" data-group="1" id="technic">
+                            <div style="color:red">Thêm nhóm phân loại*</div>
+                            <div class="form-group">
+                                <label>Hình ảnh sản phẩm phân loại chính:</label>
+                                <br>
+
+                                <input class="product-image" data-group="1" name="productInfoImg" type="file">
+                            </div>
+                            <div class="do-not-clone" data-group="1" id="additionalImages"></div>
+                            <button class="btn btn-secondary" onclick="addImageField(1)" type="button">Thêm ảnh</button>
+                            <br>
+                            <label>Ram:</label>
+                            <select aria-label="Default select example" class="form-select" id="ram" name="ram">
+                                <option value="2">2 GB</option>
+                                <option value="4">4 GB</option>
+                                <option value="6">6 GB</option>
+                                <option value="8">8 GB</option>
+                                <option value="12">12 GB</option>
+                                <option value="16">16 GB</option>
+                            </select>
+
+                            <label style=" margin-left: 20px">Dung lượng:</label>
+                            <select aria-label="Default select example" class="form-select" id="capacity"
+                                    name="capacity">
+                                <option value="16">16 GB</option>
+                                <option value="32">32 GB</option>
+                                <option value="64">64 GB</option>
+                                <option value="128">128 GB</option>
+                                <option value="256">256 GB</option>
+                                <option value="512">512 GB</option>
+                                <option value="1x">1 T</option>
+                            </select>
+                            <br>
+                            <div class="form-group">
+                                <label for="brand-select">Nhập mô tả sản phẩm: </label>
+                                <input class="form-control" name="description" placeholder="Nhập số lượng sản phẩm"
+                                       style="width:50%"
+                                       type="text">
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="color">Màu sắc:</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" id="color" name="color"
+                                                       placeholder="Nhập màu" required type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="quantity">Số lượng:</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" id="quantity" name="quantity"
+                                                       placeholder="Nhập số lượng sản phẩm" required type="number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="price">Giá (VNĐ):</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" id="price" name="price"
+                                                       placeholder="Nhập giá sản phẩm" required type="number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--                        </div>-->
+                        </div>
+                        <div id="addNewProductType"></div>
+                        <a class="btn btn-primary" onclick=" addProductInfo()" style="color:white">Thêm nhóm phân
+                            loại</a>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button aria-label="Close" class="btn btn-dark" data-bs-dismiss="modal" onclick="closeAdd()"
+                                type="button">Close
+                        </button>
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--sủa sản phẩm chinh ///////////////////////////////////////////////////////////////////////////////-->
+<script>
+    function confirmSave() {
+        return confirm('Bạn có chắc chắn muốn thay đổi không?');
+    }
+
+    function openEditProductModal(button) {
+        var productId = button.getAttribute("data-id");
+        var modal = new bootstrap.Modal(document.getElementById('editProductModal'));
+        modal.show();
+        console.log(productId);
+        console.log(typeof $);
+        $.ajax({
+            url: '/api/products/' + productId,
+            method: 'GET',
+            success: function (product) {
+                console.log('Product Data:', product);
+                $('#editProductId').val(product.productId);
+                $('#editProductName').val(product.productName);
+                // Cập nhật src của ảnh để luôn lấy phiên bản mới nhất
+                var imageUrl = '/img/ProductImg/' + product.imageData;
+                $('#imgProductEditShow').attr('src', refreshImage(imageUrl)).show();
+                $('#editComment').val(product.comment);
+                $('#editCategory').val(product.categoryId);
+                $('#editBrand').val(product.brandId);
+
+                // Xử lý các thông tin sản phẩm
+                product.productInfos.forEach(function (info) {
+                    console.log('Product Info:', info);
+                });
+            },
+            error: function (err) {
+                console.error('Error fetching product details:', err);
+            }
+        });
+    }
+
+    function closeEditProduct() {
+        var modalElement = document.getElementById('editProductModal');
+        var modal = bootstrap.Modal.getInstance(modalElement);
+        modal.hide();
+        modalElement.classList.remove('show');
+        $('#editProductId').val("");
+        $('#editProductName').val(""); // Sử dụng .val() cho input
+        $('#imgProductEditShow').attr('src', ""); // Hiển thị hình ảnh
+        $('#editComment').val(""); // Sử dụng .val() cho input
+        $('#editCategory').val("1");
+        $('#editBrand').val("1");
+    }
+
+    function refreshImage(imageUrl) {
+        var timestamp = new Date().getTime();
+        return imageUrl.split('?')[0] + '?t=' + timestamp;
+    }
+
+    // // Ví dụ sử dụng hàm
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     var imageElement = document.getElementById("imgProductEditShow");
+    //     var originalUrl = imageElement.src;
+    //     imageElement.src = refreshImage(originalUrl);
+    // });
+
+</script>
+<!--sủa sản phẩm Phụ ///////////////////////////////////////////////////////////////////////////////-->
+<script>
+    function openEditProductInfoModal(button) {
+        var productInfoId = button.getAttribute("data-id");
+        var modal = new bootstrap.Modal(document.getElementById('editProductInfoModal'));
+        modal.show();
+        console.log(productInfoId);
+        console.log(typeof $);
+        $.ajax({
+            url: '/api/productInfos/' + productInfoId, // Thay đổi URL thành endpoint của bạn
+            method: 'GET',
+            success: function (productInfo) {
+
+                console.log('Product Data:', productInfo); // Kiểm tra dữ liệu nhận được
+                // Cập nhật nội dung của các thẻ div với thông tin sản phẩm
+
+                $('#editProductInfoId').val(productInfo.productInfoId);
+                $('#editProductInfoName').val(productInfo.productInfoName); // Sử dụng .val() cho input
+                $('#imgProductEditInfoShow').attr('src', '/img/ProductImg/' + productInfo.productImages[0].imageURL); // Hiển thị hình ảnh
+                $('#oldImgInfo').val(productInfo.productImages[0].imageURL);
+                $('#oldImgInfoId').val(productInfo.productImages[0].imageId);
+                $('#editProductInfoQuantity').val(productInfo.quantity);
+                $('#editProductInfoColor').val(productInfo.color);
+                $('#editProductInfoPrice').val(productInfo.price);
+                $('#editProductInfoRam').val(productInfo.ram);
+                $('#editProductInfoCapacity').val(productInfo.capacity);
+                $('#editProductInfoDescription').val(productInfo.description);
+
+            },
+            error: function (err) {
+                console.error('Error fetching product details:', err);
+            }
+        });
+    }
+
+    function closeEditProductInfo() {
+        var modalElement = document.getElementById('editProductInfoModal');
+        var modal = bootstrap.Modal.getInstance(modalElement);
+        modal.hide();
+        modalElement.classList.remove('show');
+        $('#editProductInfoId').val("");
+        $('#editProductInfoName').val(""); // Sử dụng .val() cho input
+        $('#imgProductEditInfoShow').attr('src', ""); // Hiển thị hình ảnh
+        $('#editProductInfoQuantity').val("");
+        $('#editProductInfoColor').val("");
+        $('#editProductInfoPrice').val("");
+        $('#editProductInfoDescription').val("");
+    }
+</script>
+<!--open modal của thêm sản phẩm-->
+<script>
+    document.getElementById('addProductBtn').addEventListener('click', function () {
+        $('#productModal').modal('show');
+    });
+    const hamBurger = document.querySelector(".toggle-btn");
+
+    hamBurger.addEventListener("click", function () {
+        document.querySelector("#sidebar").classList.toggle("expand");
+    });
+    var groupCounter = 1;
+
+    // thêm ảnh
+    function addImageField(group) {
+        var div = document.createElement('div');
+        div.className = 'form-group';
+
+        var label = document.createElement('label');
+        label.innerText = 'Thêm ảnh: ';
+
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.className = 'form-control img';
+        input.dataset.group = group; // Gắn nhóm cho ảnh
+
+        var deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'btn btn-danger';
+        deleteButton.innerText = 'Xóa';
+        deleteButton.onclick = function () {
+            div.remove();
+        };
+
+        div.appendChild(label);
+        div.appendChild(input);
+        div.appendChild(deleteButton);
+
+        document.querySelector('#additionalImages[data-group="' + group + '"]').appendChild(div);
+    }
+
+    //thêm nhóm sản phẩm
+    function addProductInfo(group) {
+        groupCounter++;
+        var technicDiv = document.getElementById('technic');
+        var newTechnicDiv = technicDiv.cloneNode(true);
+
+        // Loại bỏ các phần tử không muốn clone
+        newTechnicDiv.querySelector('.do-not-clone').innerHTML = "";
+        newTechnicDiv.querySelector('input[name="productInfoImg"]').value = '';
+        newTechnicDiv.querySelector('input[name="description"]').value = '';
+        newTechnicDiv.querySelector('input[name="price"]').value = '';
+        newTechnicDiv.querySelector('input[name="color"]').value = '';
+        newTechnicDiv.querySelector('input[name="quantity"]').value = '';
+        newTechnicDiv.dataset.group = groupCounter;
+        newTechnicDiv.querySelectorAll('.product-image, #additionalImages').forEach(function (element) {
+            element.dataset.group = groupCounter;
+        });
+        document.getElementById('addNewProductType').appendChild(newTechnicDiv);
+        newTechnicDiv.querySelector('button').setAttribute('onclick', 'addImageField(' + groupCounter + ')');
+        // Tạo và thêm nút Xóa
+        var deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'btn btn-danger';
+        deleteButton.innerText = 'Xóa';
+        deleteButton.onclick = function () {
+            newTechnicDiv.remove();
+        };
+        newTechnicDiv.appendChild(deleteButton);
+    }
+
+    function logFormData(formData) {
+        // Duyệt qua các phần tử của FormData và in thông tin ra console
+        for (let [key, value] of formData.entries()) {
+            if (value instanceof File) {
+                console.log(`Key: ${key}, File name: ${value.name}, File type: ${value.type}`);
+            } else {
+                console.log(`Key: ${key}, Value: ${value}`);
+            }
+        }
+    }
+
+    document.getElementById("uploadForm").addEventListener("submit", function (event) {
+        saveProducts();
+    });
+
+    function saveProducts() {
+        const formData = new FormData(document.getElementById('uploadForm'));
+        const products = [];
+
+        document.querySelectorAll('.technic').forEach(function (technicDiv) {
+            const group = technicDiv.dataset.group;
+            const product = {
+                group: group,
+                imageUrl: [],
+                description: technicDiv.querySelector('input[name="description"]').value,
+                price: technicDiv.querySelector('input[name="price"]').value,
+                ram: technicDiv.querySelector('select[name="ram"]').value,
+                capacity: technicDiv.querySelector('select[name="capacity"]').value,
+                color: technicDiv.querySelector('input[name="color"]').value,
+                quantity: technicDiv.querySelector('input[name="quantity"]').value
+            };
+
+            // Lấy ảnh chính
+            const mainImage = technicDiv.querySelector('input[name="productInfoImg"]');
+            if (mainImage.files.length > 0) {
+                product.imageUrl.push(mainImage.files[0].name);
+                formData.append('files', mainImage.files[0]);
+            }
+
+            // Lấy các ảnh bổ sung
+            document.querySelectorAll('#additionalImages[data-group="' + group + '"] input[type="file"]').forEach(function (input) {
+                if (input.files.length > 0) {
+                    Array.from(input.files).forEach(file => {
+                        product.imageUrl.push(file.name);
+                        formData.append('files', file);
+                    });
+                }
+            });
+            products.push(product);
+        });
+        // Thêm JSON sản phẩm vào formData
+        formData.append('products', JSON.stringify(products));
+        logFormData(formData);
+        console.log("aaaaaaa");
+        console.log(JSON.stringify(products));
+        // Gửi dữ liệu qua AJAX
+        $.ajax({
+            url: '/add-product',
+            type: 'POST',
+            data: formData,
+            processData: false, // Để jQuery không xử lý dữ liệu
+            contentType: false, // Để jQuery không set contentType
+            success: function (data) {
+                console.log(data);
+                window.location.href = 'http://localhost:8080/manage-product';
+            },
+            error: function (xhr, status, error) {
+                // Xử lý lỗi
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+            }
+        });
+
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        closeAdd();
+    });
+
+    function closeAdd() {
+        var element = document.getElementById("additionalImages");
+        if (element) {
+            element.innerHTML = ""; // Xóa mọi nội dung bên trong thẻ có id là "child"
+        }
+        var technicDivs = document.getElementById('addNewProductType');
+        if (technicDivs) {
+            technicDivs.innerHTML = ""; // Xóa mọi nội dung bên trong thẻ có id là "child"
+        }
+        var modalElement = document.getElementById('productModal');
+        if (modalElement) {
+            // Xóa lớp 'show'
+            modalElement.classList.remove('show');
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectBox = document.getElementById("brand-select");
+        var inputBox = document.getElementById("newbrandInput");
+        var inputGroup = document.getElementById("brand-input-group");
+
+        selectBox.addEventListener("change", function () {
+            if (selectBox.value === "other") {
+                inputGroup.style.display = "block";
+                inputBox.disabled = false;
+            } else {
+                inputGroup.style.display = "none";
+                inputBox.disabled = true;
+                inputBox.value = ''; // Clear the input field when hiding it
+            }
+        });
+    });
+
+</script>
+<script>
+    $(function () {
+        // Chỉ áp dụng sự kiện click cho các ô không phải ô cuối cùng
+        $(".fold-table tr.view td:not(:last-child)").on("click", function () {
+            var $row = $(this).closest("tr.view");
+            $row.toggleClass("open").next(".fold").toggleClass("open");
+        });
+    });
+
+</script>
+
+
+<script crossorigin="anonymous"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js">
+</script>
+<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>-->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/a1f1039e75.js"></script>
+</body>

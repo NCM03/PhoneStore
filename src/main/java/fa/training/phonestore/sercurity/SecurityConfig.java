@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @AllArgsConstructor
@@ -16,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     CustomAuthenticationManager customAuthenticationManager;
     CustomUserDetailService customerUserDetailsService;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
@@ -26,9 +27,10 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers( "/Account/Admin","/Account/take-Activities").hasAuthority("admin")
-                        .requestMatchers("/Login", "/logout", "/ValidAuthenticate"
-                            ,"/Account/checkUsername","/Account/Register"
-                            ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password").permitAll()
+                .requestMatchers("/edit_productInfo","/edit_mainProduct","api/productInfos/**","/api/products/**","/add-product","/uploadFile","/css/**", "/js/**", "/img/**","/","shopping-cart",
+                        "/manage-product","/detailProduct/**","/Login", "/logout", "/ValidAuthenticate"
+                        ,"/Account/checkUsername","/Account/Register"
+                        ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password").permitAll()
                 .requestMatchers("/Account/getAll","/Account/ChangePassword","/Customer/Profile").hasAuthority("customer")
                 .anyRequest().authenticated()
                 .and()

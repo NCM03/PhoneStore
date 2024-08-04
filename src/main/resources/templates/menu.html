@@ -113,7 +113,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <div class="header__logo">
+                <div class="header__logo" th:if="${isManageProductPage == null}">
                     <a href="/" style="text-align: center"><img src="/img/logo.png" alt="" style="max-width: 50%"></a>
                 </div>
             </div>
@@ -130,7 +130,8 @@
                                 <li><a th:href="@{/blog-details}">Blog Details</a></li>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
+
+                        <li><a th:href="@{/manage-product}">Product</a></li>
                         <li><a href="./contact.html">Contact</a></li>
                     </ul>
                 </nav>

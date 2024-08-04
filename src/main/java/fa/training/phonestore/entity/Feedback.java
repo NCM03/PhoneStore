@@ -20,7 +20,7 @@ public class Feedback {
     private Integer feedbackId;
 
     @Column(name = "CustomerID")
-    private int ctomerID;
+    private int customerID;
 
     @Column(name = "Comment", length = 255)
     private String comment;

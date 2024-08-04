@@ -3,7 +3,7 @@ package fa.training.phonestore.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fa.training.phonestore.entity.Account;
-import fa.training.phonestore.Entity.DTO;
+import fa.training.phonestore.entity.DTO;
 import fa.training.phonestore.sercurity.SecurityConstraints;
 import fa.training.phonestore.service.AccountService;
 import jakarta.servlet.http.HttpServletRequest;

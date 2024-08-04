@@ -1,7 +1,9 @@
 package fa.training.phonestore.controller;
 
-import fa.training.phonestore.entity.Category;
+import fa.training.phonestore.entity.Brand;
 import fa.training.phonestore.repository.CategoryRepository;
+import fa.training.phonestore.repository.ProductInfoRepository;
+import fa.training.phonestore.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,14 @@ import java.util.List;
 public class HomeController {
     @Autowired
     private CategoryRepository categoryService;
-
+    @Autowired
+    private BrandService brandService;
+    @Autowired
+    private ProductInfoRepository productInfoRepository;
     @GetMapping("/")
     public String home(Model model) {
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("list", categories);
+        List<Brand> brand = brandService.findAll();
+        model.addAttribute("list", brand);
         return "index";
     }
     @GetMapping("/shop-grid")
@@ -29,5 +34,6 @@ public class HomeController {
     public String shopCart(Model model) {
         return "shoping-cart";
     }
+
 
 }

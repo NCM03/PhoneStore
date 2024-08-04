@@ -11,16 +11,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Product_ProductStatus")
-public class Product_ProductStatus {
+@Table(name = "Brand") // Sửa đổi ở đây
+public class Brand {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="Product_ProductStatusID")
-    private int id;
-    @Column(name = "ProductSupID")
-    private int productID;
+    @Column(name = "BrandID")
+    private Integer brandId;
 
-    @Column(name = "StatusID")
-    private int statusID;
+    @Column(name = "Name", nullable = false, length = 50)
+    private String name;
 
+    // Các getter và setter
 }

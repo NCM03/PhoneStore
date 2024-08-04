@@ -2,7 +2,7 @@ package fa.training.phonestore.controller;
 
 import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.entity.Customer;
-import fa.training.phonestore.Entity.DTO;
+import fa.training.phonestore.entity.DTO;
 import fa.training.phonestore.exception.EntityNotFoundException;
 import fa.training.phonestore.service.AccountService;
 
