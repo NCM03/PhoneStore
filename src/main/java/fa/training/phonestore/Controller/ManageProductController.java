@@ -149,7 +149,7 @@ public class ManageProductController {
     ) {
         try {
             Optional<ProductInfo> productInfo = productInfoService.findById(productInfoEditForm.getProductInfoId());
-            String newURL ="";
+            String newURL = oldImgInfo;
             String extension = FilenameUtils.getExtension(imgProductInfo.getOriginalFilename());
             if (imgProductInfo != null && !imgProductInfo.isEmpty()) {
                 storageService.delete(oldImgInfo);
