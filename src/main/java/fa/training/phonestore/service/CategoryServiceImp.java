@@ -2,19 +2,19 @@ package fa.training.phonestore.service;
 
 import fa.training.phonestore.entity.Brand;
 import fa.training.phonestore.entity.Category;
-import fa.training.phonestore.repository.BrandRepository;
+import fa.training.phonestore.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BrandServiceIMP implements BrandService {
+public class CategoryServiceImp implements CategoryService  {
     @Autowired
-    private BrandRepository brandRepository;
-
+    private CategoryRepository categoryRepository;
     @Override
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
+
 }

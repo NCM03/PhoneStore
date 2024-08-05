@@ -1,11 +1,18 @@
 
 server:
     port: 8080
+    servlet:
+        context-path: /
+        session:
+            persistent: true
+            tracking-modes: cookie
+            timeout: 15m
 #logging:
 #    level:
 #        org.hibernate: DEBUG
 spring:
-
+    session:
+        store-type: jdbc
     aop:
         auto: true
         proxy-target-class: true

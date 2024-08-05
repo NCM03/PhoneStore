@@ -3,6 +3,8 @@ package fa.training.phonestore.service;
 import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.repository.AccountRespository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,18 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private AccountRespository accountRespository;
-    @Override
-    public Account save(Account account) {
-        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
-        return accountRespository.save(account);
-    }
-
-
 
     static Account unwrapUsser(Optional<Account> account, long id) {
 
@@ -33,14 +28,32 @@ public class AccountServiceImpl implements AccountService{
         }
 
     }
-@Transactional
+
+    @Override
+    public Account save(Account account) {
+        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        return accountRespository.save(account);
+    }
+
+    @Transactional
     public Account getUser(String username) {
         Optional<Account> user = accountRespository.findByUsername(username);
         return unwrapUsser(user, 404L);
     }
+
+    @Override
+    public Page<Account> findAccountsByUsername(String username, Pageable pageable) {
+        return accountRespository.findByUsernameContaining(username, pageable);
+    }
+
     @Override
     public List<Account> findAll() {
         return (List<Account>) accountRespository.findAll();
+    }
+
+    @Override
+    public Page<Account> findAllAccounts(Pageable pageable) {
+        return accountRespository.findAll(pageable);
     }
 
 //    @Override
@@ -57,8 +70,9 @@ public class AccountServiceImpl implements AccountService{
     public Account searchUser(String username) {
         return accountRespository.findAccountByUsername(username);
     }
+
     @Override
-    public Account seachAccountById(int id){
+    public Account seachAccountById(int id) {
         return accountRespository.findAccountByAccountId(id);
     }
 }

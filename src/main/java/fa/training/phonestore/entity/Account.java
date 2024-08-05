@@ -1,11 +1,11 @@
 package fa.training.phonestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint.Password;
-import fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint.Username;
+import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Password;
+import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Username;
 import jakarta.persistence.*;
 import lombok.Data;
-import fa.training.phonestore.entity.Role;
+
 @Entity
 @Data
 @Table(name = "Account")
@@ -25,16 +25,8 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "RoleID")
     private Role role;
-    @Column(name = "IsActive")
-        private boolean isActive;
 
-    @PrePersist
-    public void prePersist() {
-        if (role == null) {
-            Role defaultRole = new Role();
-            defaultRole.setRoleId(3); // Thiết lập RoleID mặc định là 3
-            this.role = defaultRole;
-        }
-        setActive(true);
-    }
+    @Column(name = "IsActive")
+    private boolean isActive;
+
 }

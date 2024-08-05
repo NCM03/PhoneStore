@@ -1,10 +1,13 @@
 package fa.training.phonestore.service;
 
-import fa.training.phonestore.entity.Brand;
+
 import fa.training.phonestore.entity.Category;
+import fa.training.phonestore.service.imp.CategoryServiceImp;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface CategoryService {
     public List<Category> findAll();
+
 }

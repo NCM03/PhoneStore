@@ -1,9 +1,8 @@
 package fa.training.phonestore.Constraint.EntityConstraint;
 
-import fa.training.phonestore.Validators.GenderValidator;
+import fa.training.phonestore.validators.GenderValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

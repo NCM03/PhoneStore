@@ -9,4 +9,6 @@ public interface CustomerService {
     Customer getCustomer(Account account);
     Customer saveCustomer(Customer customer);
     Customer getCustomerByEmail(String email);
+    Customer saveCustomer(Account account);
+    boolean existsByEmail(String email);
 }

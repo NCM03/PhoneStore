@@ -5,12 +5,10 @@ import fa.training.phonestore.entity.Product;
 import fa.training.phonestore.entity.ProductImage;
 import fa.training.phonestore.entity.ProductInfo;
 import fa.training.phonestore.entity.ProductStatus;
-import fa.training.phonestore.repository.ProductImagineRepository;
-import fa.training.phonestore.repository.ProductRepository;
-import fa.training.phonestore.repository.ProductInfoRepository;
-import fa.training.phonestore.repository.ProductStatusRepository;
+import fa.training.phonestore.repository.*;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,17 +21,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ManageProductServiceIMP implements ManageProductService {
+public class ManageProductServiceImp implements ManageProductService {
     @Autowired
     private StorageService storageService;
+
     @Autowired
     private ProductStatusRepository productStatusRepository;
+
     @Autowired
     private ProductRepository productRepository;
-    @Autowired
-    private ProductInfoRepository productInfoRepository;
+
     @Autowired
     private ProductImagineRepository productImagineRepository;
+
+    @Autowired
+    private ProductInfoService productInfoService;
+    @Autowired
+    private ProductInfoRepositoryNotPageble productInfoRepositoryNotPageble;
 
     @Override
     public void replaceProduct(Product newProduct) {
@@ -56,7 +60,7 @@ public class ManageProductServiceIMP implements ManageProductService {
 
     @Override
     public void replaceProductInfo(ProductInfo newProductInfo, String url, int imageId) {
-        Optional<ProductInfo> optionalOldProduct = productInfoRepository.findById(newProductInfo.getProductInfoId());
+        Optional<ProductInfo> optionalOldProduct = productInfoService.findById(newProductInfo.getProductInfoId());
         if (optionalOldProduct.isPresent()) {
             Optional<ProductStatus> productStatus = productStatusRepository.findById(newProductInfo.getProductInfoStatus().getStatusId());
             ProductStatus oldProductStatus = productStatus.get();
@@ -69,9 +73,9 @@ public class ManageProductServiceIMP implements ManageProductService {
             oldProductInfo.setQuantity(newProductInfo.getQuantity());
             oldProductInfo.setDescription(newProductInfo.getDescription());
             oldProductInfo.setPrice(newProductInfo.getPrice());
-            oldProductInfo.setProductInfoStatus(oldProductStatus);
+//            oldProductInfo.setProductInfoStatus(oldProductStatus);
             // Lưu sản phẩm đã được cập nhật vào cơ sở dữ liệu
-            productInfoRepository.save(oldProductInfo);
+            productInfoRepositoryNotPageble.save(oldProductInfo);
         }
         Optional<ProductImage> productImage = productImagineRepository.findById(imageId);
         if (productImage.isPresent()) {
@@ -110,7 +114,7 @@ public class ManageProductServiceIMP implements ManageProductService {
             productInfo.setDescription(productInfoDTO.getDescription());
             productInfo.setImportDate(LocalDateTime.now());
             productInfo.setQuantitySold(0);
-            productInfoRepository.save(productInfo);
+            productInfoRepositoryNotPageble.save(productInfo);
             System.out.println("lỗi");
             // Tạo danh sách sao lưu để tránh ConcurrentModificationException
             List<MultipartFile> filesToRemove = new ArrayList<>();

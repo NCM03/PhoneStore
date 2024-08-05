@@ -1,6 +1,6 @@
 package fa.training.phonestore.Constraint.EntityConstraint;
 
-import fa.training.phonestore.Validators.CustomerValidator.CustomerPhoneValidator;
+import fa.training.phonestore.validators.CustomerValidator.CustomerPhoneValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

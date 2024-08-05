@@ -1,5 +1,5 @@
 package fa.training.phonestore.Constraint.EntityConstraint;
-import fa.training.phonestore.Validators.EmailValidator;
+import fa.training.phonestore.validators.EmailValidator;
 import jakarta.validation.Constraint;
 
 import java.lang.annotation.ElementType;

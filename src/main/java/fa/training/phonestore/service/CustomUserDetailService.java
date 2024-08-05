@@ -11,19 +11,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
-    @Autowired
-    AccountRespository accountRespository;
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account=accountRespository.findAccountByUsername(username);
-        return org.springframework.security.core.userdetails.User
-                .withUsername(account.getUsername())
-                .password(account.getPassword())
-                .authorities((GrantedAuthority) account.getRole())
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(false)
-                .build();
-    }
+@Autowired
+        AccountRespository accountRespository;
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            Account account=accountRespository.findAccountByUsername(username);
+            return org.springframework.security.core.userdetails.User
+                    .withUsername(account.getUsername())
+                    .password(account.getPassword())
+                    .authorities((GrantedAuthority) account.getRole())
+                    .accountExpired(false)
+                    .accountLocked(false)
+                    .credentialsExpired(false)
+                    .disabled(false)
+                    .build();
+        }
 }
