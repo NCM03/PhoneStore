@@ -20,7 +20,13 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean existsByEmail(String email) {
         return customerRespository.existsByEmail(email);
     }
-public Customer saveCustomer(Account account) {
+
+    @Override
+    public Customer getCustomerByCustomerID(int customerID) {
+        return  customerRespository.getCustomersByCustomerId(customerID);
+    }
+
+    public Customer saveCustomer(Account account) {
         Customer customer = new Customer();
         customer.setAccount(account);
         return customerRespository.save(customer);
@@ -33,4 +39,5 @@ public Customer saveCustomer(Account account) {
     public Customer getCustomerByEmail(String email) {
         return customerRespository.getCustomersByEmail(email);
     }
+
 }

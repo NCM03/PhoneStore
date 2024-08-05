@@ -122,7 +122,7 @@ public class LoginController {
                         } else if ("customer".equals(role)) {
                             return new ModelAndView("redirect:/index");
                         } else {
-                            return new ModelAndView("redirect:/Employee/EmployeeHome");
+                            return new ModelAndView("redirect:/Employee/Home");
                         }
 
                     } catch (Exception e) {

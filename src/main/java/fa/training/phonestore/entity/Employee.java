@@ -19,7 +19,7 @@ public class Employee {
     @Id
     @Column(name="EmployeeID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customerId;
+    private int employeeId;
     @Column(name = "Phone")
     @Phone(message="Phone has wrong format")
     private String phone;
@@ -32,7 +32,7 @@ public class Employee {
     @Column(name="Gender")
     @Gender(message="Male or Female or Other")
     private String gender;
-    @Column(name="DateOfBirth")
+    @Column(name="DOB")
     @CustomerDateOfBirth(message="Need 18 years old")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;

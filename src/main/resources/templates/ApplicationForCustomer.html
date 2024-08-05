@@ -59,13 +59,11 @@
 <div th:insert="~{Header :: Header}"></div>
 <div class="container mt-5">
   <h1 class="text-center mb-4">Application for Customer</h1>
-  <form id="customerForm" th:object="${requestEntity}" th:action="@{/Customer/SendApplication}">
+  <form id="customerForm" th:object="${requestEntity}" th:action="@{/Customer/SendApplication}" method="post" enctype="multipart/form-data">
     <div class="mb-3">
-      <input type="hidden" th:field="*{c}" th:value="${customer.customerId}">
+      <input type="hidden" th:field="*{customerID}">
       <label for="serviceType" class="form-label" style="padding-top: 10px">Loại dịch vụ</label>
       <select  id="serviceType" th:field="*{requestType}" required>
-        <option value="0" th:text="'Chọn loại dịch vụ'"
-                th:selected="${requestEntity.requestDate} == 0"></option>
         <option value="1" th:text="'Bảo Hành'"
                 th:selected="${requestEntity.requestDate} == 1"></option>
         <option value="2" th:text="'Sửa chữa'"
@@ -78,20 +76,24 @@
     </div>
     <div class="mb-3">
       <label for="title" class="form-label">Tiêu đề</label>
-      <input th:field="*{title}" type="text" class="form-control" id="title" required>
+      <input th:field="*{title}" type="text" class="form-control" id="title" >
+      <div id="titleError" class="text-danger"></div>
     </div>
     <div class="mb-3">
       <label for="description" class="form-label">Mô tả</label>
-      <textarea th:field="*{description}" class="form-control" id="description" rows="3" required></textarea>
+      <textarea th:field="*{description}" class="form-control" id="description" rows="3" ></textarea>
+      <div id="desError" class="text-danger"></div>
     </div>
     <div class="mb-3">
       <label for="invoiceId" class="form-label">Nhập ID Invoice</label>
-      <input th:field="*{invoiceID} "type="text" class="form-control" id="invoiceId" required>
+      <input th:field="*{invoiceID}" type="text" class="form-control" id="invoiceId" >
+      <div id="invoiceError" class="text-danger"></div>
     </div>
     <div class="mb-3">
       <label for="images" class="form-label">Tải lên hình ảnh</label>
-      <input type="file" class="form-control" id="images" multiple accept="image/*">
+      <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
       <div id="imagePreview"></div>
+      <div id="imageError" class="text-danger"></div>
     </div>
     <div class="text-center">
       <button type="submit" class="btn btn-primary">Gửi</button>
@@ -111,48 +113,110 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  let imageFiles = [];
 
-  document.getElementById('images').addEventListener('change', function(event) {
-    const newFiles = Array.from(event.target.files);
-    imageFiles = [...imageFiles, ...newFiles];
-    updateImagePreview();
-  });
 
-  function updateImagePreview() {
-    const preview = document.getElementById('imagePreview');
-    preview.innerHTML = '';
+  document.addEventListener('DOMContentLoaded', function() {
+    let dataTransfer = new DataTransfer();
 
-    imageFiles.forEach((file, index) => {
-      const container = document.createElement('div');
-      container.className = 'image-container';
+    const imagesInput = document.getElementById('images');
 
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(file);
-      img.onload = function() {
-        URL.revokeObjectURL(this.src);
-      }
-      container.appendChild(img);
+    imagesInput.addEventListener('change', function(event) {
+      dataTransfer = new DataTransfer(); // Khởi tạo lại DataTransfer mỗi lần thay đổi
+      const newFiles = Array.from(event.target.files);
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'delete-btn';
-      deleteBtn.innerHTML = 'X';
-      deleteBtn.onclick = function(e) {
-        e.preventDefault();
-        imageFiles.splice(index, 1);
-        updateImagePreview();
-      };
-      container.appendChild(deleteBtn);
-
-      preview.appendChild(container);
+      newFiles.forEach(file => dataTransfer.items.add(file));
+      updateImagePreview();
     });
-  }
 
-  document.getElementById('customerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Xử lý gửi form ở đây, bao gồm cả imageFiles
-    console.log('Form submitted with', imageFiles.length, 'images');
+    function updateImagePreview() {
+      const preview = document.getElementById('imagePreview');
+      preview.innerHTML = '';
+
+      Array.from(dataTransfer.files).forEach((file, index) => {
+        const container = document.createElement('div');
+        container.className = 'image-container';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.onload = function() {
+          URL.revokeObjectURL(this.src);
+        };
+        container.appendChild(img);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = 'X';
+        deleteBtn.onclick = function(e) {
+          e.preventDefault();
+          dataTransfer.items.remove(index);
+          updateImagePreview();
+        };
+        container.appendChild(deleteBtn);
+
+        preview.appendChild(container);
+      });
+
+      // Cập nhật input file
+      imagesInput.files = dataTransfer.files;
+    }
+
+    document.getElementById('customerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (dataTransfer.files.length === 0) {
+        document.getElementById('imageError').innerHTML = 'Vui lòng chọn ít nhất một ảnh.';
+        return;
+      }
+      const form = this;
+      const formData = new FormData();
+
+      // Thêm các file ảnh vào FormData
+      Array.from(dataTransfer.files).forEach((file) => {
+        formData.append('images', file);
+      });
+
+      // Thêm các trường khác vào FormData từ form
+      const formElements = form.elements;
+      for (let i = 0; i < formElements.length; i++) {
+        const element = formElements[i];
+        if (element.name) {
+          formData.append(element.name, element.value);
+        }
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', form.action, true);
+
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const response = JSON.parse(xhr.responseText);
+
+          if (response.status === 'success') {
+            alert('Yêu cầu của bạn đã được gửi thành công.');
+            localStorage.setItem('RequsetAdded', 'true');
+          } else {
+            if (response.errors) {
+              document.getElementById('titleError').innerHTML = response.errors.title || '';
+              document.getElementById('desError').innerHTML = response.errors.description || '';
+              document.getElementById('invoiceError').innerHTML = response.errors.invoiceID || '';
+              document.getElementById('imageError').innerHTML = response.errors.images || '';
+            }
+          }
+        } else {
+          console.error('Error:', xhr.statusText);
+          alert('Đã xảy ra lỗi khi gửi yêu cầu.');
+        }
+      };
+
+      xhr.onerror = function() {
+        console.error('Error:', xhr.statusText);
+        alert('Đã xảy ra lỗi khi gửi yêu cầu.');
+      };
+
+      // Gửi dữ liệu form
+      xhr.send(formData);
+    });
   });
+
 </script>
 </body>
 </html>

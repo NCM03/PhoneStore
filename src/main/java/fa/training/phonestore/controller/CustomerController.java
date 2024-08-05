@@ -1,10 +1,12 @@
 package fa.training.phonestore.controller;
 
-import fa.training.phonestore.entity.Account;
-import fa.training.phonestore.entity.Customer;
+import fa.training.phonestore.entity.*;
 
 import fa.training.phonestore.helper.HelperToken;
 import fa.training.phonestore.service.imp.CustomerService;
+import fa.training.phonestore.service.imp.EmployeeService;
+import fa.training.phonestore.service.imp.ImageRequestService;
+import fa.training.phonestore.service.imp.RequestEntityService;
 import fa.training.phonestore.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -15,14 +17,22 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 
 @Controller
 public class CustomerController {
     @Autowired
+    RequestEntityService requestEntityService;
+    @Autowired
+    ImageRequestService imageRequestService;
+    @Autowired
+    EmployeeService employeeService;
+    @Autowired
     CustomerService customerService;
-
     JwtUtils jwtUtils = new JwtUtils();
     HelperToken helperToken;
 
@@ -78,6 +88,28 @@ public class CustomerController {
             }
         }
     }
+    @PostMapping("Customer/RequestDetail")
+    public String goToRequestDetail (@RequestParam int requestID, HttpServletRequest request, Model model){
+        String token = helperToken.getToken(request);
+        Account account = jwtUtils.decodeToken(token);
+        List<ImageRequest> imageRequest = imageRequestService.findByRequestID(requestID);
+
+        RequestEntity requestEntity = requestEntityService.findByRequestID(requestID);
+        Customer customer= customerService.getCustomerByCustomerID(requestEntity.getCustomerID());
+        model.addAttribute("requestEntity",requestEntity);
+        model.addAttribute("imageRequest",imageRequest);
+        model.addAttribute("customer",customer);
+        if(requestEntity.getStatus()==0||requestEntity.getStatus()==2){
+            Employee employee=employeeService.getEmployeeByEmployeeID(requestEntity.getEmployeeID());
+            model.addAttribute("employee",employee);
+        }
+        model.addAttribute("acc",account);
+        return "DetailRequestForCustomer";
+    }
+
+
+
+
 }
 
 

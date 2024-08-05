@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     Employee getEmployeeByAccount(Account account);
+    Employee getEmployeeByEmployeeId(int id);
 }
