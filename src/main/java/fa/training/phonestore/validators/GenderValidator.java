@@ -1,4 +1,4 @@
-package fa.training.phonestore.Validators;
+package fa.training.phonestore.validators;
 
 import fa.training.phonestore.Constraint.EntityConstraint.Gender;
 import jakarta.validation.ConstraintValidator;
