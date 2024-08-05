@@ -43,6 +43,9 @@ public class Product {
     @Column(name = "Rating")
     private double rating;
 
+    @Column(name = "ProductStatus")
+    private int status;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ProductInfo> productInfos;

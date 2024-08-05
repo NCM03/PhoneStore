@@ -24,4 +24,11 @@ public class ProductServiceIMP implements  ProductService{
     public Boolean findImageData(String imgData) {
         return Boolean.valueOf(productRepository.findImgData(imgData));
     }
+
+    @Override
+    public void changeSatus(int productId, int status) {
+        Product product = productRepository.findByProductId(productId);
+        product.setStatus(status);
+        productRepository.save(product);
+    }
 }

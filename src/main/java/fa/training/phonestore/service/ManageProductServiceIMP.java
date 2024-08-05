@@ -4,9 +4,11 @@ import fa.training.phonestore.dto.Request.ProductInfoDTO;
 import fa.training.phonestore.entity.Product;
 import fa.training.phonestore.entity.ProductImage;
 import fa.training.phonestore.entity.ProductInfo;
+import fa.training.phonestore.entity.ProductStatus;
 import fa.training.phonestore.repository.ProductImagineRepository;
 import fa.training.phonestore.repository.ProductRepository;
 import fa.training.phonestore.repository.ProductInfoRepository;
+import fa.training.phonestore.repository.ProductStatusRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ import java.util.Optional;
 public class ManageProductServiceIMP implements ManageProductService {
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private ProductStatusRepository productStatusRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -54,6 +58,8 @@ public class ManageProductServiceIMP implements ManageProductService {
     public void replaceProductInfo(ProductInfo newProductInfo, String url, int imageId) {
         Optional<ProductInfo> optionalOldProduct = productInfoRepository.findById(newProductInfo.getProductInfoId());
         if (optionalOldProduct.isPresent()) {
+            Optional<ProductStatus> productStatus = productStatusRepository.findById(newProductInfo.getProductInfoStatus().getStatusId());
+            ProductStatus oldProductStatus = productStatus.get();
             ProductInfo oldProductInfo = optionalOldProduct.get();
             // Cập nhật thông tin sản phẩm cũ bằng thông tin sản phẩm mới
             oldProductInfo.setProductInfoName(newProductInfo.getProductInfoName());
@@ -63,6 +69,7 @@ public class ManageProductServiceIMP implements ManageProductService {
             oldProductInfo.setQuantity(newProductInfo.getQuantity());
             oldProductInfo.setDescription(newProductInfo.getDescription());
             oldProductInfo.setPrice(newProductInfo.getPrice());
+            oldProductInfo.setProductInfoStatus(oldProductStatus);
             // Lưu sản phẩm đã được cập nhật vào cơ sở dữ liệu
             productInfoRepository.save(oldProductInfo);
         }

@@ -51,10 +51,13 @@ public class ProductInfo {
 
     @Column(name = "Color")
     private String color;
-    @Column(name = "ProductInfoStatus")
-    private String productInfoStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productInfoStatus", nullable = false)
+    @JsonBackReference
+    private ProductStatus productInfoStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ProductID", nullable = false)
     @JsonBackReference
     private Product product;
@@ -68,5 +71,8 @@ public class ProductInfo {
             return productImages.get(0);
         }
         return null; // or throw an exception if preferred
+    }
+    public int getStatusID(ProductInfo product){
+        return product.getProductInfoStatus().getStatusId();
     }
 }

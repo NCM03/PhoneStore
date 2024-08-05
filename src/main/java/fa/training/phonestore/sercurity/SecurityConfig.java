@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers( "/Account/Admin","/Account/take-Activities").hasAuthority("admin")
-                .requestMatchers("/edit_productInfo","/edit_mainProduct","api/productInfos/**","/api/products/**","/add-product","/uploadFile","/css/**", "/js/**", "/img/**","/","shopping-cart",
+                .requestMatchers("/edit_mainProduct/status","/edit_productInfo","/edit_mainProduct","api/productInfos/**","/api/products/**","/add-product","/uploadFile","/css/**", "/js/**", "/img/**","/","shopping-cart",
                         "/manage-product","/detailProduct/**","/Login", "/logout", "/ValidAuthenticate"
                         ,"/Account/checkUsername","/Account/Register"
                         ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password").permitAll()

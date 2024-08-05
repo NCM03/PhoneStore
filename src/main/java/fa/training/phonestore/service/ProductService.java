@@ -10,4 +10,5 @@ public interface ProductService {
     List<Product> findAll();
     Product findById(int id);
     Boolean findImageData(String imgData);
+    void changeSatus(int productId, int status);
 }

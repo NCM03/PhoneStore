@@ -7,6 +7,7 @@ import fa.training.phonestore.dto.Request.ProductInfoDTO;
 import fa.training.phonestore.entity.*;
 import fa.training.phonestore.mapper.ProductMapper;
 import fa.training.phonestore.repository.ProductImagineRepository;
+import fa.training.phonestore.repository.ProductStatusRepository;
 import fa.training.phonestore.service.*;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class ManageProductController {
     private ManageProductService manageProductService;
     @Autowired
     private ProductImagineRepository productImagineRepository;
+    @Autowired
+    private ProductStatusRepository productStatusRepository;
 
     @RequestMapping(value = "/manage-product", method = RequestMethod.GET)
     public String manageProduct(Model model) {
@@ -43,6 +46,7 @@ public class ManageProductController {
         List<Brand> brand = brandService.findAll();
         List<ProductInfo> productInfos = productInfoService.findAll();
         List<Product> product = productService.findAll();
+        List<ProductStatus> status = productStatusRepository.findAll();
         ProductDTO productForm = new ProductDTO();
         Product productEditForm = new Product();
         ProductInfo productInfoEditForm = new ProductInfo();
@@ -53,6 +57,7 @@ public class ManageProductController {
         model.addAttribute("productInfo", productInfos);
         model.addAttribute("category", category);
         model.addAttribute("brand", brand);
+        model.addAttribute("status", status);
         model.addAttribute("mess", "oke");
         model.addAttribute("isManageProductPage", true);
         return "manage-product";
@@ -100,38 +105,42 @@ public class ManageProductController {
         return "redirect:/manage-product";
     }
 
-
+    @RequestMapping(value = "/edit_mainProduct/status", method = RequestMethod.POST)
+    public String editStatusMainProduct(@RequestParam("productId") int productId,
+            @RequestParam("status") int status){
+        productService.changeSatus(productId, status);
+        return "redirect:/manage-product";
+    }
     @RequestMapping(value = "/edit_mainProduct", method = RequestMethod.POST)
     public String editMainProduct(@RequestParam("editProductId") int productId,
-                                  // @RequestParam("brand") int brand,
                                   @ModelAttribute("productEdit") Product productEditForm,
                                   @RequestParam("editImgProduct") MultipartFile imgProduct
                                   // RedirectAttributes redirectAttributes
     ) {
         try {
-            Product product = productService.findById(productId);
-            storageService.delete(product.getImageData());
-            System.out.println("imgName ="+imgProduct.getOriginalFilename());
-            String extension = FilenameUtils.getExtension(imgProduct.getOriginalFilename());
-            if (imgProduct != null && !imgProduct.isEmpty()) {
-                String baseURL = String.valueOf(product.getProductName()+"z");
-                String newURL = baseURL;
-                int counter = 1;
-                while (productService.findImageData(newURL + "." + extension)) {
-                    newURL = baseURL + counter;
-                    counter++;
+                Product product = productService.findById(productId);
+                storageService.delete(product.getImageData());
+                System.out.println("imgName =" + imgProduct.getOriginalFilename());
+                String extension = FilenameUtils.getExtension(imgProduct.getOriginalFilename());
+                if (imgProduct != null && !imgProduct.isEmpty()) {
+                    String baseURL = String.valueOf(product.getProductName() + "z");
+                    String newURL = baseURL;
+                    int counter = 1;
+                    while (productService.findImageData(newURL + "." + extension)) {
+                        newURL = baseURL + counter;
+                        counter++;
 //                System.out.println("Đổi URL thành: " + newURL);
-                }
+                    }
 
-                storageService.store(imgProduct, newURL);
-                productEditForm.setImageData(newURL+ "." + extension);
-            }else{
-                productEditForm.setImageData(product.getImageData());
-            }
-            productEditForm.setProductId(productId);
-            manageProductService.replaceProduct(productEditForm);
-            // product.setCategoryId(category);
-            // product.setBrandId(brand);
+                    storageService.store(imgProduct, newURL);
+                    productEditForm.setImageData(newURL + "." + extension);
+                } else {
+                    productEditForm.setImageData(product.getImageData());
+                }
+                productEditForm.setProductId(productId);
+                manageProductService.replaceProduct(productEditForm);
+                // product.setCategoryId(category);
+                // product.setBrandId(brand);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,7 +172,6 @@ public class ManageProductController {
                     System.out.println("Đổi URL thành: " + newURL);
                 }
                 storageService.store(imgProductInfo, newURL);
-            }else{
             }
             manageProductService.replaceProductInfo(productInfoEditForm, newURL+"." + extension , oldImgInfoId);
             // product.setCategoryId(category);

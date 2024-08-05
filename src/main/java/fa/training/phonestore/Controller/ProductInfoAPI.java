@@ -18,9 +18,9 @@ public class ProductInfoAPI {
     @GetMapping("/productInfos/{id}")
 
     public ResponseEntity<Optional<ProductInfo>> getProductInfoById(@PathVariable("id") int id) {
-        Optional<ProductInfo> product = productInfoService.findById(id);
-        if (product != null) {
-            return ResponseEntity.ok(product);
+        Optional<ProductInfo> productInfoOptional = productInfoService.findById(id);
+        if (productInfoOptional != null) {
+            return ResponseEntity.ok(productInfoOptional);
         } else {
             return ResponseEntity.notFound().build();
         }

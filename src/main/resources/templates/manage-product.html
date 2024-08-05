@@ -245,9 +245,10 @@
                                 <tr>
                                     <th style="width: 15%">Ảnh</th>
                                     <th>Sản phẩm</th>
-                                    <th>Danh mục</th>
+                                    <!--                                    <th>Danh mục</th>-->
                                     <th>Số lượng</th>
                                     <th>Đánh giá</th>
+                                    <th>Tình trạng</th>
                                     <th>Cập nhật</th>
                                 </tr>
                                 </thead>
@@ -258,11 +259,11 @@
                                              th:src="@{/img/ProductImg/__${product.getImageData()}__}">
                                     </td>
                                     <td th:text="${product.getProductName()}"></td>
-                                    <td>
-            <span th:each="category : ${category}"
-                  th:if="${category.getCategoryId()} == ${product.getCategoryId()}"
-                  th:text="${category.getName()}"></span>
-                                    </td>
+                                    <!--                                    <td>-->
+                                    <!--            <span th:each="category : ${category}"-->
+                                    <!--                  th:if="${category.getCategoryId()} == ${product.getCategoryId()}"-->
+                                    <!--                  th:text="${category.getName()}"></span>-->
+                                    <!--                                    </td>-->
                                     <td class="" th:text="${product.getTotalQuantity()}"></td>
                                     <td class="">
     <span th:each="star : ${#numbers.sequence(1, T(java.lang.Math).floor(product.rating))}">
@@ -273,13 +274,33 @@
     </span>
                                         <span th:text="' (' + ${product.rating} + ')'"></span>
                                     </td>
+                                    <td th:if="${product.getStatus() == 1}" th:text="'Hoạt động'"></td>
+                                    <td th:if="${product.getStatus() == 2}" th:text="'Không hoạt động'"></td>
                                     <td class="none-view">
                                         <div style="display: flex;gap: 10px;">
                                             <button class="btn btn-warning" onclick="openEditProductModal(this)"
                                                     th:data-id="${product.getProductId()}">
                                                 <i class="fa-solid fa-pen"></i>
                                             </button>
-                                            <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                            <form method="post"
+                                                  style="display: inline;" th:action="@{/edit_mainProduct/status}"
+                                                  th:if="${product.getStatus() == 1}">
+                                                <input name="productId" th:value="${product.getProductId()}"
+                                                       type="hidden"/>
+                                                <input name="status" type="hidden" value="2"/>
+                                                <button class="btn btn-danger" type="submit"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </form>
+
+                                            <form method="post"
+                                                  style="display: inline;" th:action="@{/edit_mainProduct/status}"
+                                                  th:if="${product.getStatus() != 1}">
+                                                <input name="productId" th:value="${product.getProductId()}"
+                                                       type="hidden"/>
+                                                <input name="status" type="hidden" value="1"/>
+                                                <button class="btn btn-success" type="submit"><i
+                                                        class="fa-solid fa-window-restore"></i></button>
+                                            </form>
                                         </div>
                                     </td>
 
@@ -313,17 +334,16 @@
                                                         <div th:text="'Màu: ' + ${productInfos.getColor()}"></div>
                                                     </td>
                                                     <td th:text="${productInfos.getQuantity()}"></td>
-                                                    <td th:text="${productInfos.getProductInfoStatus()}"></td>
+                                                    <td th:text="${productInfos.getProductInfoStatus().getStatusName()}"></td>
 
                                                     <td>
                                                         <div style="display: flex; gap: 10px;">
                                                             <button class="btn btn-warning"
                                                                     onclick="openEditProductInfoModal(this)"
-                                                                    th:data-id="${productInfos.getProductInfoId()}">
+                                                                    th:data-id="${productInfos.getProductInfoId()}"
+                                                                    th:data-status="${productInfos.getProductInfoStatus().getStatusId()}">
                                                                 <i class="fa-solid fa-pen"></i>
                                                             </button>
-                                                            <button class="btn btn-danger"><i
-                                                                    class="fa-solid fa-trash"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -534,6 +554,21 @@
                                                 <input class="form-control" id="editProductInfoPrice"
                                                        name="price" placeholder="Nhập giá sản phẩm"
                                                        required th:field="*{price}" type="number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label" for="price">Trạng thái:</label>
+                                            <div class="col-sm-8">
+                                                <select id="editProductInfoStatus" name="statusInfo" style="heigth: 100%"
+                                                        th:field="*{productInfoStatus.statusId}">
+                                                    <option th:each="status: ${status}"
+                                                            th:text="${status.getStatusName()}"
+                                                            th:value="${status.getStatusId()}"
+
+                                                    ></option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -769,19 +804,21 @@
 <!--sủa sản phẩm Phụ ///////////////////////////////////////////////////////////////////////////////-->
 <script>
     function openEditProductInfoModal(button) {
-        var productInfoId = button.getAttribute("data-id");
+        var productInfoId = button.getAttribute('data-id');
         var modal = new bootstrap.Modal(document.getElementById('editProductInfoModal'));
+        var productInfoStatus = button.getAttribute('data-status');
         modal.show();
+        console.log(productInfoStatus);
+        document.getElementById('editProductInfoStatus').value = productInfoStatus;
         console.log(productInfoId);
         console.log(typeof $);
         $.ajax({
-            url: '/api/productInfos/' + productInfoId, // Thay đổi URL thành endpoint của bạn
+            url: '/api/productInfos/' + productInfoId, // Đảm bảo URL đúng
             method: 'GET',
             success: function (productInfo) {
-
                 console.log('Product Data:', productInfo); // Kiểm tra dữ liệu nhận được
-                // Cập nhật nội dung của các thẻ div với thông tin sản phẩm
 
+                // Cập nhật nội dung của các thẻ div với thông tin sản phẩm
                 $('#editProductInfoId').val(productInfo.productInfoId);
                 $('#editProductInfoName').val(productInfo.productInfoName); // Sử dụng .val() cho input
                 $('#imgProductEditInfoShow').attr('src', '/img/ProductImg/' + productInfo.productImages[0].imageURL); // Hiển thị hình ảnh
@@ -793,7 +830,6 @@
                 $('#editProductInfoRam').val(productInfo.ram);
                 $('#editProductInfoCapacity').val(productInfo.capacity);
                 $('#editProductInfoDescription').val(productInfo.description);
-
             },
             error: function (err) {
                 console.error('Error fetching product details:', err);
