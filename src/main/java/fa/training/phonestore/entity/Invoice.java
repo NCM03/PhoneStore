@@ -1,4 +1,5 @@
 package fa.training.phonestore.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,8 +32,10 @@ public class Invoice {
     @Column(name = "InvoiceID")
     private Integer invoiceId;
 
-    @Column(name ="CustomerID")
+    @Column(name = "CustomerID")
     private int customerID;
+    @Column(name = "EmployeeID")
+    private int employeeID;
     @Column(name = "InvoiceType", nullable = false)
     private Integer invoiceType;
 

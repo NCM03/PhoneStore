@@ -15,4 +15,9 @@ public class EmployeeServiceImpl implements EmployeeService
     @Override
     public Employee getEmployeeByAccount(Account account) {
         return employeeRespository.getEmployeeByAccount(account);   }
+
+    @Override
+    public Employee getEmployeeByEmployeeID(int id) {
+        return employeeRespository.getEmployeeByEmployeeId(id);
+    }
 }

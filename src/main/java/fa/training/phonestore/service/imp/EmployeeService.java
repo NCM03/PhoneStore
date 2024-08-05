@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EmployeeService {
         Employee getEmployeeByAccount(Account account);
-
+        Employee getEmployeeByEmployeeID(int id);
 
 }

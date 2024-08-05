@@ -28,9 +28,9 @@
 
                     .requestMatchers("/Login", "/Logout", "/ValidAuthenticate"
                                 ,"/Account/checkUsername","/Account/Register"
-                                ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password", "/**").permitAll()
-                    .requestMatchers("/Account/ChangePassword","/Customer/Profile","/Customer/Application").hasAuthority("customer")
-
+                                ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password", "/**","/uploads").permitAll()
+                    .requestMatchers("/Account/ChangePassword","/Customer/Profile","/Customer/Application","/Customer/Request").hasAuthority("customer")
+                    .requestMatchers("/Employee/Home","/Employee/RequestDetail").hasAuthority("employee")
                     .anyRequest().authenticated()
 
 
