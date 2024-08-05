@@ -23,4 +23,7 @@ public class Product_ProductStatus {
     @Column(name = "StatusID")
     private int statusID;
 
+    @Column(name = "Reason")
+    private int reason;
+
 }

@@ -11,20 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Feedback")
-public class Feedback {
-
+@Table(name = "Branch")
+public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FeedbackID")
-    private Integer feedbackId;
+    @Column(name = "BranchID")
+    private int branchID;
 
-    @Column(name = "CustomerID")
-    private int customerID;
-
-    @Column(name = "Comment", length = 255)
-    private String comment;
-
-    @Column(name = "Rating")
-    private Integer rating;
+    @Column(name = "Name")
+    private String branchName;
 }

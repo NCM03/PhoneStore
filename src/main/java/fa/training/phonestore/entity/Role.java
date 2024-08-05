@@ -3,17 +3,15 @@ package fa.training.phonestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name = "Role")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class Role {
     @Id
     @Column(name = "RoleID")

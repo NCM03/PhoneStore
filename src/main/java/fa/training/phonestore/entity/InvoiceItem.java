@@ -29,8 +29,8 @@ public class InvoiceItem {
 
     @Column(name = "InvoiceID")
     private int invoiceID;
-    @Column(name = "ProductSupID", nullable = false)
-    private int productSupID;
+    @Column(name = "ProducInfoID", nullable = false)
+    private int productInfoID;
 
     @Column(name = "Quantity", nullable = false)
     private int quantity;

@@ -10,7 +10,7 @@
     <title>Ogani | Template</title>
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
@@ -34,7 +34,7 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="/img/logo-2.png" alt=""></a>
+            <a href="/index"><img src="/img/logo-2.png" alt=""></a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -59,7 +59,7 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./">Home</a></li>
+                <li class="active"><a href="./index">Home</a></li>
                 <li><a href="/shop-grid">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
@@ -120,7 +120,8 @@
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="/Login"><i class="fa fa-user"></i> Login</a>
+                                <a href="/Login" ><i class="fa fa-user"></i> Login</a>
+                                <a></a>
                             </div>
                         </div>
                     </div>
@@ -137,7 +138,7 @@
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./">Home</a></li>
+                            <li class="active"><a href="./index">Home</a></li>
                             <li><a href="invoice.html">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
@@ -180,7 +181,10 @@
                             <span>All Categories</span>
                         </div>
                         <ul>
-                            <li th:each="category : ${list}"><a href="#" th:text="${category.name}"></a></li>
+                            <li th:each="category : ${list}" value="categoryID" >
+                                <a th:href="@{Category/{id}} " th:text="${category.getName()}"
+                                   th:value="${category.getCategoryId()}">
+                                </a></li>
                         </ul>
                     </div>
                 </div>
@@ -188,10 +192,6 @@
                     <div class="hero__search">
                         <div class="hero__search__form">
                             <form th:action="@{/search/{keyword}}" method="get">
-                                <div class="hero__search__categories">
-                                    All Categories
-                                    <span class="arrow_carrot-down"></span>
-                                </div>
                                 <label>
                                     <input type="text" name="keyword" id="keyword" th:value="${keyword}" required>
                                 </label>
@@ -208,13 +208,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hero__item set-bg" data-setbg="/img/hero/banner.jpg">
-                        <div class="hero__text">
-                            <span>FRUIT FRESH</span>
-                            <h2>Vegetable <br />100% Organic</h2>
-                            <p>Free Pickup and Delivery Available</p>
-                            <a href="/shop-grid.html" class="primary-btn">SHOP NOW</a>
-                        </div>
+                    <div class="hero__item set-bg" data-setbg="/img/banner-5.png">
                     </div>
                 </div>
             </div>
@@ -223,78 +217,20 @@
     <!-- Hero Section End -->
 
     <!-- Categories Section Begin -->
-    <section class="categories" >
-        <div class="container" >
-            <div class="row">
-                <div class="categories__slider owl-carousel" >
-                    <div class="col-lg-3" th:each="category : ${list}">
-                        <div class="categories__item set-bg" data-setbg="/img/categories/cat-1.jpg" >
-                            <h5><a href="#" th:text="${category.name}"></a></h5>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
+<!--    <section class="categories" >-->
+<!--        <div class="container" >-->
+<!--            <div class="row">-->
+<!--                <div class="categories__slider owl-carousel" >-->
+<!--                    <div class="col-lg-3" th:each="category : ${list}">-->
+<!--                        <div class="categories__item set-bg" th:attr=" data-setbg = @{/img/product/phone_image1.jpeg}" >-->
+<!--                            <h5><a href="#" th:text="${category.name}"></a></h5>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
     <!-- Categories Section End -->
-
-    <!-- Featured Section Begin -->
-    <section class="featured spad" >
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Featured Product</h2>
-                    </div>
-                    <div class="featured__controls">
-                        <ul>
-                            <li class="active" data-filter="*">All</li>
-                            <li th:each="category : ${list}" th:attr="data-filter =${'.'}+${category.name}" ><a th:text="${category.name}"></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row featured__filter" >
-                <div class="col-lg-3 col-md-4 col-sm-6 mix"
-                     th:classappend="${list.get(features.getProductID()).name}"
-                     th:each="features :${feature}" >
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/img/featured/feature-1.jpg"  th:alt="${features.getProductSupName()}">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#" th:text="${features.getProductSupName()}"></a></h6>
-                            <h5><a th:text="${features.getPrice()}+${'₫'}"></a></h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Featured Section End -->
-
-    <!-- Banner Begin -->
-    <div class="banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="/img/banner/banner-1.jpg" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="/img/banner/banner-2.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Banner End -->
 
     <!-- Latest Product Section Begin -->
     <section class="latest-product spad">
@@ -307,10 +243,10 @@
                             <div class="latest-prdouct__slider__item" th:each="lastestproduct :${lastestProduct}">
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
+                                        <img src="/img/product/samsung.jpeg" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6><a th:text="${lastestproduct.getProductSupName()}"></a></h6>
+                                        <h6><a th:text="${lastestproduct.getProductInfoName()}"></a></h6>
                                         <span><a th:text="${lastestproduct.getPrice()}+${'₫'}"></a></span>
                                     </div>
                                 </a>
@@ -325,22 +261,11 @@
                             <div class="latest-prdouct__slider__item" th:each="ratingproduct1 :${ratingProduct1}">
                                 <a href="#" class="latest-product__item" >
                                     <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
+                                        <img src="/img/product/samsung.jpeg" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6><a th:text="${ratingproduct1.getProductName()}"></a></h6>
                                         <span th:text="${ratingproduct1.getRating()}"></span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="latest-prdouct__slider__item" th:each="ratingproduct2 :${ratingProduct2}">
-                                <a href="#" class="latest-product__item" >
-                                    <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6><a th:text="${ratingproduct2.getProductName()}"></a></h6>
-                                        <span th:text="${ratingproduct2.getRating()}"></span>
                                     </div>
                                 </a>
                             </div>
@@ -354,7 +279,7 @@
                             <div class="latest-prdouct__slider__item" th:each="reviewproduct :${reviewProduct}">
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="/img/latest-product/lp-1.jpg" alt="">
+                                        <img src="/img/product/samsung.jpeg" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6><a th:text="${reviewproduct.getProductName()}"></a></h6>
@@ -367,69 +292,83 @@
                 </div>
             </div>
         </div>
+
     </section>
     <!-- Latest Product Section End -->
 
-    <!-- Blog Section Begin -->
-    <section class="from-blog spad">
+    <!-- Featured Section Begin -->
+    <section class="featured spad" >
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title from-blog__title">
-                        <h2>From The Blog</h2>
+                    <div class="section-title">
+                        <h2>ĐIỆN THOẠI NỔI BẬT NHẤT</h2>
+                    </div>
+                    <div class="featured__controls">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+                            <li th:each="category : ${list}" th:attr="data-filter =${'.'}+${category.name}">
+                                <a th:text="${category.name}"></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+            <div class="row featured__filter" >
+                <div class="col-lg-3 col-md-4 col-sm-6 mix"
+                     th:classappend="${features.getProductInfoName()}"
+                     th:each="features :${feature}" >
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg"
+                             th:attr=" data-setbg = @{/img/product/oppoA58.jpeg}">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#" th:text="${features.getProductInfoName()}"></a></h6>
+                            <h5><a th:text="${features.getPrice()}+${'₫'}"></a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product__pagination" >
+                <a th:if="${currentPage != 0}"
+                   th:href="@{/(page=${currentPage}, size=${feature.getSize()})}">
+                    <i class="fa fa-long-arrow-left"></i>
+                </a>
+                <span th:each="i : ${#numbers.sequence(0,feature.getTotalPages() - 1)}" >
+                            <a th:if="${i >= 0}" th:href="@{/(page=${i}, size=${feature.getSize()})} "
+                               th:text="${i + 1}"></a>
+                        </span>
+                <a th:if="${feature.getTotalPages() -1 != currentPage}"
+                   th:href="@{/(page=${currentPage+1}, size=${feature.getSize()})}">
+                    <i class="fa fa-long-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Section End -->
+
+    <!-- Banner Begin -->
+    <div class="banner">
+        <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/blog/blog-1.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <img src="/img/banner-3.png" alt="">
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/blog/blog-2.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic">
-                            <img src="/img/blog/blog-3.jpg" alt="">
-                        </div>
-                        <div class="blog__item__text">
-                            <ul>
-                                <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
-                            </ul>
-                            <h5><a href="#">Visit the clean farm in the US</a></h5>
-                            <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                        </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 ">
+                    <div class="banner__pic">
+                        <img src="/img/banner-4.png" alt="">
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Blog Section End -->
+    </div>
+    <!-- Banner End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer spad">
@@ -510,7 +449,7 @@
     <script src="/js/mixitup.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/main.js"></script>
-
+    <script src="/js/table-pagination.js"></script>
 
 
 </body>

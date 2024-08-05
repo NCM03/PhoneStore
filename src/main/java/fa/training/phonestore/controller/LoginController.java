@@ -96,7 +96,7 @@ public class LoginController {
                     HttpEntity<DTO> httpRequest = new HttpEntity<>(dto, headers);
 
                     try {
-                        ResponseEntity<String> authResponse = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
+                        ResponseEntity<String> authResponse = restTemplate.postForEntity("http://localhost:8080/authenticate", httpRequest, String.class);
                         String responseBody = authResponse.getBody();
                         ObjectMapper mapper = new ObjectMapper();
                         JsonNode root = mapper.readTree(responseBody);
@@ -122,7 +122,7 @@ public class LoginController {
                         if ("admin".equals(role)) {
                             return new ModelAndView("redirect:/Account/Admin");
                         } else if ("customer".equals(role)) {
-                            return new ModelAndView("redirect:/Customer/Profile");
+                            return new ModelAndView("redirect:/");
                         } else {
                             return new ModelAndView("redirect:/default");
                         }

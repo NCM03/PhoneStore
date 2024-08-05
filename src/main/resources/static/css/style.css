@@ -120,6 +120,7 @@ ol {
 	color: #1c1c1c;
 	font-weight: 700;
 	position: relative;
+
 }
 
 .section-title h2:after {
@@ -132,6 +133,7 @@ ol {
 	background: #7fad39;
 	content: "";
 	margin: 0 auto;
+
 }
 
 .set-bg {
@@ -628,7 +630,7 @@ ol {
 
 .hero__categories ul li a {
 	font-size: 16px;
-	color: #1c1c1c;
+	color: #000000;
 	line-height: 39px;
 	display: block;
 }
@@ -647,7 +649,7 @@ ol {
 }
 
 .hero__search__form form .hero__search__categories {
-	width: 30%;
+	width: 24%;
 	float: left;
 	font-size: 16px;
 	color: #1c1c1c;
@@ -670,8 +672,16 @@ ol {
 
 .hero__search__form form .hero__search__categories span {
 	position: absolute;
-	right: 14px;
+	right: 24px;
 	top: 14px;
+}
+
+.hero__search__form form .hero__search__categories ul li a {
+	color: #000000;
+}
+
+.modal-body{
+	padding: 2rem;
 }
 
 .hero__search__form form input {
@@ -1622,17 +1632,35 @@ ol {
 
 .product__pagination,
 .blog__pagination {
-	padding-top: 10px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 45%;
 }
 
-.product__pagination a,
+.product__pagination a{
+	margin-right: 0;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #b2b2b2;
+	font-size: 14px;
+	color: #252525;
+	font-weight: 700;
+	line-height: 28px;
+	text-align: center;
+	-webkit-transition: all, 0.3s;
+	-moz-transition: all, 0.3s;
+	-ms-transition: all, 0.3s;
+	-o-transition: all, 0.3s;
+	transition: all, 0.3s;
+}
 .blog__pagination a {
 	display: inline-block;
 	width: 30px;
 	height: 30px;
 	border: 1px solid #b2b2b2;
 	font-size: 14px;
-	color: #b2b2b2;
+	color: #252525;
 	font-weight: 700;
 	line-height: 28px;
 	text-align: center;

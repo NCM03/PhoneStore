@@ -11,20 +11,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Feedback")
-public class Feedback {
+@Table(name = "Brand") // Sửa đổi ở đây
+public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FeedbackID")
-    private Integer feedbackId;
+    @Column(name = "BrandID")
+    private Integer brandId;
 
-    @Column(name = "CustomerID")
-    private int customerID;
+    @Column(name = "Name", nullable = false, length = 50)
+    private String name;
 
-    @Column(name = "Comment", length = 255)
-    private String comment;
-
-    @Column(name = "Rating")
-    private Integer rating;
+    // Các getter và setter
 }

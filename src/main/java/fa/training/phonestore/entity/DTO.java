@@ -2,6 +2,7 @@ package fa.training.phonestore.entity;
 
 import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Password;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

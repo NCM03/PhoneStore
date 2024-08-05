@@ -5,7 +5,7 @@ import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Password
 import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Username;
 import jakarta.persistence.*;
 import lombok.Data;
-
+import fa.training.phonestore.entity.Role;
 @Entity
 @Data
 @Table(name = "Account")
@@ -17,7 +17,7 @@ public class Account {
 
     private int accountId;
     @Column(name = "Username")
-@Username
+    @Username
     private String username;
     @Column(name = "Password")
     @Password
@@ -32,7 +32,7 @@ public class Account {
     public void prePersist() {
         if (role == null) {
             Role defaultRole = new Role();
-            defaultRole.setRoleId(2); // Thiết lập RoleID mặc định là 3
+            defaultRole.setRoleId(3); // Thiết lập RoleID mặc định là 3
             this.role = defaultRole;
         }
         setActive(true);

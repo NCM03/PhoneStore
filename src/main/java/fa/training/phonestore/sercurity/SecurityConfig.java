@@ -23,7 +23,7 @@
             authenticationFilter.setFilterProcessesUrl("/authenticate");
 
             http
-                    .csrf(csrf -> csrf.disable())
+                    .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                     .authorizeRequests()
                     .requestMatchers( "/Account/Admin","/Account/take-Activities","/Account/GetAllAccount").hasAuthority("admin")
 
@@ -53,7 +53,6 @@
                     .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
 
                     .sessionManagement()
-
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .rememberMe()
@@ -64,5 +63,6 @@
 
             return http.build();
         }
+
 
     }
