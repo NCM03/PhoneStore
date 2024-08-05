@@ -182,7 +182,7 @@
                         </div>
                         <ul>
                             <li th:each="category : ${list}" value="categoryID" >
-                                <a th:href="@{Category/{id}} " th:text="${category.getName()}"
+                                <a th:href="@{Category/(id = ${category.getCategoryId()})} " th:text="${category.getName()}"
                                    th:value="${category.getCategoryId()}">
                                 </a></li>
                         </ul>
@@ -335,7 +335,7 @@
             </div>
             <div class="product__pagination" >
                 <a th:if="${currentPage != 0}"
-                   th:href="@{/(page=${currentPage}, size=${feature.getSize()})}">
+                   th:href="@{/(page=${currentPage - 1}, size=${feature.getSize()})}">
                     <i class="fa fa-long-arrow-left"></i>
                 </a>
                 <span th:each="i : ${#numbers.sequence(0,feature.getTotalPages() - 1)}" >

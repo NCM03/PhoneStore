@@ -28,6 +28,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT p FROM Product p WHERE p.categoryId = ?1 "
     )
-    List<Product> findByCategory(int categoryID);
+    Page<Product> findByCategory(int categoryID,Pageable pageable);
 
 }

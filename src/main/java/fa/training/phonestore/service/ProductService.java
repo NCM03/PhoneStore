@@ -31,8 +31,8 @@ public class ProductService implements ProductServiceImp {
     }
 
     @Override
-    public List<Product> findByCategory(int categoryId) {
-        return productRepository.findByCategory(categoryId);
+    public Page<Product> findByCategory(int categoryId, int page, int size) {
+        return productRepository.findByCategory(categoryId,PageRequest.of(page, size));
     }
 
 }

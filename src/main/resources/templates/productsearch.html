@@ -236,7 +236,7 @@
                             <h4>Price</h4>
                             <div class="price-range-wrap">
                                 <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    th:attr="data-min='10'" data-max="540">
+                                     th:attr="data-min='300' , data-max='53000'" >
                                     <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -250,68 +250,62 @@
                             </div>
                         </div>
                         <div class="sidebar__item sidebar__item__color--option">
-                            <h4>Colors</h4>
-                            <div class="sidebar__item__color sidebar__item__color--white">
-                                <label for="white">
-                                    White
-                                    <input type="radio" id="white">
+                            <h4>Capacity</h4>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="1TB" checked="">
+                                    1TB
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--gray">
-                                <label for="gray">
-                                    Gray
-                                    <input type="radio" id="gray">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="512GB" checked="">
+                                    512GB
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--red">
-                                <label for="red">
-                                    Red
-                                    <input type="radio" id="red">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="256GB" checked="">
+                                    256GB
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--black">
-                                <label for="black">
-                                    Black
-                                    <input type="radio" id="black">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="128GB" checked="">
+                                    128GB
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--blue">
-                                <label for="blue">
-                                    Blue
-                                    <input type="radio" id="blue">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--green">
-                                <label for="green">
-                                    Green
-                                    <input type="radio" id="green">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios5" value="64GB" checked="">
+                                    64GB
                                 </label>
                             </div>
                         </div>
                         <div class="sidebar__item">
-                            <h4>Popular Size</h4>
+                            <h4>RAM</h4>
                             <div class="sidebar__item__size">
-                                <label for="large">
-                                    Large
-                                    <input type="radio" id="large">
+                                <label for="12GB">
+                                    12GB
+                                    <input type="radio" name="optionsRadios" id="12GB" >
                                 </label>
                             </div>
                             <div class="sidebar__item__size">
-                                <label for="medium">
-                                    Medium
-                                    <input type="radio" id="medium">
+                                <label for="8GB">
+                                    8GB
+                                    <input type="radio" id="8GB">
                                 </label>
                             </div>
                             <div class="sidebar__item__size">
-                                <label for="small">
-                                    Small
-                                    <input type="radio" id="small">
+                                <label for="6GB">
+                                    6GB
+                                    <input type="radio" id="6GB">
                                 </label>
                             </div>
                             <div class="sidebar__item__size">
-                                <label for="tiny">
-                                    Tiny
-                                    <input type="radio" id="tiny">
+                                <label for="4GB">
+                                    4GB
+                                    <input type="radio" id="4GB">
                                 </label>
                             </div>
                         </div>
@@ -362,15 +356,15 @@
                     </div>
                     <div class="product__pagination" >
                         <a th:if="${currentPage != 0}"
-                           th:href="@{/search/{keyword}/(page=${currentPage - 1}, size=${searchProduct.size()})}">
+                           th:href="@{/search/{keyword}/(page=${currentPage - 1}, size=${searchProduct})}">
                             <i class="fa fa-long-arrow-left"></i>
                         </a>
                         <span th:each="i : ${#numbers.sequence(0,searchProduct.getTotalPages() - 1)}" >
-                            <a th:if="${i >= 0}" th:href="@{/search/keyword/(page=${i}, size=${searchProduct.size()})} "
+                            <a th:if="${i >= 0}" th:href="@{/search/keyword/(page=${i}, size=${searchProduct.getSize()})} "
                                th:text="${i + 1}"></a>
                         </span>
                         <a th:if="${searchProduct.getTotalPages()-1 != currentPage}"
-                           th:href="@{/search/keyword = (page=${currentPage+1}, size=${searchProduct.size()})}">
+                           th:href="@{/search/keyword = (page=${currentPage+1}, size=${searchProduct.getSize()})}">
                             <i class="fa fa-long-arrow-right"></i>
                         </a>
                     </div>

@@ -11,6 +11,6 @@ import java.util.List;
 public interface ProductServiceImp {
     List<Product> getHomeTopRateProductSection1();
     Page<Product> getHomeReviewProduct();
-    List<Product> findByCategory(int categoryId);
+    Page<Product> findByCategory(int categoryId, int page, int size);
 
 }

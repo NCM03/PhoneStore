@@ -61,10 +61,14 @@ public class HomeController {
         return "productsearch";
     }
 
-    @GetMapping({"/Category/{id}"})
-    public String searchCategory(@RequestParam(value = "id") int categoryID , Model model) {
+    @PostMapping({"/Category/{id}"})
+    public String searchCategory(@RequestParam(value = "id") int categoryID ,
+                                 @RequestParam(defaultValue = "0", value = "page") int page,
+                                 @RequestParam(defaultValue = "6", value = "size") int size,
+                                 Model model) {
         List<Category> categories = categoryService.findAll();
-        List<Product> searchProduct = productService.findByCategory(categoryID);
+        Page<Product> searchProduct = productService.findByCategory(categoryID,page,size);
+        model.addAttribute("searchPage", searchProduct);
         model.addAttribute("list", categories);
         model.addAttribute("searchProduct", searchProduct);
         return "productsearch";

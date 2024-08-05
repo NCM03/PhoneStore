@@ -31,7 +31,14 @@ public interface ProductInfoRepository extends PagingAndSortingRepository<Produc
     List<ProductInfo> Search(String keyword);
 
     @Query(value = "SELECT p FROM ProductInfo p WHERE p.productInfoName LIKE %?1%"
-
     )
     Page<ProductInfo> searchList(String keyword, Pageable pageable);
+
+    @Query(value = "SELECT p FROM ProductInfo p WHERE p.ram = ?1"
+    )
+    Page<ProductInfo> searchRam(int ram, Pageable pageable);
+
+    @Query(value = "SELECT p FROM ProductInfo p WHERE p.capacity = ?1"
+    )
+    Page<ProductInfo> searchCapacity(int capacity, Pageable pageable);
 }
