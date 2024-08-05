@@ -1,5 +1,5 @@
 package fa.training.phonestore.validators.DtoValidator;
-import fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint.Password;
+import fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint.Password;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
