@@ -1,8 +1,8 @@
 package fa.training.phonestore.repository;
 
 import fa.training.phonestore.entity.Account;
-import fa.training.phonestore.entity.Customer;
 
+import fa.training.phonestore.entity.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package fa.training.phonestore.Entity;
+package fa.training.phonestore.entity;
 
 import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerDateOfBirth;
 import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerName;
@@ -6,6 +6,7 @@ import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.Cus
 import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
 import fa.training.phonestore.Constraint.EntityConstraint.Gender;
 import fa.training.phonestore.Constraint.EntityConstraint.Phone;
+import fa.training.phonestore.entity.Account;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class Customer {
     @Gender(message="Male or Female or Other")
     private String gender;
     @Column(name="DateOfBirth")
-@CustomerDateOfBirth(message="Need 18 years old")
+    @CustomerDateOfBirth(message="Need 18 years old")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
     @NotBlank(message="Address is not blank")

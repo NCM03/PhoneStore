@@ -1,8 +1,8 @@
 package fa.training.phonestore.controller;
 
 import fa.training.phonestore.entity.Account;
-import fa.training.phonestore.entity.Customer;
 
+import fa.training.phonestore.entity.Customer;
 import fa.training.phonestore.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
