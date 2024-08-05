@@ -2,6 +2,7 @@ package fa.training.phonestore.config;
 
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.ParseException;
@@ -10,6 +11,11 @@ import java.util.Date;
 import java.util.Locale;
 
 public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");
+    }
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new Formatter<Date>() {

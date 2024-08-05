@@ -2,6 +2,7 @@ package fa.training.phonestore.service;
 
 import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.repository.AccountRespository;
+import fa.training.phonestore.service.imp.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired

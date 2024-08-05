@@ -8,7 +8,8 @@ import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.entity.Role;
 import fa.training.phonestore.sercurity.SecurityConstraints;
 
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class JwtUtils {
 
     public Account decodeToken(String token) {
@@ -32,53 +33,29 @@ public class JwtUtils {
             return null;
         }
     }
-    private static Account parseAccountString(String accountString) {
+    public static Account parseAccountString(String accountString) {
         Account account = new Account();
-        Role role = new Role();
 
-        // Loại bỏ "Account(" ở đầu và ")" ở cuối
-        String trimmed = accountString.substring(8, accountString.length() - 1);
+        // Biểu thức chính quy để phân tích chuỗi
+        Pattern pattern = Pattern.compile(
+                "Account\\(accountId=(\\d+), username=([^,]+), password=([^,]+), role=Role\\(RoleId=(\\d+), roleName=([^\\)]+)\\), isActive=(true|false)\\)"
+        );
+        Matcher matcher = pattern.matcher(accountString);
 
-        // Tách các trường
-        String[] fields = trimmed.split(", ");
+        if (matcher.find()) {
+            // Gán giá trị cho đối tượng Account từ các nhóm của biểu thức chính quy
+            account.setAccountId(Integer.parseInt(matcher.group(1)));
+            account.setUsername(matcher.group(2));
+            account.setPassword(matcher.group(3));
 
-        for (String field : fields) {
-            String[] keyValue = field.split("=");
-            if (keyValue.length == 2) {
-                String key = keyValue[0];
-                String value = keyValue[1];
+            // Tạo đối tượng Role và gán các giá trị
+            Role role = new Role();
+            role.setRoleId(Integer.parseInt(matcher.group(4)));
+            role.setRoleName(matcher.group(5));
+            account.setRole(role);
 
-                switch (key) {
-                    case "accountId":
-                        account.setAccountId(Integer.parseInt(value));
-                        break;
-                    case "username":
-                        account.setUsername(value);
-                        break;
-                    case "password":
-                        account.setPassword(value);
-                        break;
-                    case "isActive":
-                        account.setActive(Boolean.parseBoolean(value));
-                        break;
-                    case "role":
-                        // Xử lý trường role
-                        String roleTrimmed = value.substring(5, value.length() - 1); // Loại bỏ "Role(" và ")"
-                        String[] roleFields = roleTrimmed.split(", ");
-                        for (String roleField : roleFields) {
-                            String[] roleKeyValue = roleField.split("=");
-                            if (roleKeyValue.length == 2) {
-                                if ("RoleId".equals(roleKeyValue[0])) {
-                                    role.setRoleId(Integer.parseInt(roleKeyValue[1]));
-                                } else if ("roleName".equals(roleKeyValue[0])) {
-                                    role.setRoleName(roleKeyValue[1]);
-                                }
-                            }
-                        }
-                        account.setRole(role);
-                        break;
-                }
-            }
+            // Gán giá trị cho thuộc tính isActive
+            account.setActive(Boolean.parseBoolean(matcher.group(6)));
         }
 
         return account;

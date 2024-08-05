@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.entity.DTO;
 import fa.training.phonestore.sercurity.SecurityConstraints;
-import fa.training.phonestore.service.AccountService;
+import fa.training.phonestore.service.imp.AccountService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,6 +36,7 @@ public class LoginController {
     RestTemplate restTemplate ;
     @Autowired
     private HttpSession httpSession;
+    SecurityConstraints securityConstraints = new SecurityConstraints();
     @GetMapping("/Logout123")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         // Xóa token JWT khỏi cookie nếu có
@@ -66,6 +67,8 @@ public class LoginController {
     public String getlogin(Model m) {
         DTO dto= new DTO();
         m.addAttribute("dto",dto);
+        Account account = new Account();
+        m.addAttribute("acc",account);
         return "Login";
     }
 
@@ -96,7 +99,7 @@ public class LoginController {
                     HttpEntity<DTO> httpRequest = new HttpEntity<>(dto, headers);
 
                     try {
-                        ResponseEntity<String> authResponse = restTemplate.postForEntity("http://localhost:2612/authenticate", httpRequest, String.class);
+                        ResponseEntity<String> authResponse = restTemplate.postForEntity(securityConstraints.Authenticate, httpRequest, String.class);
                         String responseBody = authResponse.getBody();
                         ObjectMapper mapper = new ObjectMapper();
                         JsonNode root = mapper.readTree(responseBody);
@@ -107,24 +110,19 @@ public class LoginController {
 
                         // Xử lý Remember Me
                         boolean rememberMe = "on".equals(request.getParameter("remember-me"));
-                        if (rememberMe) {
                             // Tạo cookie với token JWT
                             Cookie rememberMeCookie = new Cookie("remember-me-token", token);
                             rememberMeCookie.setMaxAge(7 * 24 * 60 * 60); // Cookie tồn tại 7 ngày
                             rememberMeCookie.setPath("/");
                             rememberMeCookie.setHttpOnly(true); // Tăng cường bảo mật
                             response.addCookie(rememberMeCookie);
-                        } else {
-                            HttpSession session = request.getSession(true);
-                            session.setAttribute("jwtToken", token);
-                            session.setAttribute("account", account);
-                        }
+
                         if ("admin".equals(role)) {
                             return new ModelAndView("redirect:/Account/Admin");
                         } else if ("customer".equals(role)) {
-                            return new ModelAndView("redirect:/Customer/Profile");
+                            return new ModelAndView("redirect:/index");
                         } else {
-                            return new ModelAndView("redirect:/default");
+                            return new ModelAndView("redirect:/Employee/Home");
                         }
 
                     } catch (Exception e) {

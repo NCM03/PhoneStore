@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Vertical Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js'></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+
+    #app {
+        display: flex;
+    }
+
+    .sidebar {
+        height: 100vh;
+        width: 250px; /* Default width */
+        background-color: #343a40; /* Dark gray background */
+        color: #fff; /* White text */
+        transition: width 0.3s ease;
+        position: fixed; /* Fix sidebar to the left */
+        top: 0;
+        left: 0;
+        z-index: 1000; /* Ensure sidebar stays on top of content */
+        overflow: auto;
+    }
+
+    .sidebar:hover,
+    .sidebar.active {
+        width: 250px; /* Width of sidebar when expanded */
+    }
+
+    .sidebar .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        white-space: nowrap; /* Prevent text wrapping */
+        text-decoration: none; /* Remove underline from links */
+        color: #fff; /* White text */
+    }
+
+    .sidebar .nav-link i {
+        margin-right: 10px; /* Adjust icon spacing */
+    }
+
+    .sidebar .nav-link:hover {
+        background-color: #495057; /* Darker gray hover background */
+        border-radius: 4px; /* Add rounded corners for a smoother look */
+    }
+
+    .sidebar .nav-link.active {
+        background-color: #212529; /* Even darker gray for active link */
+        border-radius: 4px;
+    }
+
+    .content {
+        margin-left: 250px; /* Adjust content area margin based on sidebar width */
+        padding: 20px;
+        min-height: 100vh; /* Set minimum height to fill viewport */
+        transition: margin-left 0.3s ease;
+    }
+</style>
+<body>
+<div class="d-flex" id="app">
+    <div class="sidebar">
+        <div class="nav flex-column">
+            <div th:insert="~{SideBarForEm :: SideBarForEm}"></div>
+            <!-- Add more nav items as needed -->
+        </div>
+    </div>
+    <div class="content">
+        <!-- Page content goes here -->
+        <div class="container mt-5">
+            <h1 class="text-center mb-4">Employee Invoice Summary</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <canvas id="invoiceChart"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <h2>Employee Details</h2>
+                    <p>Name: <span th:text="${employee.name}"></span></p>
+                    <p>Employee ID: <span th:text="${employee.employeeId}"></span></p>
+                    <p>Total Invoices: <span th:text="${sumOfInvoice}"></span></p>
+                    <p>Employee's Invoices: <span th:text="${sumOfInvoiceByEmployee}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var sumOfInvoice = /*[[${sumOfInvoice}]]*/ 0;
+    var sumOfInvoiceByEmployee = /*[[${sumOfInvoiceByEmployee}]]*/ 0;
+    var employeeName = /*[[${employee.name}]]*/ '';
+    /*]]>*/
+
+    var ctx = document.getElementById('invoiceChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [employeeName + "'s Invoices", 'Other Invoices'],
+            datasets: [{
+                data: [sumOfInvoiceByEmployee, sumOfInvoice - sumOfInvoiceByEmployee],
+                backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Invoice Distribution'
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>

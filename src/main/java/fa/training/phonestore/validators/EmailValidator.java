@@ -2,7 +2,7 @@ package fa.training.phonestore.validators;
 
 
 import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
-import fa.training.phonestore.service.CustomerService;
+import fa.training.phonestore.service.imp.CustomerService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +31,7 @@ public class EmailValidator implements ConstraintValidator <EmailConstraint,Stri
         }
 
         // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
-        boolean emailExists = customerService.existsByEmail(value);
-        if (emailExists) {
-            addConstraintViolation(context, "Email đã tồn tại trong hệ thống");
-            return false;
-        }
+
 
         return true; // Email hợp lệ
     }

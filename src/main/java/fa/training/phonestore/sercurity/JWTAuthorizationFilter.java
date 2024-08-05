@@ -50,15 +50,6 @@
                 return header;
             }
 
-            // Kiểm tra token trong session
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                Object tokenObj = session.getAttribute("jwtToken");
-                if (tokenObj != null) {
-                    return tokenObj.toString();
-                }
-            }
-
             // Kiểm tra token trong cookie
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {

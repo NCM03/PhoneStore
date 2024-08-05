@@ -14,18 +14,18 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_support")
+@Table(name = "product_info")
 public class ProductSupport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productSupID")
-    private int productSupId;
+    @Column(name = "productInfoID")
+    private int productInfoId;
 
     @Column(name = "productID")
     private int  productID;
 
-    @Column(name = "ProductSupName")
+    @Column(name = "ProductInfoName")
     private String productSupName;
 
     @Column(name = "Price")

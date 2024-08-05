@@ -5,11 +5,14 @@ import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.entity.Customer;
 import fa.training.phonestore.entity.DTO;
 
+import fa.training.phonestore.entity.Employee;
 import fa.training.phonestore.helper.HelperToken;
-import fa.training.phonestore.service.AccountService;
+import fa.training.phonestore.service.*;
 
-import fa.training.phonestore.service.CustomerService;
-import fa.training.phonestore.service.EmailService;
+import fa.training.phonestore.service.imp.AccountService;
+import fa.training.phonestore.service.imp.CustomerService;
+import fa.training.phonestore.service.imp.EmployeeService;
+import fa.training.phonestore.service.imp.RoleService;
 import fa.training.phonestore.utils.JwtUtils;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +28,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +49,10 @@ public class AccountController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     AccountService accountService;
+    @Autowired
+    EmployeeService employeeService;
+    @Autowired
+    RoleService roleService;
     JwtUtils jwtUtils =new JwtUtils();
     HelperToken helperToken;
     @GetMapping("/Admin")
@@ -85,7 +91,7 @@ public class AccountController {
             } else {
                 accountPage = accountService.findAllAccounts(pageable);
             }
-
+            Account account= new Account();
             // Add attributes to model
             m.addAttribute("accountList", accountPage.getContent());
             m.addAttribute("currentPage", page);
@@ -94,7 +100,7 @@ public class AccountController {
             m.addAttribute("size", size);
             m.addAttribute("searchTerm", searchTerm);
             m.addAttribute("sortField", sortField);
-
+            m.addAttribute("account", account);
             return "AdminManageAccount";
         }catch (Exception e){
             return "AdminManageAccount";
@@ -118,17 +124,29 @@ public class AccountController {
     }
 
     @PostMapping("/Register")
-    public String registerAccount(DTO dto, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> registerAccount(@Valid @ModelAttribute("dto") DTO dto, BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+
+        if (result.hasErrors()) {
+            result.getFieldErrors().forEach(fieldError -> {
+                errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errors); // Trả về lỗi dưới dạng JSON
+        }
+
         try {
             Account account = new Account();
             account.setPassword(dto.getPassword());
             account.setUsername(dto.getUsername());
+            account.setRole(roleService.getRoleById(2));
+            account.setActive(true);
             account = accountService.save(account);
-            redirectAttributes.addFlashAttribute("successFullMessage", "Register Successful");
-            return "redirect:/Login";
-        } catch (Exception e){
-            redirectAttributes.addFlashAttribute("successFullMessage", "Failed, Please try again");
-            return "redirect:/Login";
+
+            return ResponseEntity.ok(Collections.singletonMap("success", "Register Successful")); // Thành công
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Failed, Please try again")); // Lỗi hệ thống
         }
     }
 
@@ -140,38 +158,84 @@ public class AccountController {
         return "ChangePassword";
     }
 
-    @PostMapping("/changePassword")
-    public ModelAndView changePassword(@Valid @ModelAttribute("dto") DTO dto, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest request, Model model) {
+    @PostMapping("/changePassword1")
+    public ModelAndView changePassword(@Valid @ModelAttribute("dto") DTO dto,
+
+                                       BindingResult result,
+                                       @RequestParam String useaaa,
+                                       RedirectAttributes redirectAttributes,
+                                       HttpServletRequest request,
+                                       Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return new ModelAndView("ChangePassword");
+        }
+
         try {
-
-
-            if (result.hasErrors()) {
-                ModelAndView mav = new ModelAndView("ChangePassword");
-                return mav;
-            }
             String token = helperToken.getToken(request);
             if (token == null) {
                 return new ModelAndView("redirect:/Login");
             }
 
-
             Account account = jwtUtils.decodeToken(token);
-            dto.setUsername(account.getUsername());
-            Account account1 = accountService.searchUser(dto.getUsername());
             if (account == null) {
-                result.addError(new FieldError("dto", "username", "Username does not exist"));
-                return new ModelAndView("ChangePassword");
+                return new ModelAndView("redirect:/Login");
             }
-            account1.setPassword(dto.getPassword());
-            accountService.save(account1);
-            redirectAttributes.addFlashAttribute("successFullMessage", "Change Password Successful");
-            return new ModelAndView("redirect:/Login");
+
+            if (!bCryptPasswordEncoder.matches(useaaa, account.getPassword())) {
+                redirectAttributes.addFlashAttribute("Erro", "Password không đúng.");
+                return new ModelAndView("redirect:/Account/ChangePassword");
+            }
+
+            account.setPassword(dto.getPassword());
+        accountService.save(account);
+
+            redirectAttributes.addFlashAttribute("successFullMessage", "Password changed successfully!");
+            return new ModelAndView("redirect:/Account/ChangePassword");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("successFullMessage", "Failed");
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to change password.");
             return new ModelAndView("redirect:/Login");
         }
     }
 
+    @PostMapping("/CreateAccount")
+    public ModelAndView createAccount(@Valid @ModelAttribute("account") Account account, BindingResult result, RedirectAttributes redirectAttributes) {
+        try {
+            if (result.hasErrors()) {
+                return new ModelAndView("AdminManageAccount");
+            }
+            account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+            account.setRole(roleService.getRoleById(account.getRole().getRoleId()));
+            accountService.save(account);
+            redirectAttributes.addFlashAttribute("successFullMessage", "Create Account Successful");
+            return new ModelAndView("redirect:/Account/GetAllAccount");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("successFullMessage", "Failed, Please try again");
+            return new ModelAndView("redirect:/Account/GetAllAccount");
+        }
+    }
+    @PostMapping("/GetDetails")
+    @ResponseBody
+    public ResponseEntity<?> getAccountDetails(@RequestParam int accountId, @RequestParam int roleId) {
+        try {
+            if(roleId==2) {
+                Account account = accountService.seachAccountById(accountId);
+                Customer customer = customerService.getCustomer(account);
+                return ResponseEntity.ok(customer);
+            }else if(roleId==3){
+                Account account = accountService.seachAccountById(accountId);
+                Employee employee= employeeService.getEmployeeByAccount(account);
+                return ResponseEntity.ok(employee);
+            }else {
+
+                return ResponseEntity.notFound().build();
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
     @PostMapping("/reset-password")
     public ModelAndView resetPassword(@RequestParam int accountId,RedirectAttributes redirectAttributes) throws MessagingException, UnsupportedEncodingException {
         try {

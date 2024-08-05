@@ -7,6 +7,75 @@
 </head>
 <style>
     body {
+        background: #7fad39;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #7fad39;
+    }
+
+    .profile-button {
+        background: #7fad39;
+        box-shadow: none;
+        border: none;
+    }
+
+    .profile-button:hover {
+        background: #6b9a2b; /* Thay đổi màu khi hover */
+    }
+
+    .profile-button:focus {
+        background: #7fad39;
+        box-shadow: none;
+    }
+
+    .profile-button:active {
+        background: #6b9a2b; /* Thay đổi màu khi click */
+        box-shadow: none;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        color: #7fad39;
+        text-decoration: none;
+        border: 2px solid #7fad39;
+        border-radius: 5px;
+        padding: 10px 15px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .back-button:hover {
+        background-color: #7fad39;
+        color: white;
+        border-color: #7fad39;
+    }
+
+    .back-button i {
+        margin-right: 0.5rem;
+    }
+
+    .labels {
+        font-size: 11px;
+    }
+
+    .add-experience:hover {
+        background: #7fad39;
+        color: #fff;
+        cursor: pointer;
+        border: solid 1px #7fad39;
+    }
+</style>
+
+<style>
+    body {
         background: #7fad39
     }
 
@@ -51,14 +120,16 @@
         border: solid 1px  #7fad39
     }</style>
 <body>
+<a href="/index" class="back-button">
+    <i class="fas fa-arrow-left"></i> Trở về trang chủ
+</a>
 <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
         <div class="col-md-4 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <img class="rounded-circle mt-5" width="150px"
                      src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                <span class="font-weight-bold mt-3" th:text="${customer != null ? customer.name : 'Unknown'}"></span>
-                <span class="text-black-50" th:text="${customer != null ? customer.email : 'No email'}"></span>
+
             </div>
         </div>
         <div class="col-md-8 border-right">

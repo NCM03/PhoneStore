@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Css Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+  <link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <title>Title</title>
+  <style>
+    #imagePreview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .image-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: rgba(255, 0, 0, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+<div th:insert="~{Header :: Header}"></div>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Application for Customer</h1>
+  <form id="customerForm" th:object="${requestEntity}" th:action="@{/Customer/SendApplication}" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <input type="hidden" th:field="*{customerID}">
+      <label for="serviceType" class="form-label" style="padding-top: 10px">Loại dịch vụ</label>
+      <select  id="serviceType" th:field="*{requestType}" required>
+        <option value="1" th:text="'Bảo Hành'"
+                th:selected="${requestEntity.requestDate} == 1"></option>
+        <option value="2" th:text="'Sửa chữa'"
+                th:selected="${requestEntity.requestDate} == 2"></option>
+        <option value="3" th:text="'Trả Hàng'"
+                th:selected="${requestEntity.requestDate} == 3"></option>
+        <option value="4"th:text="'Khác'"
+                th:selected="${requestEntity.requestDate} == 4"></option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="title" class="form-label">Tiêu đề</label>
+      <input th:field="*{title}" type="text" class="form-control" id="title" >
+      <div id="titleError" class="text-danger"></div>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Mô tả</label>
+      <textarea th:field="*{description}" class="form-control" id="description" rows="3" ></textarea>
+      <div id="desError" class="text-danger"></div>
+    </div>
+    <div class="mb-3">
+      <label for="invoiceId" class="form-label">Nhập ID Invoice</label>
+      <input th:field="*{invoiceID}" type="text" class="form-control" id="invoiceId" >
+      <div id="invoiceError" class="text-danger"></div>
+    </div>
+    <div class="mb-3">
+      <label for="images" class="form-label">Tải lên hình ảnh</label>
+      <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+      <div id="imagePreview"></div>
+      <div id="imageError" class="text-danger"></div>
+    </div>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Gửi</button>
+    </div>
+  </form>
+</div>
+
+<div th:insert="~{Footer :: Footer}"></div>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    let dataTransfer = new DataTransfer();
+
+    const imagesInput = document.getElementById('images');
+
+    imagesInput.addEventListener('change', function(event) {
+      dataTransfer = new DataTransfer(); // Khởi tạo lại DataTransfer mỗi lần thay đổi
+      const newFiles = Array.from(event.target.files);
+
+      newFiles.forEach(file => dataTransfer.items.add(file));
+      updateImagePreview();
+    });
+
+    function updateImagePreview() {
+      const preview = document.getElementById('imagePreview');
+      preview.innerHTML = '';
+
+      Array.from(dataTransfer.files).forEach((file, index) => {
+        const container = document.createElement('div');
+        container.className = 'image-container';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.onload = function() {
+          URL.revokeObjectURL(this.src);
+        };
+        container.appendChild(img);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.innerHTML = 'X';
+        deleteBtn.onclick = function(e) {
+          e.preventDefault();
+          dataTransfer.items.remove(index);
+          updateImagePreview();
+        };
+        container.appendChild(deleteBtn);
+
+        preview.appendChild(container);
+      });
+
+      // Cập nhật input file
+      imagesInput.files = dataTransfer.files;
+    }
+
+    document.getElementById('customerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (dataTransfer.files.length === 0) {
+        document.getElementById('imageError').innerHTML = 'Vui lòng chọn ít nhất một ảnh.';
+        return;
+      }
+      const form = this;
+      const formData = new FormData();
+
+      // Thêm các file ảnh vào FormData
+      Array.from(dataTransfer.files).forEach((file) => {
+        formData.append('images', file);
+      });
+
+      // Thêm các trường khác vào FormData từ form
+      const formElements = form.elements;
+      for (let i = 0; i < formElements.length; i++) {
+        const element = formElements[i];
+        if (element.name) {
+          formData.append(element.name, element.value);
+        }
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', form.action, true);
+
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const response = JSON.parse(xhr.responseText);
+
+          if (response.status === 'success') {
+            alert('Yêu cầu của bạn đã được gửi thành công.');
+            localStorage.setItem('RequsetAdded', 'true');
+          } else {
+            if (response.errors) {
+              document.getElementById('titleError').innerHTML = response.errors.title || '';
+              document.getElementById('desError').innerHTML = response.errors.description || '';
+              document.getElementById('invoiceError').innerHTML = response.errors.invoiceID || '';
+              document.getElementById('imageError').innerHTML = response.errors.images || '';
+            }
+          }
+        } else {
+          console.error('Error:', xhr.statusText);
+          alert('Đã xảy ra lỗi khi gửi yêu cầu.');
+        }
+      };
+
+      xhr.onerror = function() {
+        console.error('Error:', xhr.statusText);
+        alert('Đã xảy ra lỗi khi gửi yêu cầu.');
+      };
+
+      // Gửi dữ liệu form
+      xhr.send(formData);
+    });
+  });
+
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package fa.training.phonestore.service;
+package fa.training.phonestore.service.imp;
 
 import fa.training.phonestore.entity.Account;
 import org.springframework.data.domain.Page;

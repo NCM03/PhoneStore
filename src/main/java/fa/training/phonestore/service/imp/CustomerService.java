@@ -1,4 +1,4 @@
-package fa.training.phonestore.service;
+package fa.training.phonestore.service.imp;
 
 import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.entity.Customer;
@@ -9,6 +9,6 @@ public interface CustomerService {
     Customer getCustomer(Account account);
     Customer saveCustomer(Customer customer);
     Customer getCustomerByEmail(String email);
-    Customer saveCustomer(Account account);
     boolean existsByEmail(String email);
+    Customer getCustomerByCustomerID(int customerID);
 }

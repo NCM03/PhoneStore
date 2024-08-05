@@ -6,13 +6,6 @@ import jakarta.servlet.http.HttpSession;
 
 public class HelperToken {
     public static String getToken(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            Object sessionToken = session.getAttribute("jwtToken");
-            if (sessionToken != null) {
-                return sessionToken.toString();
-            }
-        }
 
         // Kiểm tra token trong cookies
         Cookie[] cookies = request.getCookies();

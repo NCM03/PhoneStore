@@ -15,7 +15,6 @@
     @EnableWebSecurity
     public class SecurityConfig {
         CustomAuthenticationManager customAuthenticationManager;
-        CustomUserDetailService customerUserDetailsService;
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -25,13 +24,13 @@
             http
                     .csrf(csrf -> csrf.disable())
                     .authorizeRequests()
-                    .requestMatchers( "/Account/Admin","/Account/take-Activities","/Account/GetAllAccount").hasAuthority("admin")
+                    .requestMatchers( "/Account/Admin","/Account/take-Activities","/Account/GetAllAccount","/Account/GetDetails").hasAuthority("admin")
 
-                                .requestMatchers("/Login", "/Logout", "/ValidAuthenticate"
+                    .requestMatchers("/Login", "/Logout", "/ValidAuthenticate"
                                 ,"/Account/checkUsername","/Account/Register"
-                                ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password","/**").permitAll()
-                    .requestMatchers("/Account/getAll","/Account/ChangePassword","/Customer/Profile").hasAuthority("customer")
-
+                                ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password", "/**","/uploads").permitAll()
+                    .requestMatchers("/Account/ChangePassword","/Customer/Profile","/Customer/Application","/Customer/Request").hasAuthority("customer")
+                    .requestMatchers("/Employee/Home","/Employee/RequestDetail").hasAuthority("employee")
                     .anyRequest().authenticated()
 
 
@@ -42,7 +41,7 @@
                         response.sendRedirect("/AccessDenied");
                     })
                     .authenticationEntryPoint((request, response, authException) -> {
-                        response.sendRedirect("/Login");
+                        response.sendRedirect("/ValidAuthenticate");
                     })
 
                     .and()

@@ -2,7 +2,7 @@ package fa.training.phonestore.sercurity;
 
 import fa.training.phonestore.entity.Account;
 
-import fa.training.phonestore.service.AccountService;
+import fa.training.phonestore.service.imp.AccountService;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;

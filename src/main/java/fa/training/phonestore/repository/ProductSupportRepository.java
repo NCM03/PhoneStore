@@ -11,24 +11,24 @@ import java.util.List;
 
 public interface ProductSupportRepository extends JpaRepository<ProductSupport, Integer> {
 
-    @Query(value = "SELECT * FROM product_support \n" +
-                   "LEFT JOIN Product ON product_support.productID = Product.productId ",
+    @Query(value = "SELECT * FROM product_info \n" +
+                   "LEFT JOIN Product ON product_info.productID = Product.productId ",
             nativeQuery = true
     )
     Page<ProductSupport> listAllProductsPrice(@Param("ProductID") int ProductID, Pageable pageable);
 
-    @Query(value = "SELECT * FROM product_support \n" +
-            "ORDER BY product_support.ImportDate DESC OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY",
+    @Query(value = "SELECT * FROM product_info \n" +
+            "ORDER BY product_info.ImportDate DESC OFFSET 0 ROWS FETCH NEXT 3 ROWS ONLY",
             nativeQuery = true
     )
     List<ProductSupport> listLastestProduct();
 
-    @Query(value = "SELECT * FROM product_support WHERE product_support.ProductSupName LIKE '%?1%'",
+    @Query(value = "SELECT * FROM product_info WHERE product_info.ProductInfoName LIKE '%?1%'",
             nativeQuery = true
     )
     Page<ProductSupport> Search(String keyword, Pageable pageable);
 
-    @Query(value = "SELECT * FROM product_support WHERE product_support.ProductSupName LIKE '%?1%'",
+    @Query(value = "SELECT * FROM product_info WHERE product_info.ProductInfoName LIKE '%?1%'",
             nativeQuery = true
     )
     List<ProductSupport> searchList(String keyword);
