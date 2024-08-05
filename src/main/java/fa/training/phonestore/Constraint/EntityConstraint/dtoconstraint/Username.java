@@ -1,5 +1,5 @@
-package fa.training.phonestore.Constraint.EntityConstraint.dtoconstraint;
-import fa.training.phonestore.validators.DtoValidator.UsernameValidator;
+package fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint;
+import fa.training.phonestore.Validators.DtoValidator.UsernameValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.ElementType;

@@ -1,13 +1,13 @@
 package fa.training.phonestore.entity;
 
-import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerDateOfBirth;
-import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerName;
+import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerDateOfBirth;
+import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerName;
 
 import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
 import fa.training.phonestore.Constraint.EntityConstraint.Gender;
 import fa.training.phonestore.Constraint.EntityConstraint.Phone;
+import fa.training.phonestore.entity.Account;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,6 @@ import java.util.Date;
 public class Customer {
     @Id
     @Column(name="CustomerID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
     @Column(name = "Phone")
     @Phone(message="Phone has wrong format")
@@ -44,7 +43,4 @@ public class Customer {
     @OneToOne
     @JoinColumn(name = "AccountID")
     private Account account;
-    @Column(name="Age")
-    @Min(18)
-    private int age;
 }

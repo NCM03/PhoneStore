@@ -1,6 +1,6 @@
-package fa.training.phonestore.validators.CustomerValidator;
+package fa.training.phonestore.Validators.CustomerValidator;
 
-import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerDateOfBirth;
+import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerDateOfBirth;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

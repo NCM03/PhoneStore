@@ -28,36 +28,26 @@ public class ForgotPasswordController {
 
     @PostMapping("/getPassword")
     public String checkEmailOrPhone(String email, RedirectAttributes redirectAttributes, Model m) {
-        try {
+        if (email == null) {
 
+            return "redirect:/ValidAuthenticate";
+        }
+        Customer customer = customerService.getCustomerByEmail(email);
 
-            if (email == null) {
-
-                return "redirect:/ValidAuthenticate";
-            }
-            Customer customer = customerService.getCustomerByEmail(email);
-
-            if (customer != null) {
-                Account account = accountService.seachAccountById(customer.getAccount().getAccountId());
-                DTO dto = new DTO();
-                dto.setUsername(account.getUsername());
-                dto.setPassword(account.getPassword());
-                m.addAttribute("dto", dto);
-                return "fali";
-            } else {
-                redirectAttributes.addFlashAttribute("error", "Email không tồn tại");
-                return "redirect:/forgotpassword";
-            }
-        }catch (Exception e){
-            redirectAttributes.addFlashAttribute("error", "Failed");
+        if (customer != null) {
+            Account account = accountService.seachAccountById(customer.getAccount().getAccountId());
+            DTO dto = new DTO();
+            dto.setUsername(account.getUsername());
+            dto.setPassword(account.getPassword());
+           m.addAttribute("dto", dto);
+            return "fali";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Email không tồn tại");
             return "redirect:/forgotpassword";
         }
     }
     @PostMapping("/GetBackPass")
     public String GetPassword(@Valid @ModelAttribute("dto") DTO dto, BindingResult result, RedirectAttributes redirectAttributes){
-      try {
-
-
         if (result.hasErrors()) {
             return "fali";
         }
@@ -70,13 +60,9 @@ public class ForgotPasswordController {
         account.setPassword(dto.getPassword());
         accountService.save(account);
         redirectAttributes.addFlashAttribute("successFullMessage", "Change Password Successful");
-        return "redirect:/Login";}
-      catch (Exception e){
-          redirectAttributes.addFlashAttribute("successFullMessage", "Failed, please try again");
-          return "redirect:/Login";}
-      }
+        return "redirect:/Login";
     }
 
 
-
+}
 

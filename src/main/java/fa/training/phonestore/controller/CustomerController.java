@@ -1,12 +1,11 @@
 package fa.training.phonestore.controller;
 
 import fa.training.phonestore.entity.Account;
-import fa.training.phonestore.entity.Customer;
 
-import fa.training.phonestore.helper.HelperToken;
+import fa.training.phonestore.entity.Customer;
 import fa.training.phonestore.service.CustomerService;
-import fa.training.phonestore.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,50 +24,31 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    JwtUtils jwtUtils =new JwtUtils();
-    HelperToken helperToken;
     @GetMapping("/Customer/Profile")
     public String getProfile(Model model, HttpServletRequest request) {
-try {
-
-
-    String token = helperToken.getToken(request);
-    if (token == null) {
-        return "redirect:/Login";
-    }
-    Account account = jwtUtils.decodeToken(token);
-
-    if (account != null) {
-        Customer customer = customerService.getCustomer(account);
-        model.addAttribute("customer", customer);
-        return "Profile";
-    } else {
-        return "redirect:/Login";
-    }
-} catch (Exception e){
-    return "redirect:/Login";
-}
+        HttpSession session = request.getSession(true);
+        Account account = (Account) session.getAttribute("account");
+        if (account != null) {
+            Customer customer = customerService.getCustomer(account);
+            model.addAttribute("customer", customer);
+            return "Success";
+        } else {
+            return "Success";
+        }
     }
 
     @PostMapping("/Customer/UpdateProfile")
     public String updateProfile(@Valid Customer customer, BindingResult result, RedirectAttributes redirectAttributes) {
         {
-            try {
-                if (result.hasErrors()) {
-                    return "Profile";
-                } else {
+            if (result.hasErrors()) {
+                return "Success";
+            } else {
+                customerService.saveCustomer(customer);
 
-                    customerService.saveCustomer(customer);
-
-                    redirectAttributes.addFlashAttribute("successFullMessage", "Update profile successfully!");
-                    return "redirect:/Customer/Profile";
-                }
-            } catch (Exception e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "Update profile failed!");
+                redirectAttributes.addFlashAttribute("successFullMessage", "Update profile successfully!");
                 return "redirect:/Customer/Profile";
             }
         }
     }
-    }
-
+}
 

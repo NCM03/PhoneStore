@@ -1,4 +1,4 @@
-package fa.training.phonestore.validators.CustomerValidator;
+package fa.training.phonestore.Validators.CustomerValidator;
 
 import fa.training.phonestore.Constraint.EntityConstraint.Phone;
 import jakarta.validation.ConstraintValidator;
