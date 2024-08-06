@@ -121,7 +121,7 @@
 
                         <div th:if="${requestEntity.status == 0 or requestEntity.status == 2}">
                             <dt class="col-sm-3">Người xử lí đơn:</dt>
-                            <dd class="col-sm-9" id="employeeId" th:text="${customer.name}"></dd>
+                            <dd class="col-sm-9" id="employeeId" th:text="${employee.name}"></dd>
                             <dt class="col-sm-3">Trả lời:</dt>
                             <dd class="col-sm-9" id="respone" th:text="${requestEntity.answer}"></dd>
                             <dt class="col-sm-3">Thời gian trả lời:</dt>

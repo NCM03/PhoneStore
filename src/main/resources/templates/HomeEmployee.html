@@ -87,54 +87,45 @@
         <!-- Page content goes here -->
         <div class="container mt-5">
             <h1 class="text-center mb-4">Employee Invoice Summary</h1>
-            <div class="row">
-                <div class="col-md-6">
-                    <canvas id="invoiceChart"></canvas>
-                </div>
-                <div class="col-md-6">
-                    <h2>Employee Details</h2>
-                    <p>Name: <span th:text="${employee.name}"></span></p>
-                    <p>Employee ID: <span th:text="${employee.employeeId}"></span></p>
-                    <p>Total Invoices: <span th:text="${sumOfInvoice}"></span></p>
-                    <p>Employee's Invoices: <span th:text="${sumOfInvoiceByEmployee}"></span></p>
-                </div>
-            </div>
+            <canvas id="requestChart"></canvas>
         </div>
     </div>
 </div>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var sumOfInvoice = /*[[${sumOfInvoice}]]*/ 0;
-    var sumOfInvoiceByEmployee = /*[[${sumOfInvoiceByEmployee}]]*/ 0;
-    var employeeName = /*[[${employee.name}]]*/ '';
-    /*]]>*/
+    var sumOfRequest = [[${sumOfRequest}]];
+    var sumOfRequestByEmployee = [[${sumOfRequestByEmployee}]];
 
-    var ctx = document.getElementById('invoiceChart').getContext('2d');
+    var ctx = document.getElementById('requestChart').getContext('2d');
     var chart = new Chart(ctx, {
-        type: 'pie',
+        type: 'bar',
         data: {
-            labels: [employeeName + "'s Invoices", 'Other Invoices'],
+            labels: ['Tổng số yêu cầu', 'Yêu cầu của nhân viên'],
             datasets: [{
-                data: [sumOfInvoiceByEmployee, sumOfInvoice - sumOfInvoiceByEmployee],
-                backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
-                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                label: 'Số lượng yêu cầu',
+                data: [sumOfRequest, sumOfRequestByEmployee],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'
+                ],
                 borderWidth: 1
             }]
         },
         options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Invoice Distribution'
-                },
-                legend: {
-                    position: 'bottom'
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }
     });
+    /*]]>*/
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

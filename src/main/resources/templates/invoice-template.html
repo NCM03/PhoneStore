@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<style>
+.invoice-box table {
+width: 100%;
+line-height: inherit;
+text-align: left;
+}
+.invoice-box table td {
+padding: 5px;
+vertical-align: top;
+}
+.invoice-box table tr.top table td {
+padding-bottom: 20px;
+}
+.invoice-box table tr.information table td {
+padding-bottom: 40px;
+}
+.invoice-box table tr.heading td {
+background: #eee;
+border-bottom: 1px solid #ddd;
+font-weight: bold;
+}
+.invoice-box table tr.details td {
+padding-bottom: 20px;
+}
+.invoice-box table tr.item td {
+border-bottom: 1px solid #eee;
+}
+.invoice-box table tr.item.last td {
+border-bottom: none;
+}
+.invoice-box table tr.total td:nth-child(2) {
+border-top: 2px solid #eee;
+font-weight: bold;
+}
+@media only screen and (max-width: 600px) {
+.invoice-box table tr.top table td {
+width: 100%;
+display: block;
+text-align: center;
+}
+.invoice-box table tr.information table td {
+width: 100%;
+display: block;
+text-align: center;
+}
+}
+</style>
+<body>
+<div class="container mt-5">
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="7">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <h2>PhoneStore</h2>
+                            </td>
+                            <td class="text-end">
+                                <span th:text="${invoice.invoiceId}"> </span><br></br>
+                                <span id="currentDate"th:text="${invoice.invoiceDate}"></span><br></br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="7">
+                    <table>
+                        <tr>
+                            <td>
+                                PhoneStore, Inc.<br></br>
+                                12345 Sunny Road<br></br>
+                                Sunnyville, CA 12345
+                            </td>
+                            <td class="text-end">
+                                <div class="mb-2">
+                                    <label class="form-label">Tên khách hàng:</label>
+                                    <span th:text="${customer.name}"> </span>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Địa chỉ:</label>
+                                    <span th:text="${customer.address}"></span>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Email:</label>
+                                    <span th:text="${customer.email}"></span>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Số điện thoại:</label>
+                                    <span th:text="${customer.phone}"> </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Tên sản phẩm</td>
+                <td>ROM</td>
+                <td>RAM</td>
+                <td>Màu sắc</td>
+                <td>Số lượng</td>
+                <td>Đơn giá</td>
+
+            </tr>
+
+            <tr class="item"th:each="ie : ${invoiceItems}">
+                <td th:text="${ie.productSupport.productSupName}"></td>
+                <td th:text="${ie.productSupport.capacity}"></td>
+                <td th:text="${ie.productSupport.ram}"></td>
+                <td th:text="${ie.productSupport.color}"></td>
+                <td th:text="${ie.quantity}"></td>
+                <td th:text="${ie.price}" th:data-price="${ie.price}"></td>
+
+            </tr>
+
+
+            <tr class="total">
+                <td colspan="5" class="text-end">Tổng cộng:</td>
+                <td id="total"></td>
+            </tr>
+        </table>
+
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h5>Chữ ký người mua</h5>
+                <div style="height: 70px; border-bottom: 1px solid #ddd;"></div>
+            </div>
+            <div class="col-md-6 text-end">
+                <h5>Chữ ký công ty</h5>
+                <div style="height: 70px; border-bottom: 1px solid #ddd;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script><script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let total = 0;
+        const rows = document.querySelectorAll(".invoice-box table tr.item");
+
+        rows.forEach(row => {
+            const priceElement = row.querySelector("td:nth-child(6)");
+            const quantityElement = row.querySelector("td:nth-child(5)");
+            if (priceElement && quantityElement) {
+                const price = parseFloat(priceElement.textContent);
+                const quantity = parseInt(quantityElement.textContent);
+                if (!isNaN(price) && !isNaN(quantity)) {
+                    total += price * quantity;
+                }
+            }
+        });
+
+        document.getElementById("total").textContent = total.toFixed(2);
+    });
+
+</script>
+</body>
+</html>

@@ -55,6 +55,7 @@ public class CustomerController {
                 return "redirect:/Login";
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return "redirect:/Login";
         }
     }

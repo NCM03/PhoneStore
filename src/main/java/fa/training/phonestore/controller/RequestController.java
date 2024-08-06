@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Controller
@@ -53,96 +56,158 @@ public class RequestController {
                               @RequestParam(required = false) Integer selectedSize,
                               @RequestParam(required = false) String searchTerm,
                               @RequestParam(required = false) String sortField,
-                              @RequestParam(required = false) String sortDir) {
+                              @RequestParam(required = false) String sortDir,
+                              @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+                              @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
         String token = helperToken.getToken(request);
         Account account = jwtUtils.decodeToken(token);
         Customer customer = customerService.getCustomer(account);
+
         // Update size if selectedSize is provided
-        try {
-            if (selectedSize != null) {
-                size = selectedSize;
-            }
-
-            // Mặc định sắp xếp theo categoryID giảm dần nếu không có sortField hoặc sortDir
-            if (sortField == null || sortField.isEmpty()) {
-                sortField = "requestID";
-            }
-            if (sortDir == null || sortDir.isEmpty()) {
-                sortDir = "desc";
-            }
-
-            // Tạo yêu cầu phân trang với sắp xếp
-            Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-            Pageable pageable = PageRequest.of(page, size, sort);
-
-            Page<RequestEntity> requestPage;
-            if (searchTerm != null && !searchTerm.isEmpty()) {
-                requestPage =  requestEntityService.findByTitle(searchTerm, pageable);
-            } else {
-                requestPage =  requestEntityService.findByCustomerID(customer.getCustomerId(), pageable);
-            }
-
-            // Thêm thuộc tính vào model
-            m.addAttribute("reList", requestPage.getContent());
-            m.addAttribute("currentPage", page);
-            m.addAttribute("totalPages", requestPage.getTotalPages());
-            m.addAttribute("totalItems", requestPage.getTotalElements());
-            m.addAttribute("size", size);
-            m.addAttribute("searchTerm", searchTerm);
-            m.addAttribute("sortField", sortField);
-            m.addAttribute("sortDir", sortDir);
-           m.addAttribute("acc", account);
-        } catch (Exception e) {
-            return "ListApplicationForCustomer";
+        if (selectedSize != null) {
+            size = selectedSize;
         }
+
+        // Default sorting by requestID if sortField or sortDir is not provided
+        if (sortField == null || sortField.isEmpty()) {
+            sortField = "requestID";
+        }
+        if (sortDir == null || sortDir.isEmpty()) {
+            sortDir = "desc";
+        }
+
+        // Create pageable request with sorting
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<RequestEntity> requestPage;
+
+        // Filtering logic
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            if (fromDate != null && toDate != null) {
+                // Convert LocalDate to LocalDateTime for date range
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByTitleAndDateRange(searchTerm, fromDateTime, toDateTime, pageable);
+            } else if (fromDate != null) {
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                requestPage = requestEntityService.findByTitleAndToDate(searchTerm, fromDateTime, pageable);
+            } else if (toDate != null) {
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByTitleAndToDate(searchTerm, toDateTime, pageable);
+            } else {
+                requestPage = requestEntityService.findByTitle(searchTerm, pageable);
+            }
+        } else {
+            if (fromDate != null && toDate != null) {
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByCustomerIDAndDateRange(customer.getCustomerId(), fromDateTime, toDateTime, pageable);
+            } else if (fromDate != null) {
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                requestPage = requestEntityService.findByCustomerIDAndFromDate(customer.getCustomerId(), fromDateTime, pageable);
+            } else if (toDate != null) {
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByCustomerIDAndToDate(customer.getCustomerId(), toDateTime, pageable);
+            } else {
+                requestPage = requestEntityService.findByCustomerID(customer.getCustomerId(), pageable);
+            }
+        }
+
+        // Add attributes to model
+        m.addAttribute("reList", requestPage.getContent());
+        m.addAttribute("currentPage", page);
+        m.addAttribute("totalPages", requestPage.getTotalPages());
+        m.addAttribute("totalItems", requestPage.getTotalElements());
+        m.addAttribute("size", size);
+        m.addAttribute("searchTerm", searchTerm);
+        m.addAttribute("sortField", sortField);
+        m.addAttribute("sortDir", sortDir);
+        m.addAttribute("fromDate", fromDate);
+        m.addAttribute("toDate", toDate);
+        m.addAttribute("acc", account);
+
         return "ListApplicationForCustomer";
     }
+
+
     @GetMapping("/Employee/Request")
     public String listRequestForEmployee(Model m, HttpServletRequest request,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "5") int size,
-                              @RequestParam(required = false) Integer selectedSize,
-                              @RequestParam(required = false) String searchTerm,
-                              @RequestParam(required = false) String sortField,
-                              @RequestParam(required = false) String sortDir) {
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "5") int size,
+                                         @RequestParam(required = false) Integer selectedSize,
+                                         @RequestParam(required = false) String searchTerm,
+                                         @RequestParam(required = false) String sortField,
+                                         @RequestParam(required = false) String sortDir,
+                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+       try {
         String token = helperToken.getToken(request);
         Account account = jwtUtils.decodeToken(token);
         Customer customer = customerService.getCustomer(account);
+
         // Update size if selectedSize is provided
-        try {
-            if (selectedSize != null) {
-                size = selectedSize;
-            }
+        if (selectedSize != null) {
+            size = selectedSize;
+        }
 
-            // Mặc định sắp xếp theo categoryID giảm dần nếu không có sortField hoặc sortDir
-            if (sortField == null || sortField.isEmpty()) {
-                sortField = "requestDate";
-            }
-            if (sortDir == null || sortDir.isEmpty()) {
-                sortDir = "desc";
-            }
+        // Default sorting by requestID if sortField or sortDir is not provided
+        if (sortField == null || sortField.isEmpty()) {
+            sortField = "requestID";
+        }
+        if (sortDir == null || sortDir.isEmpty()) {
+            sortDir = "desc";
+        }
 
-            // Tạo yêu cầu phân trang với sắp xếp
-            Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-            Pageable pageable = PageRequest.of(page, size, sort);
+        // Create pageable request with sorting
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-            Page<RequestEntity> requestPage;
-            if (searchTerm != null && !searchTerm.isEmpty()) {
-                requestPage =  requestEntityService.findByTitle(searchTerm, pageable);
+        Page<RequestEntity> requestPage;
+
+        // Filtering logic
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            if (fromDate != null && toDate != null) {
+                // Convert LocalDate to LocalDateTime for date range
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByTitleAndDateRange(searchTerm, fromDateTime, toDateTime, pageable);
+            } else if (fromDate != null) {
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                requestPage = requestEntityService.findByTitleAndToDate(searchTerm, fromDateTime, pageable);
+            } else if (toDate != null) {
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByTitleAndToDate(searchTerm, toDateTime, pageable);
             } else {
-                requestPage =  requestEntityService.findAll(pageable);
+                requestPage = requestEntityService.findByTitle(searchTerm, pageable);
             }
+        } else {
+            if (fromDate != null && toDate != null) {
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByCustomerIDAndDateRange(customer.getCustomerId(), fromDateTime, toDateTime, pageable);
+            } else if (fromDate != null) {
+                LocalDateTime fromDateTime = fromDate.atStartOfDay();
+                requestPage = requestEntityService.findByCustomerIDAndFromDate(customer.getCustomerId(), fromDateTime, pageable);
+            } else if (toDate != null) {
+                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
+                requestPage = requestEntityService.findByCustomerIDAndToDate(customer.getCustomerId(), toDateTime, pageable);
+            } else {
+                requestPage = requestEntityService.findAll(pageable);
+            }
+        }
 
-            // Thêm thuộc tính vào model
-            m.addAttribute("reList", requestPage.getContent());
-            m.addAttribute("currentPage", page);
-            m.addAttribute("totalPages", requestPage.getTotalPages());
-            m.addAttribute("totalItems", requestPage.getTotalElements());
-            m.addAttribute("size", size);
-            m.addAttribute("searchTerm", searchTerm);
-            m.addAttribute("sortField", sortField);
-            m.addAttribute("sortDir", sortDir);
-            m.addAttribute("acc", account);
+        // Add attributes to model
+        m.addAttribute("reList", requestPage.getContent());
+        m.addAttribute("currentPage", page);
+        m.addAttribute("totalPages", requestPage.getTotalPages());
+        m.addAttribute("totalItems", requestPage.getTotalElements());
+        m.addAttribute("size", size);
+        m.addAttribute("searchTerm", searchTerm);
+        m.addAttribute("sortField", sortField);
+        m.addAttribute("sortDir", sortDir);
+        m.addAttribute("fromDate", fromDate);
+        m.addAttribute("toDate", toDate);
         } catch (Exception e) {
             return "ListApplicationForEmployee";
         }
