@@ -67,6 +67,7 @@
                         <li><a href="./shoping-cart.html">Shoping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
                         <li><a href="./blog.html">Blog Details</a></li>
+                        <li><a>Product</a></li>
                     </ul>
                 </li>
                 <li><a href="./blog.html">Blog</a></li>
@@ -145,9 +146,11 @@
                                     <li><a href="./shop-details.html">Shop Details</a></li>
                                     <li><a href="./shoping-cart.html">Shoping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
+
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>
+                            <li><a th:href="@{/manage-product}">Product</a></li>
                             <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contact</a></li>
                         </ul>
@@ -243,7 +246,8 @@
                             <div class="latest-prdouct__slider__item" th:each="lastestproduct :${lastestProduct}">
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="/img/product/samsung.jpeg" alt="">
+                                        <img th:src="@{/img/ProductImg/__${lastestproduct.getProduct().getImageData()}__}" alt="">
+
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6><a th:text="${lastestproduct.getProductInfoName()}"></a></h6>
@@ -261,7 +265,7 @@
                             <div class="latest-prdouct__slider__item" th:each="ratingproduct1 :${ratingProduct1}">
                                 <a href="#" class="latest-product__item" >
                                     <div class="latest-product__item__pic">
-                                        <img src="/img/product/samsung.jpeg" alt="">
+                                        <img th:src="@{/img/ProductImg/__${ratingproduct1.getImageData()}__}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6><a th:text="${ratingproduct1.getProductName()}"></a></h6>
@@ -279,7 +283,7 @@
                             <div class="latest-prdouct__slider__item" th:each="reviewproduct :${reviewProduct}">
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="/img/product/samsung.jpeg" alt="">
+                                        <img th:src="@{/img/ProductImg/__${reviewproduct.getImageData()}__}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6><a th:text="${reviewproduct.getProductName()}"></a></h6>
@@ -319,8 +323,8 @@
                      th:classappend="${features.getProductInfoName()}"
                      th:each="features :${feature}" >
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                             th:attr=" data-setbg = @{/img/product/oppoA58.jpeg}">
+                        <div class="featured__item__pic set-bg">
+                            <img style="width: 200px;height: 200px;" th:src="@{/img/ProductImg/__${features.getProduct().getImageData()}__}" alt="">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
