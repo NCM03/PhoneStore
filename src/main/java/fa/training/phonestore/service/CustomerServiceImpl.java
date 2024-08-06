@@ -1,6 +1,7 @@
 package fa.training.phonestore.service;
 
 import fa.training.phonestore.entity.Account;
+import fa.training.phonestore.entity.Customer;
 import fa.training.phonestore.repository.CustomerRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
