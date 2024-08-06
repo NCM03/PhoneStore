@@ -1,7 +1,5 @@
 package fa.training.phonestore.entity;
 
-import fa.training.phonestore.Constraint.EntityConstraint.CustomerConstraint.CustomerName;
-
 import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
 import fa.training.phonestore.Constraint.EntityConstraint.Gender;
 import fa.training.phonestore.Constraint.EntityConstraint.Phone;
@@ -26,7 +24,6 @@ public class Customer {
     @EmailConstraint(message = "Email has wrong format")
     private String email;
     @Column(name="CustomerName")
-    @CustomerName(message ="Wrong format name")
     private String name;
     @Column(name="Gender")
     @Gender(message="Male or Female or Other")
