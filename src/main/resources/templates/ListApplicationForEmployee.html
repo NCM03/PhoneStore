@@ -245,7 +245,7 @@
 </head>
 <body>
 <div class="d-flex" id="app">
-    <div class=""sidebarContainer"">
+    <div class="sidebarContainer">
             <div th:insert="~{SideBarForEm :: SideBarForEm}"></div>
             <!-- Add more nav items as needed -->
     </div>
@@ -263,33 +263,37 @@
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <form th:action="@{/Employee/Request}" method="get" class="form-inline">
-                                            <label for="searchTerm" class="mr-2">Tìm kiếu theo tiêu đề:</label>
-                                            <input type="text" id="searchTerm" name="searchTerm"
-                                                   th:value="${searchTerm}" placeholder="Enter username">
-                                            <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+                                            <label for="size" class="mr-2">Items per page:</label>
+                                            <select id="size" name="size" onchange="this.form.submit()">
+                                                <option value="5" th:selected="${size == 5}">5</option>
+                                                <option value="10" th:selected="${size == 10}">10</option>
+                                                <option value="20" th:selected="${size == 20}">20</option>
+                                                <option value="50" th:selected="${size == 50}">50</option>
+                                            </select>
+                                            <input type="hidden" name="size" th:value="${size}" />
+                                        </form>
+                                        <form th:action="@{/Employee/Request}" method="get" class="d-flex align-items-center mb-3">
+                                            <!-- Search by Title -->
+                                            <label for="searchTerm" class="mr-2 mb-0">Tìm kiếm theo tiêu đề:</label>
+                                            <input type="text" id="searchTerm" name="searchTerm" th:value="${searchTerm}" placeholder="Enter title" class="form-control mr-2" style="max-width: 200px;">
+
+                                            <!-- Date Range Filters -->
+                                            <label for="fromDate" class="mr-2 mb-0">Từ ngày:</label>
+                                            <input type="date" id="fromDate" name="fromDate" th:value="${fromDate}" class="form-control mr-2" style="max-width: 150px;">
+
+                                            <label for="toDate" class="mr-2 mb-0">Đến ngày:</label>
+                                            <input type="date" id="toDate" name="toDate" th:value="${toDate}" class="form-control mr-2" style="max-width: 150px;">
+
+                                            <!-- Hidden Inputs -->
                                             <input type="hidden" name="size" th:value="${size}" />
                                             <input type="hidden" name="sortField" th:value="${sortField}" />
-                                        </form>
-                                    </div>
+                                            <input type="hidden" name="sortDir" th:value="${sortDir}" />
 
-                                    <form th:action="@{/Employee/Request}" method="get" class="form-inline">
-                                        <label for="size" class="mr-2">Items per page:</label>
-                                        <select id="size" name="size" onchange="this.form.submit()">
-                                            <option value="5" th:selected="${size == 5}">5</option>
-                                            <option value="10" th:selected="${size == 10}">10</option>
-                                            <option value="20" th:selected="${size == 20}">20</option>
-                                            <option value="50" th:selected="${size == 50}">50</option>
-                                        </select>
-                                        <input type="hidden" name="size" th:value="${size}" />
-                                    </form>
-                                    <div class="container mt-3">
-                                        <form th:action="@{/Employee/Request}" method="get">
-                                            <button type="submit" class="btn btn-primary">
-                                                Gửi Yêu Cầu
-                                            </button>
+                                            <!-- Submit Button -->
+                                            <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
                                         </form>
+
                                     </div>
-                                </div>
                                 <table class="table mb-0">
                                     <thead>
                                     <tr>

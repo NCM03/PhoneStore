@@ -29,8 +29,9 @@ public class InvoiceItem {
 
     @Column(name = "InvoiceID")
     private int invoiceID;
-    @Column(name = "ProductSupID", nullable = false)
-    private int productSupID;
+    @ManyToOne
+    @JoinColumn(name = "ProductInfoID")
+    private ProductSupport productSupport;
 
     @Column(name = "Quantity", nullable = false)
     private int quantity;

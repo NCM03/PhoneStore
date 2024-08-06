@@ -46,5 +46,5 @@ public class Customer {
     private Account account;
     @Column(name="Age")
     @Min(18)
-    private int age;
+    private Integer age;
 }

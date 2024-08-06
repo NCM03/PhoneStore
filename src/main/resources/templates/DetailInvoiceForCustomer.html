@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"  >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hóa đơn PhoneStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        #app {
+            display: flex;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 250px; /* Default width */
+            background-color: #343a40; /* Dark gray background */
+            color: #fff; /* White text */
+            transition: width 0.3s ease;
+            position: fixed; /* Fix sidebar to the left */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure sidebar stays on top of content */
+            overflow: auto;
+        }
+
+        .sidebar:hover,
+        .sidebar.active {
+            width: 250px; /* Width of sidebar when expanded */
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            white-space: nowrap; /* Prevent text wrapping */
+            text-decoration: none; /* Remove underline from links */
+            color: #fff; /* White text */
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px; /* Adjust icon spacing */
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #495057; /* Darker gray hover background */
+            border-radius: 4px; /* Add rounded corners for a smoother look */
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #212529; /* Even darker gray for active link */
+            border-radius: 4px;
+        }
+
+        .content {
+            margin-left: 250px; /* Adjust content area margin based on sidebar width */
+            padding: 20px;
+            min-height: 100vh; /* Set minimum height to fill viewport */
+            transition: margin-left 0.3s ease;
+        }
+        .invoice-box {
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+            background-color: white;
+        }
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex" id="app">
+    <div class="sidebar">
+        <div class="nav flex-column">
+            <div th:insert="~{SideBarForEm :: SideBarForEm}"></div>
+            <!-- Add more nav items as needed -->
+        </div>
+    </div>
+    <div class="content">
+<div class="container mt-5">
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="7">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <h2>PhoneStore</h2>
+                            </td>
+                            <td class="text-end">
+                                <span th:text="${invoice.invoiceId}"> </span><br>
+                                <span id="currentDate"th:text="${invoice.invoiceDate}"></span><br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="7">
+                    <table>
+                        <tr>
+                            <td>
+                                PhoneStore, Inc.<br>
+                                12345 Sunny Road<br>
+                                Sunnyville, CA 12345
+                            </td>
+                            <td class="text-end">
+                                <div class="mb-2">
+                                    <label class="form-label">Tên khách hàng:</label>
+                                    <span th:text="${customer.name}"> </span>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Địa chỉ:</label>
+                                    <span th:text="${customer.address}"></span>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Email:</label>
+                                    <span th:text="${customer.email}"></span>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Số điện thoại:</label>
+                                    <span th:text="${customer.phone}"> </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Tên sản phẩm</td>
+                <td>ROM</td>
+                <td>RAM</td>
+                <td>Màu sắc</td>
+                <td>Số lượng</td>
+                <td>Đơn giá</td>
+
+            </tr>
+
+            <tr class="item"th:each="ie : ${invoiceItems}">
+                <td th:text="${ie.productSupport.productSupName}"></td>
+                <td th:text="${ie.productSupport.capacity}"></td>
+                <td th:text="${ie.productSupport.ram}"></td>
+                <td th:text="${ie.productSupport.color}"></td>
+                <td th:text="${ie.quantity}"></td>
+                <td th:text="${ie.price}" th:data-price="${ie.price}"></td>
+
+            </tr>
+
+
+            <tr class="total">
+                <td colspan="5" class="text-end">Tổng cộng:</td>
+                <td id="total"></td>
+            </tr>
+        </table>
+
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h5>Chữ ký người mua</h5>
+                <div style="height: 70px; border-bottom: 1px solid #ddd;"></div>
+            </div>
+            <div class="col-md-6 text-end">
+                <h5>Chữ ký công ty</h5>
+                <div style="height: 70px; border-bottom: 1px solid #ddd;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+        <button id="exportPdf" class="btn btn-primary">Export PDF</button>
+    </div>
+</div>
+
+
+<script>
+    document.getElementById("exportPdf").addEventListener("click", function() {
+        const invoiceId = 1/* lấy ID hóa đơn từ dữ liệu hiện tại */;
+        window.location.href = `/export-pdf/${invoiceId}`;
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script><script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let total = 0;
+        const rows = document.querySelectorAll(".invoice-box table tr.item");
+
+        rows.forEach(row => {
+            const priceElement = row.querySelector("td:nth-child(6)");
+            const quantityElement = row.querySelector("td:nth-child(5)");
+            if (priceElement && quantityElement) {
+                const price = parseFloat(priceElement.textContent);
+                const quantity = parseInt(quantityElement.textContent);
+                if (!isNaN(price) && !isNaN(quantity)) {
+                    total += price * quantity;
+                }
+            }
+        });
+
+        document.getElementById("total").textContent = total.toFixed(2);
+    });
+
+</script>
+</body>
+</html>
