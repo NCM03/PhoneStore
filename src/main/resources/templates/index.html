@@ -160,7 +160,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span id="CartNumber"></span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
@@ -282,7 +282,7 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item" th:each="reviewproduct :${reviewProduct}">
                                 <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
+                                    <div style="display: flex;justify-content: center;align-items: center;" class="latest-product__item__pic">
                                         <img th:src="@{/img/ProductImg/__${reviewproduct.getImageData()}__}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
@@ -323,7 +323,7 @@
                      th:classappend="${features.getProductInfoName()}"
                      th:each="features :${feature}" >
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg">
+                        <div style="display: flex;justify-content: center;align-items: center;" class="featured__item__pic set-bg">
                             <img style="width: 200px;height: 200px;" th:src="@{/img/ProductImg/__${features.getProduct().getImageData()}__}" alt="">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -443,7 +443,24 @@
         </div>
     </footer>
     <!-- Footer Section End -->
-
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/getCartNumber', // Thay đổi URL này thành endpoint bạn muốn gửi yêu cầu đến
+                type: 'GET', // Hoặc 'POST' nếu bạn cần gửi dữ liệu
+                success: function(data) {
+                    // Xử lý dữ liệu trả về từ server
+                    console.log(data);
+                    // Ví dụ: Cập nhật nội dung của một phần tử trên trang
+                    $('#your-element').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Xử lý lỗi nếu có
+                    console.error('Error: ' + textStatus, errorThrown);
+                }
+            });
+        });
+    </script>
     <!-- Js Plugins -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>

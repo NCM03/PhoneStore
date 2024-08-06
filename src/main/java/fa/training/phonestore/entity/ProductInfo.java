@@ -66,6 +66,10 @@ public class ProductInfo {
     @JsonManagedReference
     private List<ProductImage> productImages;
 
+    @OneToMany(mappedBy = "productInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Cart> cart;
+
     public ProductImage getFirstProductImage(List<ProductImage> productImages) {
         if (productImages != null && !productImages.isEmpty()) {
             return productImages.get(0);

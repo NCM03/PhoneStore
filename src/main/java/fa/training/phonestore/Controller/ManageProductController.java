@@ -119,10 +119,10 @@ public class ManageProductController {
     ) {
         try {
                 Product product = productService.findById(productId);
-                storageService.delete(product.getImageData());
                 System.out.println("imgName =" + imgProduct.getOriginalFilename());
                 String extension = FilenameUtils.getExtension(imgProduct.getOriginalFilename());
                 if (imgProduct != null && !imgProduct.isEmpty()) {
+                    storageService.delete(product.getImageData());
                     String baseURL = String.valueOf(product.getProductName() + "z");
                     String newURL = baseURL;
                     int counter = 1;
@@ -131,7 +131,6 @@ public class ManageProductController {
                         counter++;
 //                System.out.println("Đổi URL thành: " + newURL);
                     }
-
                     storageService.store(imgProduct, newURL);
                     productEditForm.setImageData(newURL + "." + extension);
                 } else {
