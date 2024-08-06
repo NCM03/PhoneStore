@@ -1,7 +1,6 @@
 package fa.training.phonestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import fa.training.phonestore.Constraint.EntityConstraint.DtoConstraint.Password;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,7 +17,6 @@ public class Account {
     @Column(name = "Username")
     private String username;
     @Column(name = "Password")
-    @Password
     private String password;
     @ManyToOne
     @JoinColumn(name = "RoleID")
