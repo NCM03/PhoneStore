@@ -166,7 +166,6 @@
             <div class="col-md-6">
               <label class="labels">Gender</label>
               <select class="form-control" id="gender" name="gender" th:field="*{gender}">
-                <option value="">Select Gender</option>
                 <option value="Male" th:selected="${employee != null and employee.gender == 'Male'}">Male</option>
                 <option value="Female" th:selected="${employee != null and employee.gender == 'Female'}">Female</option>
                 <option value="Other" th:selected="${employee != null and employee.gender == 'Other'}">Other</option>
@@ -245,7 +244,7 @@
       // Form sẽ được gửi đi mà không cần thêm xử lý
     });
 
-    var employee = /*[[${customer}]]*/ null;
+    var employee = /*[[${employee}]]*/ null;
     if (employee == null) {
       document.getElementById('phone').value = '';
       document.getElementById('email').value = '';

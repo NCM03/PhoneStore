@@ -105,20 +105,20 @@
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <th:block th:if="${acc.role.roleId == 3}">
-                      <li><a class="dropdown-item" href="/Employee/Profile">Profile</a></li>
-                      <li><a class="dropdown-item" href="/HomeEmployee">HomeEmployee</a></li>
-                      <li><a class="dropdown-item" href="/Logout123">Logout</a></li>
+                      <li><a class="dropdown-item" href="/Employee/Profile">Thông tin cá nhân</a></li>
+                      <li><a class="dropdown-item" href="/Employee/Home">HomeEmployee</a></li>
+                      <li><a class="dropdown-item" href="/Logout123">Đăng xuất </a></li>
                     </th:block>
                     <th:block th:if="${acc.role.roleId == 1}">
                       <li><a class="dropdown-item" href="/HomeAdmin">HomeAdmin</a></li>
-                      <li><a class="dropdown-item" href="/Logout123">Logout</a></li>
+                      <li><a class="dropdown-item" href="/Logout123">Đăng xuất</a></li>
                     </th:block>
                     <th:block th:if="${acc.role.roleId == 2}">
-                      <li><a class="dropdown-item" href="/Customer/ManageInvoice">Invoice</a></li>
-                      <li><a class="dropdown-item" href="/Customer/Request">Request</a></li>
-                      <li><a class="dropdown-item" href="/Customer/Profile">Profile</a></li>
-                      <li><a class="dropdown-item" href="/Account/ChangePassword">Settings</a></li>
-                      <li><a class="dropdown-item" href="/Logout123">Logout</a></li>
+                      <li><a class="dropdown-item" href="/Customer/ManageInvoice">Hóa đơn</a></li>
+                      <li><a class="dropdown-item" href="/Customer/Request">Yêu câù</a></li>
+                      <li><a class="dropdown-item" href="/Customer/Profile">Thông tin cá nhân</a></li>
+                      <li><a class="dropdown-item" href="/Account/ChangePassword">Đổi mật khẩu</a></li>
+                      <li><a class="dropdown-item" href="/Logout123">Đăng xuất</a></li>
                     </th:block>
                   </ul>
                 </div>

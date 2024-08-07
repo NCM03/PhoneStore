@@ -63,24 +63,26 @@ public class EmployeeController {
     public String updateProfile(@Valid Employee employee, BindingResult result, RedirectAttributes redirectAttributes) {
         {
             boolean emailExists = employeeService.existsByEmail(employee.getEmail());
-
+            Employee employee1=employeeService.getEmployeeByEmployeeID(employee.getEmployeeId());
             try {
                 if (result.hasErrors()) {
                     return "ProfileforEmployee";
                 }
 
 
-                if (emailExists) {
-                    result.rejectValue("email", "error.email", "Email already exists");
-                    return "ProfileforEmployee";
 
-                } else {
+                    if(!employee1.getEmail().equalsIgnoreCase(employee.getEmail())) {
+                        if (emailExists) {
+                        result.rejectValue("email", "error.email", "Email already exists");
+                        return "ProfileforEmployee";
+                    }
+                }
 
                     employeeService.saveEmployee(employee);
 
                     redirectAttributes.addFlashAttribute("successFullMessage", "Update profile successfully!");
                     return "redirect:/Employee/Profile";
-                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 redirectAttributes.addFlashAttribute("errorMessage", "Update profile failed!");
@@ -102,6 +104,7 @@ public class EmployeeController {
             if (account != null) {
                Employee employee = employeeService.getEmployeeByAccount(account);
                 model.addAttribute("employee", employee);
+                model.addAttribute("account",account);
                 return "ProfileforEmployee";
             } else {
                 return "redirect:/Login";
