@@ -8,5 +8,7 @@ import org.springframework.stereotype.Service;
 public interface EmployeeService {
         Employee getEmployeeByAccount(Account account);
         Employee getEmployeeByEmployeeID(int id);
+        boolean existsByEmail(String email);
+        Employee saveEmployee(Employee employee);
 
 }

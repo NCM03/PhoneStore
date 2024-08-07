@@ -84,6 +84,9 @@
                                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#AddBrandModal">
                                     <i class="bi bi-plus-circle"></i> Add Brand
                                 </button>
+                                <button class="btn btn-info" onclick="exportToExcel()">
+                                    <i class="bi bi-file-earmark-excel"></i> Export to Excel
+                                </button>
                                 <form th:action="@{/Admin/ManageBrand}" method="get" class="row g-3 align-items-center">
                                     <div class="col-auto">
                                         <input type="text" class="form-control" id="searchTerm" name="searchTerm"
@@ -362,6 +365,20 @@
         }
     });
 </script>
+<script>function exportToExcel() {
+    // Set up the URL for the export request
+    var exportUrl = '/Admin/exportBrandsToExcel';
 
+    // Create a link element
+    var link = document.createElement('a');
+    link.href = exportUrl;
+    link.download = 'brands.xlsx'; // Suggested filename
+
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+</script>
 </body>
 </html>

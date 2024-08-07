@@ -78,6 +78,10 @@ public class RequestEntityServiceImpl implements RequestEntityService {
         return requestRespository.count();
     }
 
+    @Override
+    public long countByStatus(int status) {
+        return requestRespository.countByStatus(status);
+    }
 
 
 }

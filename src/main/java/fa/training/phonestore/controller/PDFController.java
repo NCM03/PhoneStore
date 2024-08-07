@@ -36,7 +36,7 @@ public class PDFController {
     @GetMapping("/export-pdf/{invoiceId}")
     public ResponseEntity<byte[]> exportPDF(@PathVariable int invoiceId) throws Exception {
         Invoice invoice = invoiceService.getInvoiceById(invoiceId);
-        Customer customer = customerService.getCustomerByCustomerID(invoice.getCustomerID());
+        Customer customer = customerService.getCustomerByCustomerID(invoice.getCustomer().getCustomerId());
         List<InvoiceItem> invoiceItems =invoiceItemService.findByInvoiceID(invoiceId) ;
 
         byte[] pdfBytes = pdfService.generatePdf(invoice, customer, invoiceItems);

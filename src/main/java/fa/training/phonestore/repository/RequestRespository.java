@@ -24,4 +24,5 @@ public interface RequestRespository extends CrudRepository<RequestEntity,Integer
     RequestEntity findByRequestID(int requestID);
     int countByEmployeeID(int id);
     long count();
+    long countByStatus(int status);
 }

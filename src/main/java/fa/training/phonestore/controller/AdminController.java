@@ -6,11 +6,18 @@ import fa.training.phonestore.entity.Category;
 import fa.training.phonestore.service.imp.BrandService;
 import fa.training.phonestore.service.imp.CategoryServiceImp;
 import jakarta.validation.Valid;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +25,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -237,7 +246,34 @@ public  ResponseEntity<Map<String, Object>> addCategory(
         redirectAttributes.addFlashAttribute("messageSS", "Category updated successfully");
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/exportBrandsToExcel")
+    public ResponseEntity<byte[]> exportBrandsToExcel() throws IOException {
+        List<Brand> brandList = brandService.findAll();
 
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Brands");
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Brand ID");
+            headerRow.createCell(1).setCellValue("Brand Name");
+
+            int rowNum = 1;
+            for (Brand brand : brandList) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(brand.getBrandID());
+                row.createCell(1).setCellValue(brand.getBrandName());
+            }
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
+            byte[] excelData = out.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=brands.xlsx");
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+            return ResponseEntity.ok().headers(headers).body(excelData);
+        }
+    }
 }
 
 

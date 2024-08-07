@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CustomerService {
+    Customer getCustomerByName(String name);
     Customer getCustomer(Account account);
     Customer saveCustomer(Customer customer);
     Customer getCustomerByEmail(String email);

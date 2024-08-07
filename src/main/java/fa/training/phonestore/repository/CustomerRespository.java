@@ -14,5 +14,6 @@ public interface CustomerRespository extends CrudRepository<Customer,Long> {
     Customer save(Customer customer);
     Customer save(Account account);
     boolean existsByEmail(String email);
+    Customer getCustomersByNameContaining (String name);
 
 }

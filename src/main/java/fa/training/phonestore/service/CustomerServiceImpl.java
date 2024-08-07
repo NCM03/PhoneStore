@@ -13,6 +13,11 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRespository customerRespository;
 
     @Override
+    public Customer getCustomerByName(String name) {
+        return customerRespository.getCustomersByNameContaining(name);
+    }
+
+    @Override
     public Customer getCustomer(Account account) {
         return customerRespository.getCustomersByAccount(account);
     }

@@ -165,19 +165,19 @@
                             <td class="text-end">
                                 <div class="mb-2">
                                     <label class="form-label">Tên khách hàng:</label>
-                                    <span th:text="${customer.name}"> </span>
+                                    <span th:text="${invoice.customer.name}"> </span>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label">Địa chỉ:</label>
-                                    <span th:text="${customer.address}"></span>
+                                    <span th:text="${invoice.customer.address}"></span>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label">Email:</label>
-                                    <span th:text="${customer.email}"></span>
+                                    <span th:text="${invoice.customer.email}"></span>
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label">Số điện thoại:</label>
-                                    <span th:text="${customer.phone}"> </span>
+                                    <span th:text="${invoice.customer.phone}"> </span>
                                 </div>
                             </td>
                         </tr>
@@ -228,11 +228,23 @@
     </div>
 </div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-    document.getElementById("exportPdf").addEventListener("click", function() {
-        const invoiceId = 1/* lấy ID hóa đơn từ dữ liệu hiện tại */;
-        window.location.href = `/export-pdf/${invoiceId}`;
+    document.getElementById('exportPdf').addEventListener('click', function() {
+        // Lấy phần tử chứa nội dung cần xuất PDF
+        const element = document.querySelector('.invoice-box');
+
+        // Cấu hình cho PDF
+        const opt = {
+            margin:       1,
+            filename:     'invoice.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Tạo và tải xuống PDF
+        html2pdf().from(element).set(opt).save();
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script><script>

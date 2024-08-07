@@ -64,7 +64,7 @@
             border-radius: 4px;
         }
         .content {
-            margin-left: 250px; /* Adjust content area margin based on sidebar width */
+            margin-left: 150px; /* Adjust content area margin based on sidebar width */
             padding: 20px;
             min-height:200vh; /* Set minimum height to fill viewport */
             transition: margin-left 0.3s ease;
@@ -137,7 +137,7 @@
         }
 
         .table tbody tr:hover {
-            background-color: #f1f3f5;
+            background-color: #f1f3f5
         }
 
         /
@@ -218,7 +218,7 @@
 </head>
 <body>
 <div class="d-flex" id="app">
-    <div class=""sidebarContainer"">
+    <div class="sidebarContainer">
     <div th:insert="~{SideBarForEm :: SideBarForEm}"></div>
     <!-- Add more nav items as needed -->
 </div>
@@ -235,16 +235,26 @@
                                 <div class="table-responsive bg-white">
                                     <div class="mb-3">
                                         <div class="mb-3">
-                                            <form th:action="@{/Employee/ManageInvoice}" method="get" class="form-inline">
-                                                <label for="searchTerm" class="mr-2">Tìm kiếu theo tiêu đề:</label>
-                                                <input type="text" id="searchTerm" name="searchTerm"
-                                                       th:value="${searchTerm}" placeholder="Enter username">
-                                                <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
-                                                <input type="hidden" name="size" th:value="${size}" />
-                                                <input type="hidden" name="sortField" th:value="${sortField}" />
-                                            </form>
-                                        </div>
+                                            <div class="mb-3">
+                                                <form th:action="@{/Employee/ManageInvoice}" method="get" class="form-inline">
+                                                    <label for="searchTerm" class="mr-2">Tìm kiếm theo Khach hang:</label>
+                                                    <input type="text" id="searchTerm" name="searchTerm" th:value="${searchTerm}" placeholder="Khach hang">
 
+                                                    <label for="startDate" class="mr-2">Từ ngày:</label>
+                                                    <input type="date" id="startDate" name="startDate" th:value="${startDate}">
+
+                                                    <label for="endDate" class="mr-2">Đến ngày:</label>
+                                                    <input type="date" id="endDate" name="endDate" th:value="${endDate}">
+
+                                                    <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+                                                    <input type="hidden" name="size" th:value="${size}" />
+                                                    <input type="hidden" name="sortField" th:value="${sortField}" />
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <a th:href="@{/Employee/ExportInvoice(searchTerm=${searchTerm},startDate=${startDate},endDate=${endDate},sortField=${sortField},sortDir=${sortDir})}" class="btn btn-success">Export to Excel</a>
+                                        </div>
                                         <form th:action="@{/Employee/ManageInvoicet}" method="get" class="form-inline">
                                             <label for="size" class="mr-2">Items per page:</label>
                                             <select id="size" name="size" onchange="this.form.submit()">
@@ -255,13 +265,7 @@
                                             </select>
                                             <input type="hidden" name="size" th:value="${size}" />
                                         </form>
-                                        <div class="container mt-3">
-                                            <form th:action="@{/Employee/ManageInvoice}" method="get">
-                                                <button type="submit" class="btn btn-primary">
-                                                    Gửi Yêu Cầu
-                                                </button>
-                                            </form>
-                                        </div>
+
                                     </div>
                                     <table class="table mb-0">
                                         <thead>
@@ -279,6 +283,10 @@
                                                     <i th:if="${sortField == 'invoiceType'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                                                 </a>
                                             </th>
+                                            <th>
+                                                Người mua hàng
+                                            </th>
+
                                             <th>
                                                 <a th:href="@{/Employee/ManageInvoice(page=0,size=${size},sortField='incurred',sortDir=${sortField == 'incurred' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
                                                     Phát sinh
@@ -310,9 +318,11 @@
                                         <tr th:each="in: ${invoiceList}">
                                             <td th:text="${in.invoiceId}"></td>
                                             <td th:text="${in.invoiceType}"></td>
+                                            <td th:text="${in.customer.name} "></td>
                                             <td th:text="${in.incurred}"></td>
                                             <td th:text="${in.incurredDescription}"></td>
                                             <td th:text="${in.invoiceDate} "></td>
+
                                             <td>
                                                 <form th:action="@{/Employee/InvoiceDetail}" method="post">
                                                     <input type="hidden" name="invoiceID" th:value="${in.invoiceId}">

@@ -40,7 +40,7 @@ public class InvoiceItem {
     private BigDecimal price;
 
     @Column(name = "Discount", nullable = false, precision = 5, scale = 2)
-    private BigDecimal disCount;
+    private double disCount;
 
 
 }
