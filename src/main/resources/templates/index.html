@@ -326,7 +326,7 @@
                         <div style="display: flex;justify-content: center;align-items: center;" class="featured__item__pic set-bg">
                             <img style="width: 200px;height: 200px;" th:src="@{/img/ProductImg/__${features.getProduct().getImageData()}__}" alt="">
                             <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a th:href="@{/detailProduct/{id}(id=${features.getProduct().getProductId()})}"><i class="fa fa-info"></i></a></li>
                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
@@ -445,6 +445,7 @@
     <!-- Footer Section End -->
     <script>
         $(document).ready(function() {
+
             $.ajax({
                 url: '/getCartNumber', // Thay đổi URL này thành endpoint bạn muốn gửi yêu cầu đến
                 type: 'GET', // Hoặc 'POST' nếu bạn cần gửi dữ liệu

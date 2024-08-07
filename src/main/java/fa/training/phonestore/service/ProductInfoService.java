@@ -19,4 +19,7 @@ public interface ProductInfoService {
     List<ProductInfo> getHomeLastestProduct();
     List<ProductInfo> getSearchProduct(String keyword);
     Page<ProductInfo> getSearchList(String keyword,int page, int size);
+    List<String> getColorByCapacity(int ram, int capacity,int productId);
+    List<Integer> getCapacityByRam(int ram,int productId);
+    List<ProductInfo> getProductInfo( int ram, int capacity,int productId);
 }

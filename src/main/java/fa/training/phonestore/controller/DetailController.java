@@ -28,17 +28,28 @@ public class DetailController {
     @RequestMapping("/detailProduct/{id}")
     public String home(Model model, @PathVariable("id") int id) {
         Product product = productRepository.findByProductId(id);
-        List<ProductInfo> productSup = productInfoRepository.findByProduct_ProductId(id);
+        List<ProductInfo> productInfo = productInfoRepository.findByProduct_ProductId(id);
         List<ProductImage> productImage = productImagineRepository.findProductImagesByProductID(id);
         model.addAttribute("Product", product);
-        model.addAttribute("ProductSup", productSup);
+        model.addAttribute("ProductInfo", productInfo);
         model.addAttribute("ProductImage", productImage);
         Set<Integer> uniqueCapacities = new HashSet<>();
-        for (ProductInfo ProductSup : productSup) {
-            uniqueCapacities.add(ProductSup.getCapacity());
+        for (ProductInfo ProductInfo : productInfo) {
+            uniqueCapacities.add(ProductInfo.getCapacity());
         }
-
-        model.addAttribute("uniqueCapacities", uniqueCapacities);
+        Set<String> uniqueColor = new HashSet<>();
+        for (ProductInfo ProductInfo : productInfo) {
+            uniqueColor.add(ProductInfo.getColor());
+        }
+        Set<Integer> uniqueRams = new HashSet<>();
+        for (ProductInfo ProductInfo : productInfo) {
+            uniqueRams.add(ProductInfo.getRam());
+        }
+        model.addAttribute("uniqueRams", uniqueRams);
+        model.addAttribute("uniqueColors", uniqueColor);
+        model.addAttribute("uniqueCapacities",uniqueCapacities);
         return "shop-details";
     }
+
+
 }

@@ -58,4 +58,19 @@ public class ProductInfoServiceImp implements  ProductInfoService {
     public Page<ProductInfo> getSearchList(String keyword, int page, int size) {
         return productInfoRepository.searchList(keyword, PageRequest.of(page, size));
     }
+
+    @Override
+    public List<String> getColorByCapacity(int ram, int capacity, int productid) {
+        return productInfoRepositoryNotPageble.getColorByCapacity(ram ,capacity, productid);
+    }
+
+    @Override
+    public List<Integer> getCapacityByRam(int ram, int productId) {
+        return productInfoRepositoryNotPageble.getCapacityByRam(ram, productId);
+    }
+
+    @Override
+    public List<ProductInfo> getProductInfo( int ram, int capacity, int productId) {
+        return productInfoRepositoryNotPageble.getProductInfoIdToCart(ram,capacity,productId);
+    }
 }
