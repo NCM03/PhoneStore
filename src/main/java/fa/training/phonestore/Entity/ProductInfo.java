@@ -52,7 +52,7 @@ public class ProductInfo {
     @Column(name = "Color")
     private String color;
 
-    @Column(name = "Discount", nullable = false, precision = 5, scale = 2)
+    @Column(name = "productDiscount", nullable = false, precision = 5, scale = 2)
     private BigDecimal disCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
