@@ -1,4 +1,4 @@
-package fa.training.phonestore.config;
+package fa.training.phonestore.Config;
 
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;

@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "ORDER BY Product.Rating OFFSET 0 ROWS FETCH NEXT 2 ROWS ONLY",
             nativeQuery = true
     )
-    List<Product> listTopRateProductSection1();
+    List<Product> listTopRateProduct();
 
     @Query(value = "SELECT p FROM Product p WHERE p.categoryId = ?1 "
     )

@@ -34,7 +34,7 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="/index"><img src="/img/logo-2.png" alt=""></a>
+            <a href="/index"><img src="/img/logo-2.png" alt="" ></a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -61,16 +61,7 @@
             <ul>
                 <li class="active"><a href="./index">Home</a></li>
                 <li><a href="/shop-grid">Shop</a></li>
-                <li><a href="#">Pages</a>
-                    <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                        <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog.html">Blog Details</a></li>
-                        <li><a>Product</a></li>
-                    </ul>
-                </li>
-                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./checkout.html">Check Out</a></li>
                 <li><a href="./contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -133,25 +124,16 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="/img/logo-2.png" alt=""></a>
+                        <a href="./index.html"><img src="/img/logo-2.png" style="padding-left: 60px" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="./index">Home</a></li>
-                            <li><a href="invoice.html">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="./shop-grid">Shop</a></li>
+                            <li><a href="./checkout.html">Check Out</a></li>
                             <li><a th:href="@{/manage-product}">Product</a></li>
-                            <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contact</a></li>
                         </ul>
                     </nav>
@@ -185,8 +167,8 @@
                         </div>
                         <ul>
                             <li th:each="category : ${list}" value="categoryID" >
-                                <a th:href="@{Category/(id = ${category.getCategoryId()})} " th:text="${category.getName()}"
-                                   th:value="${category.getCategoryId()}">
+                                <a th:href="@{Category/(id = ${category.getBrandId()})} " th:text="${category.getName()}"
+                                   th:value="${category.getBrandId()}">
                                 </a></li>
                         </ul>
                     </div>
@@ -247,7 +229,6 @@
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
                                         <img th:src="@{/img/ProductImg/__${lastestproduct.getProduct().getImageData()}__}" alt="">
-
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6><a th:text="${lastestproduct.getProductInfoName()}"></a></h6>
@@ -320,19 +301,19 @@
             </div>
             <div class="row featured__filter" >
                 <div class="col-lg-3 col-md-4 col-sm-6 mix"
-                     th:classappend="${features.getProductInfoName()}"
+                     th:classappend="${features.getProductName()}"
                      th:each="features :${feature}" >
                     <div class="featured__item">
                         <div style="display: flex;justify-content: center;align-items: center;" class="featured__item__pic set-bg">
-                            <img style="width: 200px;height: 200px;" th:src="@{/img/ProductImg/__${features.getProduct().getImageData()}__}" alt="">
+                            <img style="width: 200px;height: 200px;" th:src="@{/img/ProductImg/__${features.getProductInfos().get(0).getProductImages().get(0).getImageURL()}__}" alt="">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#" th:text="${features.getProductInfoName()}"></a></h6>
-                            <h5><a th:text="${features.getPrice()}+${'₫'}"></a></h5>
+                            <h6><a href="#" th:text="${features.getProductInfos().get(0).getProductInfoName()}"></a></h6>
+                            <h5><a th:text="${features.getProductInfos().get(0).getPrice()}+${'₫'}"></a></h5>
                         </div>
                     </div>
                 </div>

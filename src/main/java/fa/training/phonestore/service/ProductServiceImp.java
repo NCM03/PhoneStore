@@ -5,6 +5,7 @@ import fa.training.phonestore.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,12 @@ import java.util.List;
 public class ProductServiceImp implements  ProductService{
     @Autowired
     private ProductRepository productRepository;
+
+    @Override
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+    }
+
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
@@ -34,8 +41,8 @@ public class ProductServiceImp implements  ProductService{
         productRepository.save(product);
     }
     @Override
-    public List<Product> getHomeTopRateProductSection1() {
-        return productRepository.listTopRateProductSection1();
+    public List<Product> getHomeTopRateProduct() {
+        return productRepository.listTopRateProduct();
     }
 
     @Override

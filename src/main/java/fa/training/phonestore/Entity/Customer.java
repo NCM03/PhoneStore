@@ -1,6 +1,7 @@
 package fa.training.phonestore.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import fa.training.phonestore.Constraint.EntityConstraint.EmailConstraint;
 import fa.training.phonestore.Constraint.EntityConstraint.Gender;
 import fa.training.phonestore.Constraint.EntityConstraint.Phone;

@@ -19,7 +19,7 @@ public class PhoneStoreApplication {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
-    };
+    }
     @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {

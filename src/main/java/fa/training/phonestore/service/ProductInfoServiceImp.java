@@ -58,4 +58,9 @@ public class ProductInfoServiceImp implements  ProductInfoService {
     public Page<ProductInfo> getSearchList(String keyword, int page, int size) {
         return productInfoRepository.searchList(keyword, PageRequest.of(page, size));
     }
+
+    @Override
+    public List<ProductInfo> getProductInfoDiscount() {
+        return productInfoRepositoryNotPageble.getProductInfoDiscount();
+    }
 }

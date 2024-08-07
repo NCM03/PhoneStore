@@ -18,53 +18,71 @@ public class HomeController {
     @Autowired
     private CategoryRepository categoryService;
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
     private ProductService productService;
     @Autowired
     private ProductInfoService productInfoService;
     @Autowired
     AccountService accountService;
+    @Autowired
+    BrandService brandService;
+
 
     @GetMapping({"/index","/"})
     public String home(@RequestParam(defaultValue = "0", value = "page") int page,
                        @RequestParam(defaultValue = "8", value = "size") int size,
                        Model model) {
-        List<Category> categories = categoryService.findAll();
-        Page<ProductInfo> productsFeature = productInfoService.findAll(PageRequest.of(page,size));
+        List<Brand> brands = brandService.findAll();
+        Page<Product> productsFeature = productService.findAll(PageRequest.of(page,size));
         List<ProductInfo> lastestProduct = productInfoService.getHomeLastestProduct();
         Page<Product> reviewProduct = productService.getHomeReviewProduct();
-        List<Product> RatingProduct1 = productService.getHomeTopRateProductSection1();
-        model.addAttribute("list", categories);
+        List<Product> RatingProduct = productService.getHomeTopRateProduct();
+        model.addAttribute("list", brands);
         model.addAttribute("feature", productsFeature);
         model.addAttribute("currentPage", page);
         model.addAttribute("lastestProduct", lastestProduct);
         model.addAttribute("reviewProduct", reviewProduct);
-        model.addAttribute("ratingProduct1", RatingProduct1);
+        model.addAttribute("ratingProduct1", RatingProduct);
         return "index";
     }
 
-    @GetMapping({"/search/{keyword}"})
+    @GetMapping({"/search/?keyword"})
     public String search(@Param(value = "keyword") String keyword ,
                          @RequestParam(defaultValue = "0", value = "page") int page,
                          @RequestParam(defaultValue = "6", value = "size") int size,
                          Model model) {
-        List<Category> categories = categoryService.findAll();
-        List<Product> product = productRepository.findAll();
-        model.addAttribute("list", categories);
-        model.addAttribute("productAll", product);
+        List<Brand> brands = brandService.findAll();
+        //List<Product> product = productRepository.findAll();
+        model.addAttribute("list", brands);
+        //model.addAttribute("productAll", product);
         List<ProductInfo> searchPage = productInfoService.getSearchProduct(keyword);
         Page<ProductInfo> searchProduct = productInfoService.getSearchList(keyword, page, size);
         model.addAttribute("currentPage", page);
+        model.addAttribute("keys", keyword);
         model.addAttribute("searchProduct", searchProduct);
         model.addAttribute("searchPage", searchPage);
         return "productsearch";
     }
 
+    @GetMapping({"/shop-grid"})
+    public String shop(@RequestParam(defaultValue = "0", value = "page") int page,
+                       @RequestParam(defaultValue = "9", value = "size") int size,
+                       Model model) {
+        List<Brand> brands = brandService.findAll();
+        Page<ProductInfo> product = productInfoService.findAll(PageRequest.of(page,size));
+        List<ProductInfo> productInfos = productInfoService.findAll();
+        List<ProductInfo> discount = productInfoService.getProductInfoDiscount();
+        model.addAttribute("discount", discount);
+        model.addAttribute("list", brands);
+        model.addAttribute("productInfos", productInfos);
+        model.addAttribute("productAll", product);
+        model.addAttribute("currentPage", page);
+        return "shop-grid";
+    }
+
     @PostMapping({"/Category/{id}"})
     public String searchCategory(@RequestParam(value = "id") int categoryID ,
                                  @RequestParam(defaultValue = "0", value = "page") int page,
-                                 @RequestParam(defaultValue = "6", value = "size") int size,
+                                 @RequestParam(defaultValue = "9", value = "size") int size,
                                  Model model) {
         List<Category> categories = categoryService.findAll();
         Page<Product> searchProduct = productService.findByCategory(categoryID,page,size);
