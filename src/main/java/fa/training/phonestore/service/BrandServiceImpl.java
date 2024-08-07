@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
@@ -35,5 +37,10 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public boolean existsBrandByBrandName(String brandName) {
         return brandRepository.existsBrandByBrandName(brandName);
+    }
+
+    @Override
+    public List<Brand> findAll() {
+        return brandRepository.findAll();
     }
 }

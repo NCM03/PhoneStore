@@ -9,10 +9,7 @@ import fa.training.phonestore.entity.Employee;
 import fa.training.phonestore.helper.HelperToken;
 import fa.training.phonestore.service.*;
 
-import fa.training.phonestore.service.imp.AccountService;
-import fa.training.phonestore.service.imp.CustomerService;
-import fa.training.phonestore.service.imp.EmployeeService;
-import fa.training.phonestore.service.imp.RoleService;
+import fa.training.phonestore.service.imp.*;
 import fa.training.phonestore.utils.JwtUtils;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,10 +50,24 @@ public class AccountController {
     EmployeeService employeeService;
     @Autowired
     RoleService roleService;
+    @Autowired
+    RequestEntityService requestEntityService;
+    @Autowired
+            InvoiceService invoiceService;
     JwtUtils jwtUtils =new JwtUtils();
     HelperToken helperToken;
     @GetMapping("/Admin")
-    public String homeAdmin() {
+    public String homeAdmin(Model model) {
+        long countRequest = requestEntityService.count();
+        long countInvoice = invoiceService.countAll();
+        long countRequestStatus2 = requestEntityService.countByStatus(2);
+        long countRequestStatus1 = requestEntityService.countByStatus(1);
+        long countRequestStatus0 = requestEntityService.countByStatus(0);
+        model.addAttribute("countRequest", countRequest);
+        model.addAttribute("countInvoice", countInvoice);
+        model.addAttribute("countRequestStatus2", countRequestStatus2);
+        model.addAttribute("countRequestStatus1", countRequestStatus1);
+        model.addAttribute("countRequestStatus0", countRequestStatus0);
         return "HomeAdmin";
     }
 

@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     Employee getEmployeeByAccount(Account account);
     Employee getEmployeeByEmployeeId(int id);
+    boolean existsByEmail(String email);
+    Employee save(Employee employee);
 }

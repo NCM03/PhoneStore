@@ -39,8 +39,8 @@ public class ForgotPasswordController {
 
 
             if (email == null || accountId == null) {
-
-                return "redirect:/ValidAuthenticate";
+                redirectAttributes.addFlashAttribute("error", "Tai khoan cua ban chua cap nhat email vui long lien he admin");
+                return "redirect:/forgotpassword";
             }
             Customer customer = customerService.getCustomerByEmail(email);
             Account account = accountService.seachAccountById(Integer.parseInt(accountId));
@@ -60,7 +60,7 @@ public class ForgotPasswordController {
                 return "redirect:/Login";
             }
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed");
+            redirectAttributes.addFlashAttribute("error", "Tai khoan cua ban chua cap nhat email vui long lien he admin");
             return "redirect:/forgotpassword";
         }
     }

@@ -20,4 +20,14 @@ public class EmployeeServiceImpl implements EmployeeService
     public Employee getEmployeeByEmployeeID(int id) {
         return employeeRespository.getEmployeeByEmployeeId(id);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return employeeRespository.existsByEmail(email);
+    }
+
+    @Override
+    public Employee saveEmployee(Employee employee) {
+        return employeeRespository.save(employee);
+    }
 }

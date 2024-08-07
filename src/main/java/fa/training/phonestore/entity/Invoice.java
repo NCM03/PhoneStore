@@ -31,11 +31,12 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "InvoiceID")
     private Integer invoiceId;
-
-    @Column(name = "CustomerID")
-    private int customerID;
-    @Column(name = "EmployeeID")
-    private int employeeID;
+    @ManyToOne
+    @JoinColumn(name = "CustomerID")
+    private Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "EmployeeID")
+    private Employee employee;
     @Column(name = "InvoiceType", nullable = false)
     private Integer invoiceType;
 
@@ -44,7 +45,7 @@ public class Invoice {
     private Date invoiceDate;
 
     @Column(name = "incurred", nullable = false, precision = 10, scale = 2)
-    private BigDecimal incurred;
+    private double incurred;
 
     @Column(name = "incurredDescription", length = 2000)
     private String incurredDescription;

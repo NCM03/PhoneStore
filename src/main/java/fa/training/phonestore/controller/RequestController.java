@@ -167,35 +167,11 @@ public class RequestController {
 
         // Filtering logic
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            if (fromDate != null && toDate != null) {
-                // Convert LocalDate to LocalDateTime for date range
-                LocalDateTime fromDateTime = fromDate.atStartOfDay();
-                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-                requestPage = requestEntityService.findByTitleAndDateRange(searchTerm, fromDateTime, toDateTime, pageable);
-            } else if (fromDate != null) {
-                LocalDateTime fromDateTime = fromDate.atStartOfDay();
-                requestPage = requestEntityService.findByTitleAndToDate(searchTerm, fromDateTime, pageable);
-            } else if (toDate != null) {
-                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-                requestPage = requestEntityService.findByTitleAndToDate(searchTerm, toDateTime, pageable);
-            } else {
-                requestPage = requestEntityService.findByTitle(searchTerm, pageable);
-            }
-        } else {
-            if (fromDate != null && toDate != null) {
-                LocalDateTime fromDateTime = fromDate.atStartOfDay();
-                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-                requestPage = requestEntityService.findByCustomerIDAndDateRange(customer.getCustomerId(), fromDateTime, toDateTime, pageable);
-            } else if (fromDate != null) {
-                LocalDateTime fromDateTime = fromDate.atStartOfDay();
-                requestPage = requestEntityService.findByCustomerIDAndFromDate(customer.getCustomerId(), fromDateTime, pageable);
-            } else if (toDate != null) {
-                LocalDateTime toDateTime = toDate.atTime(LocalTime.MAX);
-                requestPage = requestEntityService.findByCustomerIDAndToDate(customer.getCustomerId(), toDateTime, pageable);
-            } else {
+            requestPage=requestEntityService.findByTitle(searchTerm,pageable);
+        }else{
                 requestPage = requestEntityService.findAll(pageable);
             }
-        }
+
 
         // Add attributes to model
         m.addAttribute("reList", requestPage.getContent());
@@ -250,7 +226,7 @@ public class RequestController {
             if (invoice == null) {
                 errors.put("invoiceID", "Hoa don nay khong ton tai");
             } else {
-                if (invoice.getCustomerID() != requestEntity.getCustomerID()) {
+                if (invoice.getCustomer().getCustomerId() != requestEntity.getCustomerID()) {
                     errors.put("invoiceID                                                                                                           ", "Hoa don nay khong phai cua ban");
                 }
             }

@@ -21,7 +21,7 @@ public class Customer {
     @Id
     @Column(name="CustomerID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customerId;
+    private Integer customerId;
     @Column(name = "Phone")
     @Phone(message="Phone has wrong format")
     private String phone;

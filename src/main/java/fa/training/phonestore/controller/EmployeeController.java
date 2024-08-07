@@ -7,13 +7,16 @@ import fa.training.phonestore.helper.HelperToken;
 import fa.training.phonestore.service.imp.*;
 import fa.training.phonestore.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,7 +59,58 @@ public class EmployeeController {
 
         return "HomeEmployee";
     }
+    @PostMapping("/UpdatePofile")
+    public String updateProfile(@Valid Employee employee, BindingResult result, RedirectAttributes redirectAttributes) {
+        {
+            boolean emailExists = employeeService.existsByEmail(employee.getEmail());
 
+            try {
+                if (result.hasErrors()) {
+                    return "ProfileforEmployee";
+                }
+
+
+                if (emailExists) {
+                    result.rejectValue("email", "error.email", "Email already exists");
+                    return "ProfileforEmployee";
+
+                } else {
+
+                    employeeService.saveEmployee(employee);
+
+                    redirectAttributes.addFlashAttribute("successFullMessage", "Update profile successfully!");
+                    return "redirect:/Employee/Profile";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                redirectAttributes.addFlashAttribute("errorMessage", "Update profile failed!");
+                return "redirect:/Employee/Profile";
+            }
+        }
+    }
+    @GetMapping("/Profile")
+    public String getProfile(Model model, HttpServletRequest request) {
+        try {
+
+
+            String token = helperToken.getToken(request);
+            if (token == null) {
+                return "redirect:/Login";
+            }
+            Account account = jwtUtils.decodeToken(token);
+
+            if (account != null) {
+               Employee employee = employeeService.getEmployeeByAccount(account);
+                model.addAttribute("employee", employee);
+                return "ProfileforEmployee";
+            } else {
+                return "redirect:/Login";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/Login";
+        }
+    }
     @PostMapping("/RequestDetail")
     public String goToRequestDetail (@RequestParam int requestID, HttpServletRequest request,Model model){
         String token = helperToken.getToken(request);
@@ -90,70 +145,68 @@ public class EmployeeController {
         redirectAttributes.addFlashAttribute("successFullMessage","Xử lí đơn thành công ");
         return "redirect:/Employee/Request";
     }
-    @GetMapping("/ManageInvoice")
-    public String getListBrand(Model m,
-                               @RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "5") int size,
-                               @RequestParam(required = false) Integer selectedSize,
-                               @RequestParam(required = false) String searchTerm,
-                               @RequestParam(defaultValue = "InvoiceDate") String sortField,
-                               @RequestParam(defaultValue = "desc") String sortDir
-            , HttpServletRequest request) {
-        String token = helperToken.getToken(request);
-        Account account = jwtUtils.decodeToken(token);
-        Employee employee = employeeService.getEmployeeByAccount(account);
+        @GetMapping("/ManageInvoice")
+        public String getListBrand(Model m,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "5") int size,
+                                   @RequestParam(required = false) Integer selectedSize,
+                                   @RequestParam(required = false) String searchTerm,
+                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                   @RequestParam(defaultValue = "InvoiceDate") String sortField,
+                                   @RequestParam(defaultValue = "desc") String sortDir,
+                                   HttpServletRequest request) {
+            String token = helperToken.getToken(request);
+            Account account = jwtUtils.decodeToken(token);
+            Employee employee = employeeService.getEmployeeByAccount(account);
 
 
-        try {
-            // Cập nhật kích thước trang nếu selectedSize được cung cấp
-            if (selectedSize != null) {
-                size = selectedSize;
+            try {
+                if (selectedSize != null) {
+                    size = selectedSize;
+                }
+
+                Sort sort = Sort.by(Sort.Direction.DESC, sortField);
+                if (sortDir.equalsIgnoreCase("asc")) {
+                    sort = Sort.by(Sort.Direction.ASC, sortField);
+                }
+
+                Pageable pageable = PageRequest.of(page, size, sort);
+
+                Page<Invoice> invoicePage;
+                if (searchTerm != null && !searchTerm.isEmpty()||startDate!=null||endDate!=null) {
+                    invoicePage = invoiceService.findByCustomerNameAndDateRange(searchTerm, startDate, endDate, pageable);
+                } else {
+                    invoicePage = invoiceService.findByEmployee(employee,pageable);
+                }
+
+                m.addAttribute("invoiceList", invoicePage.getContent());
+                m.addAttribute("currentPage", page);
+                m.addAttribute("totalPages", invoicePage.getTotalPages());
+                m.addAttribute("totalItems", invoicePage.getTotalElements());
+                m.addAttribute("size", size);
+                m.addAttribute("searchTerm", searchTerm);
+                m.addAttribute("startDate", startDate);
+                m.addAttribute("endDate", endDate);
+                m.addAttribute("sortField", sortField);
+                m.addAttribute("sortDir", sortDir);
+                m.addAttribute("acc", account);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "ListInvoiceForEmployee";
             }
 
-            // Tạo yêu cầu phân trang với sắp xếp
-            Sort sort = Sort.by(Sort.Direction.DESC, sortField); // Mặc định là DESC
-            if (sortDir.equalsIgnoreCase("asc")) {
-                sort = Sort.by(Sort.Direction.ASC, sortField);
-            }
-
-            Pageable pageable = PageRequest.of(page, size, sort);
-
-            Page<Invoice> invoicePage;
-            if (searchTerm != null && !searchTerm.isEmpty()) {
-               invoicePage= invoiceService.findByCustomerID(Integer.parseInt(searchTerm), pageable);
-            } else {
-               invoicePage = invoiceService.findByEmployeeID(employee.getEmployeeId(), pageable);
-            }
-
-            // Thêm thuộc tính vào model
-            m.addAttribute("invoiceList", invoicePage.getContent());
-            m.addAttribute("currentPage", page);
-            m.addAttribute("totalPages", invoicePage.getTotalPages());
-            m.addAttribute("totalItems", invoicePage.getTotalElements());
-            m.addAttribute("size", size);
-            m.addAttribute("searchTerm", searchTerm);
-            m.addAttribute("sortField", sortField);
-            m.addAttribute("sortDir", sortDir);
-            m.addAttribute("acc",account);
-        } catch (Exception e) {
             return "ListInvoiceForEmployee";
         }
-
-        return "ListInvoiceForEmployee";
-    }
     @PostMapping("/InvoiceDetail")
     public String goToInvoiceDetail (@RequestParam int invoiceID, HttpServletRequest request,Model model){
         String token = helperToken.getToken(request);
         Account account = jwtUtils.decodeToken(token);
         Invoice invoice = invoiceService.getInvoiceById(invoiceID);
-        Customer customer= customerService.getCustomerByCustomerID(invoice.getCustomerID());
-        Employee employee=employeeService.getEmployeeByEmployeeID(invoice.getEmployeeID());
         List<InvoiceItem> invoiceItems=invoiceItemService.findByInvoiceID(invoiceID);
         model.addAttribute("invoice",invoice);
-        model.addAttribute("customer",customer);
-        model.addAttribute("employee",employee);
         model.addAttribute("invoiceItems",invoiceItems);
 
-        return "DetailInvoiceForCustomer";
+        return "DetailInvoiceForEmployee";
     }
 }

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+  body {
+    background: #7fad39;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #7fad39;
+  }
+
+  .profile-button {
+    background: #7fad39;
+    box-shadow: none;
+    border: none;
+  }
+
+  .profile-button:hover {
+    background: #6b9a2b; /* Thay đổi màu khi hover */
+  }
+
+  .profile-button:focus {
+    background: #7fad39;
+    box-shadow: none;
+  }
+
+  .profile-button:active {
+    background: #6b9a2b; /* Thay đổi màu khi click */
+    box-shadow: none;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #7fad39;
+    text-decoration: none;
+    border: 2px solid #7fad39;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+
+  .back-button:hover {
+    background-color: #7fad39;
+    color: white;
+    border-color: #7fad39;
+  }
+
+  .back-button i {
+    margin-right: 0.5rem;
+  }
+
+  .labels {
+    font-size: 11px;
+  }
+
+  .add-experience:hover {
+    background: #7fad39;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #7fad39;
+  }
+</style>
+
+<style>
+  body {
+    background: #7fad39
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #7fad39
+  }
+
+  .profile-button {
+    background: #7fad39;
+    box-shadow: none;
+    border: none
+  }
+
+  .profile-button:hover {
+    background: #7fad39
+  }
+
+  .profile-button:focus {
+    background:  #7fad39;
+    box-shadow: none
+  }
+
+  .profile-button:active {
+    background:  #7fad39;
+    box-shadow: none
+  }
+
+  .back:hover {
+    color:  #7fad39;
+    cursor: pointer
+  }
+
+  .labels {
+    font-size: 11px
+  }
+
+  .add-experience:hover {
+    background:  #7fad39;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px  #7fad39
+  }</style>
+<body>
+<a href="/index" class="back-button">
+  <i class="fas fa-arrow-left"></i> Trở về trang chủ
+</a>
+<div class="container rounded bg-white mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-4 border-right">
+      <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+        <img class="rounded-circle mt-5" width="150px"
+             src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+
+      </div>
+    </div>
+    <div class="col-md-8 border-right">
+      <form th:object="${employee}" method="post" th:action="@{/Employee/UpdatePofile}">
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-right">Profile Settings</h4>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-md-12"><label class="labels">Full Name</label><input type="text" class="form-control" id="name" name="name" th:value="${employee != null ? employee.name : ''}" th:field="*{name}" readonly>
+              <p style="color: red" th:errors="*{name}"></p>
+            </div>
+
+          </div>
+          <div class="row mt-3">
+            <!-- Hidden fields for accountId and customerId -->
+            <input th:field="*{account}" type="text" th:value="${employee != null ? employee.account : ''}" hidden/>
+            <input th:field="*{employeeId}" type="text" th:value="${employee != null ? employee.getEmployeeId() : ''}" hidden/>
+
+            <div class="col-md-12">
+              <label class="labels">Email</label>
+              <input type="text" class="form-control" id="email" name="email" th:value="${employee != null ? employee.email : ''}" th:field="*{email}" readonly>
+              <p style="color: red" th:errors="*{email}"></p>
+            </div>
+
+            <div class="col-md-12">
+              <label class="labels">Address</label>
+              <input type="text" class="form-control" id="address" name="address" th:value="${employee != null ? employee.address : ''}" th:field="*{address}" readonly>
+              <p style="color: red" th:errors="*{address}"></p>
+            </div>
+
+            <!-- Gender and Phone Number in one row -->
+            <div class="col-md-6">
+              <label class="labels">Gender</label>
+              <select class="form-control" id="gender" name="gender" th:field="*{gender}">
+                <option value="">Select Gender</option>
+                <option value="Male" th:selected="${employee != null and employee.gender == 'Male'}">Male</option>
+                <option value="Female" th:selected="${employee != null and employee.gender == 'Female'}">Female</option>
+                <option value="Other" th:selected="${employee != null and employee.gender == 'Other'}">Other</option>
+              </select>
+              <p style="color: red" th:errors="*{gender}"></p>
+            </div>
+
+            <div class="col-md-6">
+              <label class="labels">Mobile Number</label>
+              <input class="form-control" type="text" id="phone" name="phone" th:field="*{phone}" th:value="${employee != null ? employee.phone : ''}" readonly>
+              <p style="color: red" th:errors="*{phone}"></p>
+            </div>
+
+            <!-- Age and DOB in another row -->
+
+
+            <div class="col-md-6">
+              <label class="labels">DOB</label>
+              <input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" th:value="${employee != null ? #dates.format(employee.dateOfBirth, 'yyyy-MM-dd') : ''}" th:field="*{dateOfBirth}" readonly/>
+              <p style="color: red" th:errors="*{dateOfBirth}"></p>
+            </div>
+          </div>
+
+
+          <div class="mt-5 text-center">
+            <button type="button" id="editButton" class="btn btn-primary profile-button" onclick="toggleEdit()">Edit</button>
+            <button type="submit" id="saveButton" class="btn btn-primary profile-button" style="display: none;">Save Profile</button>
+          </div>
+        </div>
+      </form>
+      <div class="alert alert-success" th:if="${not #strings.isEmpty(successFullMessage)}" role="alert">
+        <p th:text="${successFullMessage}"></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script th:inline="javascript">
+  function toggleEdit() {
+    var form = document.querySelector('form');
+    var inputs = form.getElementsByTagName('input');
+    var selects = form.getElementsByTagName('select');
+    var editButton = document.getElementById('editButton');
+    var saveButton = document.getElementById('saveButton');
+
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].type !== 'hidden') {
+        inputs[i].readOnly = !inputs[i].readOnly;
+        inputs[i].classList.toggle('readonly');
+      }
+    }
+
+    for (var i = 0; i < selects.length; i++) {
+      selects[i].disabled = !selects[i].disabled;
+      selects[i].classList.toggle('readonly');
+    }
+
+    editButton.style.display = 'none';
+    saveButton.style.display = 'inline-block';
+  }
+
+  // Thêm này vào để đảm bảo select box được disable khi trang load
+  document.addEventListener('DOMContentLoaded', function() {
+    var genderSelect = document.getElementById('gender');
+    genderSelect.disabled = true;
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('form');
+
+    form.addEventListener('submit', function(event) {
+      // Form sẽ được gửi đi mà không cần thêm xử lý
+    });
+
+    var employee = /*[[${customer}]]*/ null;
+    if (employee == null) {
+      document.getElementById('phone').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('name').value = '';
+      document.getElementById('gender').value = '';
+      document.getElementById('dateOfBirth').value = '';
+      document.getElementById('address').value = '';
+    }
+  });
+</script>
+</body>
+</html>
