@@ -13,6 +13,6 @@ public interface ProductInfoRepositoryNotPageble extends JpaRepository<ProductIn
     @Query(value = "SELECT p.productInfoId FROM ProductInfo p WHERE p.color LIKE  %?1% AND p.ram = ?2 AND p.capacity = ?3")
     public void getProductInfoId(int color, int ram, int capacity);
 
-    @Query(value = "SELECT * FROM product_info WHERE Discount IS NOT NUll", nativeQuery = true)
+    @Query(value = "SELECT * FROM product_info WHERE productDiscount IS NOT NUll", nativeQuery = true)
     public List<ProductInfo> getProductInfoDiscount();
 }

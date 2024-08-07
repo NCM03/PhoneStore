@@ -101,7 +101,6 @@
       background: $white-color;
       @include transition(all, .3s);
       margin-right: 10px;
-
       &:last-child {
         margin-right: 0;
       }

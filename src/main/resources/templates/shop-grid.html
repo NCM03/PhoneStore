@@ -285,15 +285,15 @@
                     </div>
                     <div class="product__pagination">
                         <a th:if="${currentPage != 0}"
-                           th:href="@{/(page=${currentPage - 1}, size=${productAll.getSize()})}">
+                           th:href="@{/shop-grid/(page=${currentPage - 1}, size=${productAll.getSize()})}">
                             <i class="fa fa-long-arrow-left"></i>
                         </a>
                         <span th:each="i : ${#numbers.sequence(0, - 1)}" >
-                            <a th:if="${i >= 0}" th:href="@{/(page=${i}, size=${productAll.getSize()})} "
+                            <a th:if="${i >= 0}" th:href="@{/shop-grid/(page=${i}, size=${productAll.getSize()})} "
                                th:text="${i + 1}"></a>
                         </span>
                         <a th:if="${productAll.getTotalPages() -1 != currentPage}"
-                           th:href="@{/(page=${currentPage+1}, size=${productAll.getSize()})}">
+                           th:href="@{/shop-grid/(page=${currentPage+1}, size=${productAll.getSize()})}">
                             <i class="fa fa-long-arrow-right"></i>
                         </a>
                     </div>

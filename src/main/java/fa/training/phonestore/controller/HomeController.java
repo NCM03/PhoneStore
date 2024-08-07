@@ -45,7 +45,7 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping({"/search/?keyword"})
+    @GetMapping({"/search/{keyword}"})
     public String search(@Param(value = "keyword") String keyword ,
                          @RequestParam(defaultValue = "0", value = "page") int page,
                          @RequestParam(defaultValue = "6", value = "size") int size,

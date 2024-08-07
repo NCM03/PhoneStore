@@ -365,7 +365,7 @@
                                th:text="${i + 1}"></a>
                         </span>
                         <a th:if="${searchProduct.getTotalPages()-1 != currentPage}"
-                           th:href="@{/search/keyword=(${keys})/(page=${currentPage+1}, size=${searchProduct.getSize()})}">
+                           th:href="@{/search/{keyword}/(page=${currentPage+1}, size=${searchProduct.getSize()})}" >
                             <i class="fa fa-long-arrow-right"></i>
                         </a>
                     </div>

@@ -2879,6 +2879,7 @@ ol {
     -o-transition: all, 0.3s;
     transition: all, 0.3s;
     margin-right: 10px;
+    margin-bottom: 15px;
 }
 
 .footer__widget .footer__widget__social a:last-child {
@@ -2906,7 +2907,7 @@ ol {
 }
 
 .footer__copyright__payment {
-    float: right;
+    float: left;
 }
 
 /*---------------------
