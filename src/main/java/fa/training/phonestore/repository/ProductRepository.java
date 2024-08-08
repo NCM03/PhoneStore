@@ -32,6 +32,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     )
     Page<Product> findByCategory(int categoryID,Pageable pageable);
 
-    @Query(value = "SELECT imageData FROM product WHERE imageData = :param", nativeQuery = true)
+    @Query(value = "SELECT top 1 imageData FROM product WHERE imageData Like :param", nativeQuery = true)
     String findImgData(@Param("param") String param);
 }

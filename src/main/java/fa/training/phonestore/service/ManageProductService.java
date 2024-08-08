@@ -12,7 +12,7 @@ import java.util.List;
 public interface ManageProductService {
     public List<ProductImage> saveImages(List<String> imageNames) ;
     public void saveProductInfo(Product product, List<ProductInfoDTO> productSupList, MultipartFile[] fileSupProduct) ;
-    public void saveProduct(Product product, String extension) ;
+    public void saveProduct(Product product) ;
     public void replaceProduct(Product newProduct);
     public void replaceProductInfo(ProductInfo newProductInfo, String newUrl, int imageId);
     }

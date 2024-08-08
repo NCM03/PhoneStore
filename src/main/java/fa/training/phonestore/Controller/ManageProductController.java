@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/manage-product")
 public class ManageProductController {
     @Autowired
     private ProductInfoService productInfoService;
@@ -40,7 +41,7 @@ public class ManageProductController {
     @Autowired
     private ProductStatusRepository productStatusRepository;
 
-    @RequestMapping(value = "/manage-product", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String manageProduct(Model model) {
         List<Category> category = categoryService.findAll();
         List<Brand> brand = brandService.findAll();
@@ -76,22 +77,22 @@ public class ManageProductController {
         try {
             System.out.println("imgProduct: " + imgProduct.getOriginalFilename());
             System.out.println("Number of files: " + fileArray.length);
-
             product.setCategoryId(category);
             product.setBrandId(brand);
-// Xử lý ảnh
             String extension = FilenameUtils.getExtension(imgProduct.getOriginalFilename());
             String baseURL = String.valueOf(product.getProductName());
             String newURL = baseURL;
             int counter = 1;
             while (productService.findImageData(newURL + "." + extension)) {
                 newURL = baseURL + counter;
-                counter++;
+                counter+=1;
 //                System.out.println("Đổi URL thành: " + newURL);
             }
             storageService.store(imgProduct, newURL);
             product.setImageData(newURL + "." + extension);
-            manageProductService.saveProduct(product, extension);
+            System.out.println("chạy ở đây");
+            manageProductService.saveProduct(product);
+            System.out.println("chạy ở đây");
             ObjectMapper objectMapper = new ObjectMapper();
             if (productsJson.startsWith(",")) {
                 productsJson = productsJson.substring(1);

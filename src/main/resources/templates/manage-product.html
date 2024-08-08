@@ -283,7 +283,7 @@
                                                 <i class="fa-solid fa-pen"></i>
                                             </button>
                                             <form method="post"
-                                                  style="display: inline;" th:action="@{/edit_mainProduct/status}"
+                                                  style="display: inline;" th:action="@{/manage-product/edit_mainProduct/status}"
                                                   th:if="${product.getStatus() == 1}">
                                                 <input name="productId" th:value="${product.getProductId()}"
                                                        type="hidden"/>
@@ -293,7 +293,7 @@
                                             </form>
 
                                             <form method="post"
-                                                  style="display: inline;" th:action="@{/edit_mainProduct/status}"
+                                                  style="display: inline;" th:action="@{/manage-product/edit_mainProduct/status}"
                                                   th:if="${product.getStatus() != 1}">
                                                 <input name="productId" th:value="${product.getProductId()}"
                                                        type="hidden"/>
@@ -391,7 +391,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="edit_mainProduct" enctype="multipart/form-data" id="editProduct"
+                    <form action="/manage-product/edit_mainProduct" enctype="multipart/form-data" id="editProduct"
                           method="post" onsubmit="return confirmSave();"
                           role="form" th:object="${productEdit}">
                         <div class="form-group">
@@ -459,7 +459,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/edit_productInfo" enctype="multipart/form-data" id="editProductInfoForm"
+                    <form action="/manage-product/edit_productInfo" enctype="multipart/form-data" id="editProductInfoForm"
                           method="post"
                           onsubmit="return confirmSave()" th:object="${productInfoEdit}">
                         <div class="form-group">
@@ -598,11 +598,11 @@
                             class="fas fa-xmark"></i></button>
 
                 </div>
-                <form action="add-product" enctype="multipart/form-data" id="uploadForm" method="post" role="form"
+                <form  action="/manage-product/add-product" method="post" onsubmit="return saveProducts();" enctype="multipart/form-data" id="uploadForm" role="form"
                       th:object="${productForm}">
                     <input id="productsInput" name="products" type="hidden">
                     <div class="modal-body">
-                        <input hidden multiple name="files" type="file">
+                        <input hidden multiple id="files" name="files" type="file">
                         <div class="form-group">
                             <label>Hình ảnh sản phẩm chính:</label>
                             <br>
@@ -932,9 +932,6 @@
         }
     }
 
-    document.getElementById("uploadForm").addEventListener("submit", function (event) {
-        saveProducts();
-    });
 
     function saveProducts() {
         const formData = new FormData(document.getElementById('uploadForm'));
@@ -978,14 +975,14 @@
         console.log(JSON.stringify(products));
         // Gửi dữ liệu qua AJAX
         $.ajax({
-            url: '/add-product',
+            url: '/manage-product/add-product',
             type: 'POST',
             data: formData,
             processData: false, // Để jQuery không xử lý dữ liệu
             contentType: false, // Để jQuery không set contentType
             success: function (data) {
                 console.log(data);
-                window.location.href = 'http://localhost:8080/manage-product';
+                window.location.href = '/manage-product';
             },
             error: function (xhr, status, error) {
                 // Xử lý lỗi
@@ -993,7 +990,7 @@
                 console.error('Response Text:', xhr.responseText);
             }
         });
-
+        return false;
     }
 
 

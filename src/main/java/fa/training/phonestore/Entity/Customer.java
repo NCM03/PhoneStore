@@ -38,7 +38,7 @@ public class Customer {
     @Column(name="Address")
     private String address;
     @OneToOne
-    @JoinColumn(name = "AccountID")
+    @JoinColumn(name = "CustomerID")
     private Account account;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

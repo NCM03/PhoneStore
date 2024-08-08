@@ -102,10 +102,11 @@ public class ManageProductServiceImp implements ManageProductService {
 
     public void saveProductInfo(Product product, List<ProductInfoDTO> productInfoList, MultipartFile[] fileSupProduct) {
         List<MultipartFile> fileSupProductList = new ArrayList<>(List.of(fileSupProduct));
+        ProductStatus productStatus = new ProductStatus();
         for (ProductInfoDTO productInfoDTO : productInfoList) {
             ProductInfo productInfo = new ProductInfo();
             productInfo.setProduct(product);
-            productInfo.setProductInfoName(product.getProductName() + " " + productInfoDTO.getCapacity() + " " + productInfoDTO.getColor());
+            productInfo.setProductInfoName(product.getProductName() + " " + productInfoDTO.getCapacity() + "G " + productInfoDTO.getColor());
             productInfo.setCapacity(Integer.parseInt(productInfoDTO.getCapacity()));
             productInfo.setRam(Integer.parseInt(productInfoDTO.getRam()));
             productInfo.setColor(productInfoDTO.getColor());
@@ -114,6 +115,8 @@ public class ManageProductServiceImp implements ManageProductService {
             productInfo.setDescription(productInfoDTO.getDescription());
             productInfo.setImportDate(LocalDateTime.now());
             productInfo.setQuantitySold(0);
+            productStatus.setStatusId(1);
+            productInfo.setProductInfoStatus(productStatus);
             productInfoRepositoryNotPageble.save(productInfo);
             System.out.println("lỗi");
             // Tạo danh sách sao lưu để tránh ConcurrentModificationException
@@ -121,8 +124,8 @@ public class ManageProductServiceImp implements ManageProductService {
 
             for (MultipartFile file : fileSupProductList) {
                 System.out.println("Xử lý tệp: " + file.getOriginalFilename());
+                String extension = FilenameUtils.getExtension(file.getOriginalFilename());
                 if (productInfoDTO.getImageUrl().contains(file.getOriginalFilename())) {
-                    String extension = FilenameUtils.getExtension(file.getOriginalFilename());
                     String baseURL = String.valueOf(productInfo.getProductInfoId());
                     String newURL = baseURL;
                     int counter = 1;
@@ -147,7 +150,8 @@ public class ManageProductServiceImp implements ManageProductService {
         }
     }
 
-    public void saveProduct(Product product, String extension) {
+    public void saveProduct(Product product) {
+        product.setStatus(1);
         product.setWarrantyPeriod(LocalDateTime.now());
         productRepository.save(product);
     }
