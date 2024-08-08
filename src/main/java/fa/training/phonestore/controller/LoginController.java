@@ -82,7 +82,6 @@ public class LoginController {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("jwtToken", token);
                 session.setAttribute("account", account);
-                session.setAttribute("id", account.getAccountId());
                 if ("admin".equals(role)) {
 
                     return new ModelAndView("redirect:/Account/Admin");
