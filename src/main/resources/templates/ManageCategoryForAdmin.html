@@ -74,7 +74,7 @@
         <div th:insert="~{sidebar :: sidebar}"></div>
     </div>
     <div class="content flex-grow-1 p-3">
-        <h1 class="text-center">Manage Brands</h1>
+        <h1 class="text-center">Manage Category</h1>
         <section class="intro">
             <div class="container">
                 <div class="row justify-content-center">
@@ -117,30 +117,30 @@
                                 <thead>
                                 <tr>
                                     <th>
-                                        <a th:href="@{/Admin/ManageCategory(page=0,size=${size},sortField='categoryID',sortDir=${sortField == 'categoryID' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
+                                        <a th:href="@{/Admin/ManageCategory(page=0,size=${size},sortField='categoryId',sortDir=${sortField == 'categoryId' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
                                             Category ID
-                                            <i th:if="${sortField == 'categoryID'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                            <i th:if="${sortField == 'categoryId'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                                         </a>
                                     </th>
                                     <th>
-                                        <a th:href="@{/Admin/ManageCategory(page=0,size=${size},sortField='categoryName',sortDir=${sortField == 'categoryName' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
+                                        <a th:href="@{/Admin/ManageCategory(page=0,size=${size},sortField='name',sortDir=${sortField == 'name' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
                                             Category Name
-                                            <i th:if="${sortField == 'categoryName'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                            <i th:if="${sortField == 'name'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                                         </a>
                                     </th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="category : ${categoryList}" th:data-category-id="${category.categoryID}">
-                                    <td th:text="${category.categoryID}"></td>
-                                    <td th:text="${category.categoryName}"></td>
+                                <tr th:each="category : ${categoryList}" th:data-category-id="${category.categoryId}">
+                                    <td th:text="${category.categoryId}"></td>
+                                    <td th:text="${category.name}"></td>
                                     <td>
                                         <button class="btn btn-warning btn-sm update-btn"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#updateModal"
-                                                th:data-category-id="${category.categoryID}"
-                                                th:data-category-name="${category.categoryName}">
+                                                th:data-category-id="${category.categoryId}"
+                                                th:data-category-name="${category.name}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                         <button class="btn btn-danger btn-sm">
@@ -281,7 +281,7 @@
                             successAlert.innerText = 'Category updated successfully';
                             successAlert.style.display = 'block';
 
-                            var updatedRow = document.querySelector(`tr[data-category-id="${categoryID}"]`);
+                            var updatedRow = document.querySelector(`tr[data-category-id="${categoryId}"]`);
                             if (updatedRow) {
                                 updatedRow.querySelector('td:nth-child(2)').innerText = categoryName;
                             }
@@ -300,7 +300,7 @@
                 }
             };
 
-            var data = JSON.stringify({ categoryID: categoryID, categoryName: categoryName });
+            var data = JSON.stringify({ categoryId: categoryID, name: categoryName });
             xhr.send(data);
         });
     });

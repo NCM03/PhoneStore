@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface BrandRespository extends JpaRepository<Brand, Integer> {
     Page<Brand> findAll(Pageable pageable);
-    Page<Brand> findBrandByBrandNameContaining(String brandName, Pageable pageable);
-    boolean deleteBrandByBrandID(int brandID);
-    boolean existsBrandByBrandName(String brandName);
+    Page<Brand> findBrandByNameContaining(String brandName, Pageable pageable);
+    boolean deleteBrandByBrandId(int brandID);
+    boolean existsBrandByName(String brandName);
     List<Brand> findAll();
 }

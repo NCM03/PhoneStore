@@ -15,13 +15,18 @@ public class CategoryService implements CategoryServiceImp {
     CategoryRepository categoryRepository;
 
     @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
     public Page<Category> findAllCategories(Pageable pageable) {
         return categoryRepository.findAll(pageable);
     }
 
     @Override
     public Page<Category> findCategoriesByCategoryNameContaining(String Name, Pageable pageable) {
-        return categoryRepository.findCategoryByCategoryNameContaining(Name, pageable);
+        return categoryRepository.findCategoryByNameContaining(Name, pageable);
     }
     @Override
     public Category saveCategory(Category category) {
@@ -29,6 +34,6 @@ public class CategoryService implements CategoryServiceImp {
     }
     @Override
     public boolean existsCategoryByCategoryName(String categoryName) {
-        return categoryRepository.existsCategoryByCategoryName(categoryName);
+        return categoryRepository.existsCategoryByName(categoryName);
     }
 }

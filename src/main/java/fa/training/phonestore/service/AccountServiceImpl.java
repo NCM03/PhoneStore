@@ -44,7 +44,13 @@ public class AccountServiceImpl implements AccountService {
     public Page<Account> findAccountsByUsername(String username, Pageable pageable) {
         return accountRespository.findByUsernameContaining(username, pageable);
     }
-   @Override
+
+    @Override
+    public Account saveAccount(Account account) {
+        return accountRespository.save(account);
+    }
+
+    @Override
    public Page<Account> findAllAccounts(Pageable pageable) {
        return accountRespository.findAll(pageable);
    }

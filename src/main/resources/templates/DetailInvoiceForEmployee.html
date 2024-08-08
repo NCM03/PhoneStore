@@ -196,10 +196,10 @@
             </tr>
 
             <tr class="item"th:each="ie : ${invoiceItems}">
-                <td th:text="${ie.productSupport.productSupName}"></td>
-                <td th:text="${ie.productSupport.capacity}"></td>
-                <td th:text="${ie.productSupport.ram}"></td>
-                <td th:text="${ie.productSupport.color}"></td>
+                <td th:text="${ie.productInfo.productInfoName}"></td>
+                <td th:text="${ie.productInfo.capacity}"></td>
+                <td th:text="${ie.productInfo.ram}"></td>
+                <td th:text="${ie.productInfo.color}"></td>
                 <td th:text="${ie.quantity}"></td>
                 <td th:text="${ie.price}" th:data-price="${ie.price}"></td>
 

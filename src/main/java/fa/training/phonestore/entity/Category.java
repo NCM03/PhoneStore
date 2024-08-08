@@ -17,10 +17,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CategoryID")
-    private Integer categoryID;
+    private Integer categoryId;
 
-    @Column(name = "categoryName")
-    private String categoryName;
+    @Column(name = "categoryName", nullable = false, length = 50)
+    private String name;
 
     // Các getter và setter
 }

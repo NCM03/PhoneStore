@@ -13,7 +13,7 @@ Account searchUser(String username);
     Account getUser(String username);
      Page<Account> findAllAccounts(Pageable pageable);
     Page<Account> findAccountsByUsername(String username, Pageable pageable);
-
+    Account saveAccount(Account account);
    Account save(Account account);
     Account update(Account account);
 Account seachAccountById(int id);

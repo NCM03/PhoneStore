@@ -6049,7 +6049,7 @@ a.close.disabled {
 
 .modal-header .close {
   padding: 1rem 1rem;
-  margin: -1rem -1rem -1rem auto;
+  margin-top: -2px;
 }
 
 .modal-title {

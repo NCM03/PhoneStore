@@ -30,8 +30,8 @@ public class InvoiceItem {
     @Column(name = "InvoiceID")
     private int invoiceID;
     @ManyToOne
-    @JoinColumn(name = "ProductInfoID")
-    private ProductSupport productSupport;
+    @JoinColumn(name = "ProducInfoID")
+    private ProductInfo productInfo;
 
     @Column(name = "Quantity", nullable = false)
     private int quantity;
@@ -40,7 +40,7 @@ public class InvoiceItem {
     private BigDecimal price;
 
     @Column(name = "Discount", nullable = false, precision = 5, scale = 2)
-    private double disCount;
+    private BigDecimal disCount;
 
 
 }

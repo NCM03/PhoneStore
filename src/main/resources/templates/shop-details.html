@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="Ogani Template" name="description">
+    <meta content="Ogani, unica, creative, html" name="keywords">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-grid.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-reboot.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/elegant-icons.css" rel="stylesheet" type="text/css">
+    <link href="/css/nice-select.css" rel="stylesheet" type="text/css">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/owl.carousel.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/slicknav.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<style>
+    .active {
+        /*background-color: red;*/
+        color: red;
+        /*border-color: #007bff;*/
+    }
+</style>
+<!-- Include the menu -->
+<div th:replace="~{menu.html :: body}"></div>
+<!-- Hero Section End -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img alt="Product details image" class="product__details__pic__item--large"
+                             id="mainImg"
+                             style="object-fit: contain; height: 400px;"
+                             th:src="@{/img/ProductImg/__${Product.getImageData()}__}">
+                        <!--                             th:src="@{/static/img/ProductImg/__${Product.getImageData()}__}"-->
+                    </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        <!--                        <img data-imgbigurl="/img/ProductImg/image1.jpg"-->
+                        <!--                             src="/img/ProductImg/image1.jpg" alt="">-->
+                        <img alt="Product Image"
+                             style="object-fit: contain; width: 100%; height: auto; max-width: 300px; display: block; margin: 0 auto;"
+                             th:attr="data-imgbigurl=@{/img/ProductImg/__${Product.getImageData()}__}"
+                             th:src="@{/img/ProductImg/__${Product.getImageData()}__}">
+
+                        <img alt="Product Image"
+                             style="object-fit: contain; width: 100%; height: auto; max-width: 300px; display: block; margin: 0 auto;"
+                             th:attr="data-imgbigurl=@{/img/ProductImg/__${image.getImageURL()}__}"
+                             th:each="image: ${ProductImage}"
+                             th:src="@{/img/ProductImg/__${image.getImageURL()}__}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text ">
+                    <h1 th:text="${Product.getProductName()}"></h1>
+                    <div style="display: flex; flex-direction: column;">
+                        <p>ID sản phẩm: <span th:text="${Product.getProductId()}"></span></p>
+                        <div style="font-size: 150%; display: flex; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                            <b style="width:30%;font-family: 'Arial'">Ram: </b>
+                            <button class="ramCart"
+                                    onclick="selectRam(this)"
+                                    style="margin-right: 10px; background-color: white; border-radius: 5px; border-color: #808080;"
+                                    th:data-productid="${Product.getProductId()}"
+                                    th:data-ram="${ram}"
+                                    th:each="ram : ${uniqueRams}"
+                                    th:text="${ram} + 'G'">
+                            </button>
+                            <div data-ram="" hidden="" id="ramCart"></div>
+                        </div>
+                        <div style="font-size: 150%; display: flex; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                            <b style="width:30%;font-family: 'Arial'">Dung lượng: </b>
+                            <button class="capacityCart"
+                                    style="margin-right: 10px;color: #dee2e6; background-color: white; border-radius: 5px; border-color: #808080;"
+                                    th:data-capacity="${capacity} "
+                                    th:data-productid="${Product.getProductId()}"
+                                    th:each="capacity : ${uniqueCapacities}"
+                                    th:text="${capacity} + 'G'">
+                            </button>
+                            <div data-capacity="" hidden="" id="capacityCart"></div>
+                        </div>
+                        <div style="margin-right: 10px;font-size: 150%; display: grid; grid-template-columns: 30% 1fr; align-items: center; margin-bottom: 10px; gap: 10px;">
+                            <b style=" align-self: start;font-family: 'Arial';">Màu sắc:</b>
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                <button class="colorCart"
+                                        style="margin-left:1px;background-color: white;color: #dee2e6; border-radius: 5px; border-color: #808080;"
+                                        th:data-color="${color} "
+                                        th:data-productid="${Product.getProductId()}"
+                                        th:each="color : ${uniqueColors}"
+                                        th:text="${color}">
+                                </button>
+                            </div>
+                            <div data-color="" hidden="" id="colorCart"></div>
+                        </div>
+                    </div>
+                    <span style="font-size: 25px">Giá:</span> <span class="product__details__price"
+                                                                    id="priceCart"
+                                                                    th:each="productInfo, iterStat : ${ProductInfo}"
+                                                                    th:if="${iterStat.index == 0}"
+                                                                    th:text="${productInfo.getPrice()}"></span><span
+                        class="product__details__price"> VNĐ</span>
+                    <p>Comment: <span th:text="${Product.getComment()}"></span></p>
+                    <div class="row" style="display: flex; align-items: center;">
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input id="quantityCart" max="" min="1" type="text" value="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div data-quantity="0" id="quantityContain"></div>
+                    </div>
+                    <style>
+                        .product__details__quantity {
+                            display: inline-block;
+                            margin-right: 10px; /* Điều chỉnh khoảng cách giữa các div nếu cần thiết */
+                        }
+                    </style>
+                    <input hidden id="productIdCart" type="text" value="">
+                    <button class="primary-btn" href="#" onclick="addToCart()">ADD TO CARD</button>
+                    <button class="primary-btn" href="#" type="submit">BUY</button>
+                    <ul>
+
+                        <li><b style="font-family: 'Arial'">Thông số kĩ thuật: </b></li>
+                        <li><b>Availability</b> <span>In Stock</span></li>
+                        <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+                        <li><b>Weight</b> <span>0.5 kg</span></li>
+                        <li><b>Share on</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+
+<!-- Related Product Section Begin -->
+<section class="related-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title related__product__title">
+                    <h2>Related Product</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-1.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-2.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-3.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="/img/product/product-7.jpg">
+                        <ul class="product__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Crab Pool Security</a></h6>
+                        <h5>$30.00</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related Product Section End -->
+
+<!-- Footer Section Begin -->
+<footer class="footer spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <div class="footer__about__logo">
+                        <a href="/"><img alt="" src="/img/logo.png"></a>
+                    </div>
+                    <ul>
+                        <li>Address: 60-49 Road 11378 New York</li>
+                        <li>Phone: +65 11.188.888</li>
+                        <li>Email: hello@colorlib.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                <div class="footer__widget">
+                    <h6>Useful Links</h6>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">About Our Shop</a></li>
+                        <li><a href="#">Secure Shopping</a></li>
+                        <li><a href="#">Delivery infomation</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Our Sitemap</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="#">Who We Are</a></li>
+                        <li><a href="#">Our Services</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Innovation</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="footer__widget">
+                    <h6>Join Our Newsletter Now</h6>
+                    <p>Get E-mail updates about our latest shop and special offers.</p>
+                    <form action="#">
+                        <input placeholder="Enter your mail" type="text">
+                        <button class="site-btn" type="submit">Subscribe</button>
+                    </form>
+                    <div class="footer__widget__social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="footer__copyright">
+                    <div class="footer__copyright__text">
+                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                            All rights reserved | This template is made with <i aria-hidden="true"
+                                                                                class="fa fa-heart"></i> by <a
+                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                    </div>
+                    <div class="footer__copyright__payment"><img alt="" src="/img/payment-item.png"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+<script>
+    function selectRam(button) {
+        document.querySelectorAll('.ramCart').forEach(element => {
+            element.style.borderColor = 'Black'
+        })
+        document.getElementById("quantityCart").value = "1";
+        document.getElementById("productIdCart").value = "";
+        button.style.borderColor = 'red';
+        var ram = button.getAttribute('data-ram');
+        var productId = button.getAttribute('data-productid');
+        document.getElementById('ramCart').setAttribute('data-ram', ram)
+        document.getElementById('capacityCart').setAttribute('data-capacity', "");
+        document.getElementById('colorCart').setAttribute('data-color', "");
+        const colorCart = document.querySelectorAll('.coloCart');
+        colorCart.forEach(element => {
+            element.onclick = null;
+        });
+        document.querySelectorAll('.capacityCart').forEach(element => {
+            element.style.borderColor = 'Black'
+            element.style.color = '#dee2e6';
+        })
+        document.querySelectorAll('.colorCart').forEach(element => {
+            element.style.borderColor = 'Black'
+            element.style.color = '#dee2e6';
+        })
+
+        const capacityCart = document.querySelectorAll('.capacityCart');
+        capacityCart.forEach(element => {
+            element.onclick = null;
+        });
+
+
+        $.ajax({
+            url: '/api/select-ram/' + ram + '/' + productId,
+            type: 'GET',
+            processData: false,
+            contentType: false,
+            success: function (capacities) {
+                console.log(capacities);
+                // Lấy tất cả các phần tử có class là "color"
+                $('.capacityCart').each(function () {
+                    var $this = $(this);
+                    var capacity = $this.text().trim();
+                    if (capacity.endsWith('G')) {
+                        capacity = capacity.slice(0, -1);
+                    }
+                    // Kiểm tra nếu màu không tồn tại trong danh sách colors
+                    if (capacities != capacity) {
+                        // Xóa sự kiện onclick nếu có
+                        $this.css('color', '#dee2e6'); // Đặt màu của phần tử này thành màu trắng
+                    } else {
+                        console.log(capacity);
+                        $this.on('click', function () {
+                            selectCapacity(this);
+                        });
+                        $this.css('color', 'black'); // Đặt màu của phần tử này thành màu đen nếu có trong danh sách colors
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function selectCapacity(button) {
+        document.querySelectorAll('.capacityCart').forEach(element => {
+            element.style.borderColor = 'Black'
+        })
+        button.style.borderColor = 'red';
+        document.getElementById('colorCart').setAttribute('data-capacity', "")
+        var capacity = button.getAttribute('data-capacity');
+        document.getElementById('capacityCart').setAttribute('data-capacity', capacity)
+        var productId = button.getAttribute('data-productid');
+        var ram = document.getElementById('ramCart').getAttribute('data-ram')
+        document.getElementById('colorCart').setAttribute('data-color', "");
+        const colorCart = document.querySelectorAll('.coloCart');
+        colorCart.forEach(element => {
+            element.onclick = null;
+        });
+        $.ajax({
+            url: '/api/select-capacity/' + ram + '/' + capacity + '/' + productId,
+            type: 'GET',
+            processData: false,
+            contentType: false,
+            success: function (colors) {
+                console.log(colors);
+                // Lấy tất cả các phần tử có class là "color"
+                $('.colorCart').each(function () {
+                    var $this = $(this);
+
+                    var color = $this.text().trim();
+                    console.log(color);
+                    if (!colors.includes(color)) {
+                        // $this.removeAttr('onclick'); // Xóa sự kiện onclick nếu có
+                        $this.css('color', '#dee2e6'); // Đặt màu của phần tử này thành màu trắng
+                    } else {
+                        $this.css('color', 'black');
+                        $this.on('click', function () {
+                            selectColor(this);
+                        });// Đặt màu của phần tử này thành màu đen nếu có trong danh sách colors
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function selectColor(button) {
+        var formData = new FormData();
+        var colorCart = button.getAttribute('data-color');
+        var productId = button.getAttribute('data-productid');
+        document.getElementById('colorCart').setAttribute('data-color', colorCart);
+        var color = document.getElementById('colorCart').getAttribute('data-color');
+        var ram = document.getElementById('ramCart').getAttribute('data-ram');
+        var capacity = document.getElementById('capacityCart').getAttribute('data-capacity');
+        document.querySelectorAll('.colorCart').forEach(element => {
+            element.style.borderColor = 'Black';
+        });
+        button.style.borderColor = 'red';
+        console.log(ram)
+        console.log(color)
+        console.log(capacity)
+        console.log(productId)
+        var url = '/api/select-color/' + ram + '/' + capacity + '/' + productId + '?color=' + encodeURIComponent(color);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (product) {
+                console.log(product);
+                $('#priceCart').text(formatPrice(product.price));
+                $('#quantityContain').text('Số lượng còn lại: ' + product.quantity);
+                $('#quantityContain').attr('data-quantity', product.quantity);
+                $('#quantityCart').attr('max', product.quantity);
+                $('#mainImg').attr('src', '/img/ProductImg/' + product.productImages[0].imageURL);
+                $('#productIdCart').val(product.productInfoId);
+
+                // Xử lý kết quả trả về
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', xhr.responseText);
+            }
+        });
+    }
+
+    function addToCart() {
+
+        if (document.getElementById("productIdCart").value === "") {
+            alert("Vui lòng chọn thông số");
+            return;
+        }
+        var productId = document.getElementById("productIdCart").value;
+        // Giả sử bạn có một biến quantity để so sánh
+        if (isNaN(parseInt(document.getElementById("quantityCart").value)
+            || parseInt(document.getElementById("quantityCart").value) <= 0
+        )) {
+            alert("Số lượng không thích hợp");
+            return;
+        }
+        // Kiểm tra productId
+        var quantityCart = parseInt(document.getElementById("quantityCart").value);
+        var quantityContain = parseInt(document.getElementById("quantityContain").getAttribute("data-quantity"));
+
+        if (quantityCart > quantityContain) {
+            alert("Số lượng không được lớn hơn " + quantityContain);
+            return;
+        }
+        console.log(productId)
+        console.log(quantityCart)
+        console.log(document.getElementById("quantityContain").getAttribute("data-quantity"))
+
+        alert("Thêm thành công");
+        $.ajax({
+            url: '/api/addToCart/' + quantityCart +'/'+ productId ,
+            type: 'POST',
+            success: function (cart) {
+                if (!cart) {
+                    window.location.href = "/Login";
+                } else {
+                    console.log(cart);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', xhr.responseText);
+            }
+        });
+
+    }
+
+    function formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var priceElement = document.getElementById("priceCart");
+        if (priceElement) {
+            var price = priceElement.textContent.trim();
+            priceElement.textContent = formatPrice(price);
+        }
+    });
+</script>
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/a1f1039e75.js"></script>
+
+</body>
+
+</html>

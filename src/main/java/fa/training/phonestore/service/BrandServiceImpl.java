@@ -23,7 +23,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Page<Brand> findBrandsByBrandNameContaining(String brandName, Pageable pageable) {
-        return brandRepository.findBrandByBrandNameContaining(brandName, pageable);
+        return brandRepository.findBrandByNameContaining(brandName, pageable);
     }
 
     @Override
@@ -32,11 +32,11 @@ public class BrandServiceImpl implements BrandService {
     }
     @Override
     public boolean deleteBrandByBrandID(int brandID) {
-        return brandRepository.deleteBrandByBrandID(brandID);
+        return brandRepository.deleteBrandByBrandId(brandID);
     }
     @Override
     public boolean existsBrandByBrandName(String brandName) {
-        return brandRepository.existsBrandByBrandName(brandName);
+        return brandRepository.existsBrandByName(brandName);
     }
 
     @Override

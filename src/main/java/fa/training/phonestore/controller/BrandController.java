@@ -18,7 +18,7 @@ public class BrandController {
 
     @PostMapping("/deleteBrand")
     public String deleteBrand(@ModelAttribute("brand") Brand brand){
-        brandService.deleteBrandByBrandID(brand.getBrandID());
+        brandService.deleteBrandByBrandID(brand.getBrandId());
         return "ManageBrandForAdmin";
     }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 2612
+  port: 8080
   servlet:
     context-path: /
   error:
@@ -14,7 +14,7 @@ spring:
     availability:
       enabled: true
   datasource:
-    url: "jdbc:sqlserver://localhost:1433;databaseName=PhoneStore;encrypt=true;trustServerCertificate=true;"
+    url: "jdbc:sqlserver://localhost:1433;databaseName=PhoneStore10;encrypt=true;trustServerCertificate=true;"
     driver-class-name: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     username: sa
     password: sa  # Thay your_password_here bằng mật khẩu thực tế của bạn
@@ -42,3 +42,12 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+    security:
+      user:
+        name: hung
+        password: 1

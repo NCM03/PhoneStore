@@ -5,7 +5,7 @@ public class SecurityConstraints {
 
     public static final String BEARER = "Bearer ";
     public static final String AUTHORIZATION = "Authorization";
-    public static final String Authenticate="http://localhost:2612/authenticate";
+    public static final String Authenticate="http://localhost:8080/authenticate";
     public static final long TOKEN_EXPIRATION = 604_800_000; // 15 minutes
     public static final long REMEMBER_ME_EXPIRATION = 604_800_000; // 7 days
 }

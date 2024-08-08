@@ -77,23 +77,19 @@ public class AccountController {
                                 @RequestParam(defaultValue = "5") int size,
                                 @RequestParam(required = false) Integer selectedSize,
                                 @RequestParam(required = false) String searchTerm,
-                                @RequestParam(required = false) String sortField) {
+                                @RequestParam(defaultValue = "accountId") String sortField,
+                                @RequestParam(defaultValue = "DESC") String sortDirection) {
 
         // Update size if selectedSize is provided
         try {
-
-
             if (selectedSize != null) {
                 size = selectedSize;
             }
 
-            // Create pageable request with sorting if sortField is provided
-            Pageable pageable;
-            if (sortField != null && !sortField.isEmpty()) {
-                pageable = PageRequest.of(page, size, Sort.by(sortField));
-            } else {
-                pageable = PageRequest.of(page, size);
-            }
+            // Create pageable request with sorting
+            Sort.Direction direction = Sort.Direction.valueOf(sortDirection);
+            Sort sort = Sort.by(direction, sortField);
+            Pageable pageable = PageRequest.of(page, size, sort);
 
             // Call service to get accounts based on search term and pageable request
             Page<Account> accountPage;
@@ -102,7 +98,8 @@ public class AccountController {
             } else {
                 accountPage = accountService.findAllAccounts(pageable);
             }
-            Account account= new Account();
+            Account account = new Account();
+
             // Add attributes to model
             m.addAttribute("accountList", accountPage.getContent());
             m.addAttribute("currentPage", page);
@@ -111,9 +108,10 @@ public class AccountController {
             m.addAttribute("size", size);
             m.addAttribute("searchTerm", searchTerm);
             m.addAttribute("sortField", sortField);
+            m.addAttribute("sortDirection", sortDirection);
             m.addAttribute("account", account);
             return "AdminManageAccount";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "AdminManageAccount";
         }
     }
@@ -294,17 +292,17 @@ public class AccountController {
 
     //CHange active account
     @PostMapping("/take-Activities")
-    public String changeActive(@RequestParam int accountId, RedirectAttributes redirectAttributes) {
+    public String changeActive(@RequestParam int accountId1, RedirectAttributes redirectAttributes) {
         try {
 
 
-            Account account = accountService.seachAccountById(accountId);
+            Account account = accountService.seachAccountById(accountId1);
             if (account.isActive() == false) {
                 account.setActive(true);
             } else {
                 account.setActive(false);
             }
-            accountService.save(account);
+            accountService.saveAccount(account);
             redirectAttributes.addFlashAttribute("successFullMessage", "Change Acitivies successfull");
             return "redirect:/Account/GetAllAccount";
         }catch (Exception e){

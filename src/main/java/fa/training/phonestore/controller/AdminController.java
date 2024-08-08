@@ -3,8 +3,10 @@ package fa.training.phonestore.controller;
 import fa.training.phonestore.entity.Account;
 import fa.training.phonestore.entity.Brand;
 import fa.training.phonestore.entity.Category;
+import fa.training.phonestore.helper.HelperToken;
 import fa.training.phonestore.service.imp.BrandService;
 import fa.training.phonestore.service.imp.CategoryServiceImp;
+import fa.training.phonestore.utils.JwtUtils;
 import jakarta.validation.Valid;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -38,14 +40,15 @@ public class AdminController {
     @Autowired
     private CategoryServiceImp categoryServiceImp;
 
-
+    JwtUtils jwtUtils = new JwtUtils();
+    HelperToken helperToken;
     @GetMapping("/ManageBrand")
     public String getListBrand(Model m,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "5") int size,
                                @RequestParam(required = false) Integer selectedSize,
                                @RequestParam(required = false) String searchTerm,
-                               @RequestParam(defaultValue = "brandID") String sortField,
+                               @RequestParam(defaultValue = "brandId") String sortField,
                                @RequestParam(defaultValue = "desc") String sortDir) {
 
         try {
@@ -106,9 +109,9 @@ public class AdminController {
             response.put("errors", errors);
             return ResponseEntity.ok(response);
         }
-        if (brandService.existsBrandByBrandName( brand.getBrandName()) == true){
+        if (brandService.existsBrandByBrandName( brand.getName()) == true){
             Map<String, String> errors = new HashMap<>();
-            errors.put("brandName", "Brand name already exists");
+            errors.put("name", "Brand name already exists");
             response.put("errors", errors);
             return ResponseEntity.ok(response);
         }
@@ -132,9 +135,9 @@ public class AdminController {
             response.put("errors", errors);
             return ResponseEntity.ok(response);
         }
-        if (brandService.existsBrandByBrandName(brand.getBrandName()) == true) {
+        if (brandService.existsBrandByBrandName(brand.getName()) == true) {
             Map<String, String> errors = new HashMap<>();
-            errors.put("brandName", "Brand name already exists");
+            errors.put("name", "Brand name already exists");
             response.put("errors", errors);
             return ResponseEntity.ok(response);
         }
@@ -158,7 +161,7 @@ public class AdminController {
 
             // Mặc định sắp xếp theo categoryID giảm dần nếu không có sortField hoặc sortDir
             if (sortField == null || sortField.isEmpty()) {
-                sortField = "categoryID";
+                sortField = "categoryId";
             }
             if (sortDir == null || sortDir.isEmpty()) {
                 sortDir = "desc";
@@ -206,7 +209,7 @@ public  ResponseEntity<Map<String, Object>> addCategory(
         response.put("errors", errors);
         return ResponseEntity.ok(response);
     }
-    if (categoryServiceImp.existsCategoryByCategoryName(category.getCategoryName()) == true) {
+    if (categoryServiceImp.existsCategoryByCategoryName(category.getName()) == true) {
         Map<String, String> errors = new HashMap<>();
         errors.put("categoryName", "Category name already exists");
         response.put("errors", errors);
@@ -235,7 +238,7 @@ public  ResponseEntity<Map<String, Object>> addCategory(
             response.put("errors", errors);
             return ResponseEntity.ok(response);
         }
-        if (categoryServiceImp.existsCategoryByCategoryName(category.getCategoryName()) == true) {
+        if (categoryServiceImp.existsCategoryByCategoryName(category.getName()) == true) {
             Map<String, String> errors = new HashMap<>();
             errors.put("categoryName", "Category name already exists");
             response.put("errors", errors);
@@ -259,8 +262,8 @@ public  ResponseEntity<Map<String, Object>> addCategory(
             int rowNum = 1;
             for (Brand brand : brandList) {
                 Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(brand.getBrandID());
-                row.createCell(1).setCellValue(brand.getBrandName());
+                row.createCell(0).setCellValue(brand.getBrandId());
+                row.createCell(1).setCellValue(brand.getName());
             }
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();

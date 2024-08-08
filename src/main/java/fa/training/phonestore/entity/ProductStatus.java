@@ -1,10 +1,13 @@
 package fa.training.phonestore.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +24,8 @@ public class ProductStatus {
 
     @Column(name = "StatusName", nullable = false, length = 50)
     private String statusName;
+
+    @OneToMany(mappedBy = "productInfoStatus", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ProductInfo> productInfos;
 }

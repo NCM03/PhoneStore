@@ -85,7 +85,7 @@
                                 <h2>PhoneStore</h2>
                             </td>
                             <td class="text-end">
-                                <span th:text="${invoice.invoiceId}"> </span><br>
+                              mã hóa đơn:     <span th:text="${invoice.invoiceId}"> </span><br>
                                 <span id="currentDate"th:text="${invoice.invoiceDate}"></span><br>
                             </td>
                         </tr>
@@ -136,10 +136,10 @@
             </tr>
 
             <tr class="item"th:each="ie : ${invoiceItems}">
-                <td th:text="${ie.productSupport.productSupName}"></td>
-                <td th:text="${ie.productSupport.capacity}"></td>
-                <td th:text="${ie.productSupport.ram}"></td>
-                <td th:text="${ie.productSupport.color}"></td>
+                <td th:text="${ie.productInfo.productInfoName}"></td>
+                <td th:text="${ie.productInfo.capacity}"></td>
+                <td th:text="${ie.productInfo.ram}"></td>
+                <td th:text="${ie.productInfo.color}"></td>
                 <td th:text="${ie.quantity}"></td>
                 <td th:text="${ie.price}" th:data-price="${ie.price}"></td>
 

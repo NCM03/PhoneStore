@@ -1,11 +1,12 @@
 package fa.training.phonestore.entity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -31,11 +32,35 @@ public class Product {
     private String comment;
 
     @Column(name = "WarrantyPeriod")
-    private Date warrantyPeriod;
+    private LocalDateTime warrantyPeriod;
+
+    @Column(name = "BrandID")
+    private int brandId;
 
     @Column(name = "CategoryID")
     private int categoryId;
 
     @Column(name = "Rating")
     private double rating;
+
+    @Column(name = "ProductStatus")
+    private int status;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ProductInfo> productInfos;
+
+    public int getTotalQuantity() {
+        return totalQuantity();
+    }
+
+    private int totalQuantity() {
+        int quantity = 0;
+        if (productInfos != null) {
+            for (ProductInfo productInfo : productInfos) {
+                quantity += productInfo.getQuantity();
+            }
+        }
+        return quantity;
+    }
 }

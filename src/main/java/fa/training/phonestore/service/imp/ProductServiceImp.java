@@ -2,7 +2,6 @@ package fa.training.phonestore.service.imp;
 
 
 import fa.training.phonestore.entity.Product;
-import fa.training.phonestore.entity.ProductSupport;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

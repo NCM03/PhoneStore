@@ -1,5 +1,6 @@
 package fa.training.phonestore.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerDateOfBirth;
 import fa.training.phonestore.Constraint.EntityConstraint.customerconstraint.CustomerName;
 
@@ -14,6 +15,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -47,4 +50,5 @@ public class Customer {
     @Column(name="Age")
     @Min(18)
     private Integer age;
+
 }

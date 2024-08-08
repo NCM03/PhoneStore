@@ -1,7 +1,6 @@
 package fa.training.phonestore.repository;
 
 import fa.training.phonestore.entity.Product;
-import fa.training.phonestore.entity.ProductSupport;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,13 +13,9 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-//    @Query(value = "SELECT * FROM Product \n"+
-//            "LEFT JOIN product_support ON Product.productId = product_support.productID",
-//            nativeQuery = true
-//    )
-//    Page<Product> listAllProductsPrice(@Param("ProductID") int ProductID, Pageable pageable);
+    Product findByProductId(int id);
 
-    @Query(value = "SELECT * FROM Product WHERE Product.productId < 9"
+    @Query(value = "SELECT * FROM Product"
             , nativeQuery = true)
     Page<Product> listProductsFeature(Pageable pageable);
 
@@ -33,16 +28,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             nativeQuery = true
     )
     List<Product> listTopRateProductSection1();
-
-    @Query(value = "SELECT * FROM Product WHERE Product.Rating >= 4.5 " +
-            "ORDER BY Product.Rating OFFSET 2 ROWS FETCH NEXT 2 ROWS ONLY",
-            nativeQuery = true
+    @Query(value = "SELECT p FROM Product p WHERE p.categoryId = ?1 "
     )
-    List<Product> listTopRateProductSection2();
+    Page<Product> findByCategory(int categoryID,Pageable pageable);
 
-    @Query(value = "SELECT * FROM Product WHERE Product.Rating >= 4.5 " +
-            "ORDER BY Product.Rating OFFSET 4 ROWS FETCH NEXT 2 ROWS ONLY",
-            nativeQuery = true
-    )
-    List<Product> listTopRateProductSection3();
+    @Query(value = "SELECT top 1 imageData FROM product WHERE imageData Like :param", nativeQuery = true)
+    String findImgData(@Param("param") String param);
+
 }

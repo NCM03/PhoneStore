@@ -24,11 +24,11 @@
             http
                     .csrf(csrf -> csrf.disable())
                     .authorizeRequests()
-                    .requestMatchers( "/Account/Admin","/Account/take-Activities","/Account/GetAllAccount","/Account/GetDetails","Admin/**").hasAuthority("admin")
+                    .requestMatchers( "/Account/Admin","/Account/take-Activities","/Account/GetAllAccount","/Account/GetDetails","/Admin/**").hasAuthority("admin")
 
                     .requestMatchers("/Login", "/Logout", "/ValidAuthenticate"
                                 ,"/Account/checkUsername","/Account/Register"
-                                ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password", "/**","/uploads").permitAll()
+                                ,"/getPassword","forgotpassword","/GetBackPass","/Account/reset-password","/uploads","/**").permitAll()
                     .requestMatchers("/Account/ChangePassword","/Customer/**").hasAuthority("customer")
                     .requestMatchers("Employee/**").hasAuthority("employee")
                     .anyRequest().authenticated()

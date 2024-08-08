@@ -115,30 +115,30 @@
                                 <thead>
                                 <tr>
                                     <th>
-                                        <a th:href="@{/Admin/ManageBrand(page=0,size=${size},sortField='brandID',sortDir=${sortField == 'brandID' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
+                                        <a th:href="@{/Admin/ManageBrand(page=0,size=${size},sortField='brandId',sortDir=${sortField == 'brandId' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
                                             Brand ID
-                                            <i th:if="${sortField == 'brandID'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                            <i th:if="${sortField == 'brandId'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                                         </a>
                                     </th>
                                     <th>
-                                        <a th:href="@{/Admin/ManageBrand(page=0,size=${size},sortField='brandName',sortDir=${sortField == 'brandName' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
+                                        <a th:href="@{/Admin/ManageBrand(page=0,size=${size},sortField='name',sortDir=${sortField == 'name' and sortDir == 'asc' ? 'desc' : 'asc'},searchTerm=${searchTerm})}">
                                             Brand Name
-                                            <i th:if="${sortField == 'brandName'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                            <i th:if="${sortField == 'name'}" th:class="${sortDir == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                                         </a>
                                     </th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="brand : ${brandList}" th:data-brand-id="${brand.brandID}">
-                                    <td th:text="${brand.brandID}"></td>
-                                    <td th:text="${brand.brandName}"></td>
+                                <tr th:each="brand : ${brandList}" th:data-brand-id="${brand.brandId}">
+                                    <td th:text="${brand.brandId}"></td>
+                                    <td th:text="${brand.name}"></td>
                                     <td>
                                         <button class="btn btn-warning btn-sm update-btn"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#updateModal"
-                                                th:data-brand-id="${brand.brandID}"
-                                                th:data-brand-name="${brand.brandName}">
+                                                th:data-brand-id="${brand.brandId}"
+                                                th:data-brand-name="${brand.name}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                         <button class="btn btn-danger btn-sm">
@@ -239,11 +239,11 @@
 
         updateModal.addEventListener('show.bs.modal', function(event) {
             var button = event.relatedTarget;
-            var brandID = button.getAttribute('data-brand-id');
-            var brandName = button.getAttribute('data-brand-name');
+            var brandId = button.getAttribute('data-brand-id');
+            var name = button.getAttribute('data-brand-name');
 
-            document.getElementById('updateBrandID').value = brandID;
-            document.getElementById('updateBrandName').value = brandName;
+            document.getElementById('updateBrandID').value = brandId;
+            document.getElementById('updateBrandName').value = name;
 
             brandNameError.innerText = '';
         });
@@ -277,17 +277,17 @@
                             successAlert.innerText = 'Brand updated successfully';
                             successAlert.style.display = 'block';
 
-                            var updatedRow = document.querySelector(`tr[data-brand-id="${brandID}"]`);
+                            var updatedRow = document.querySelector(`tr[data-brand-id="${brandId}"]`);
                             if (updatedRow) {
-                                updatedRow.querySelector('td:nth-child(2)').innerText = brandName;
+                                updatedRow.querySelector('td:nth-child(2)').innerText = name;
                             }
 
                             setTimeout(function() {
                                 successAlert.style.display = 'none';
                             }, 3000);
                         } else {
-                            if (response.errors.brandName) {
-                                brandNameError.innerText = response.errors.brandName;
+                            if (response.errors.name) {
+                                brandNameError.innerText = response.errors.name;
                             }
                         }
                     } else {
@@ -296,7 +296,7 @@
                 }
             };
 
-            var data = JSON.stringify({ brandID: brandID, brandName: brandName });
+            var data = JSON.stringify({ brandId: brandID, name: brandName });
             xhr.send(data);
         });
     });
@@ -316,7 +316,7 @@
         addBrandForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            var brandName = document.getElementById('addBrandName').value;
+            var name = document.getElementById('addBrandName').value;
 
             brandNameError1.innerText = '';
 
@@ -337,8 +337,8 @@
                             // Reload the page
                             window.location.reload();
                         } else {
-                            if (response.errors.brandName) {
-                                brandNameError1.innerText = response.errors.brandName;
+                            if (response.errors.name) {
+                                brandNameError1.innerText = response.errors.name;
                             }
                         }
                     } else {
@@ -347,7 +347,7 @@
                 }
             };
 
-            var data = JSON.stringify({ brandName: brandName });
+            var data = JSON.stringify({ name: name });
             xhr.send(data);
         });
 
