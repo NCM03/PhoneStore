@@ -4,7 +4,9 @@ import fa.training.phonestore.entity.ProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -14,7 +16,7 @@ import org.springframework.security.core.parameters.P;
 import java.util.List;
 
 @Repository
-public interface ProductInfoRepository extends PagingAndSortingRepository<ProductInfo, Integer> {
+public interface ProductInfoRepository extends PagingAndSortingRepository<ProductInfo, Integer>, JpaSpecificationExecutor<ProductInfo> {
 
     List<ProductInfo> findByProduct_ProductId(int productId);
     @Override
@@ -37,11 +39,5 @@ public interface ProductInfoRepository extends PagingAndSortingRepository<Produc
     )
     Page<ProductInfo> searchList(String keyword, Pageable pageable);
 
-    @Query(value = "SELECT p FROM ProductInfo p WHERE p.ram = ?1"
-    )
-    Page<ProductInfo> searchRam(int ram, Pageable pageable);
-
-    @Query(value = "SELECT p FROM ProductInfo p WHERE p.capacity = ?1"
-    )
-    Page<ProductInfo> searchCapacity(int capacity, Pageable pageable);
+//    Page<ProductInfo> findAllByCapacityAndRam(Specification<ProductInfo> spec,Pageable pageable);
 }

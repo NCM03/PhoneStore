@@ -80,6 +80,7 @@ body {
 #sidebar.expand {
     width: 260px;
     min-width: 260px;
+    height: 400px;
 }
 
 .toggle-btn {
@@ -754,7 +755,7 @@ ol {
     content: "3";
     font-family: "ElegantIcons";
     font-size: 18px;
-    color: #ffffff;
+    color: #2c2c2c;
 }
 
 .hero__categories ul {
@@ -772,6 +773,7 @@ ol {
     font-size: 16px;
     line-height: 39px;
     display: block;
+    color: #0d0e10;
 }
 
 .hero__search {

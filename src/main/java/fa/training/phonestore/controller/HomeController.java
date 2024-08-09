@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+
+import java.io.Console;
 import java.util.List;
 
 @Controller
@@ -63,8 +65,15 @@ public class HomeController {
         return "productsearch";
     }
 
+    @GetMapping({"/contact"})
+    public String contact(Model model) {
+        List<Brand> brands = brandService.findAll();
+        model.addAttribute("list", brands);
+        return "contact";
+    }
+
     @GetMapping({"/shop-grid"})
-    public String shop(@RequestParam(defaultValue = "0", value = "page") int page,
+    public String shop(@RequestParam(defaultValue = "0", value = "pages") int page,
                        @RequestParam(defaultValue = "9", value = "size") int size,
                        Model model) {
         List<Brand> brands = brandService.findAll();
@@ -75,7 +84,7 @@ public class HomeController {
         model.addAttribute("list", brands);
         model.addAttribute("productInfos", productInfos);
         model.addAttribute("productAll", product);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("currentPages", page);
         return "shop-grid";
     }
 
