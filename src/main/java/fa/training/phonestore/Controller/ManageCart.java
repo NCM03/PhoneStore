@@ -30,15 +30,22 @@ public class ManageCart {
     }
     @GetMapping("")
     public String Cart(Model model) {
-        if(httpSession.getAttribute("id")==null){
-          return "redirect:/login"  ;
-        }else{
-        int customerId = (int) httpSession.getAttribute("id");
+        if (httpSession.getAttribute("id") == null) {
+            return "redirect:/Login";
+        } else {
+            int customerId = (int) httpSession.getAttribute("id");
+            List<ProductInfo> productInfoList = cartService.getProductInfoByCart(customerId);
+            model.addAttribute("productInfo", productInfoList);
+            return "shoping-cart";
 
-        List<ProductInfo> productInfoList = cartService.getProductInfoByCart(customerId);
-        model.addAttribute("productInfo", productInfoList);
-        return "shoping-cart";
+        }
     }
+    @PostMapping("/changeQuantity/{quantity}/{cartId}")
+        public void changeQuantity(Model model, @PathVariable int quantity, @PathVariable int cartId) {
+            Cart cart = cartService.getCartByCartId(cartId);
+            cart.setQuantity(quantity);
+            cartService.save(cart);
+            }
     }
     //    @PostMapping("/addToCart/{quantity}/{productInfoId}")
 //    public Boolean addToCart(@PathVariable("quantity") int quantity, @PathVariable("productInfoId") int productInfoId) {
@@ -65,4 +72,4 @@ public class ManageCart {
 //            return true;
 //        }
 //    }
-}
+

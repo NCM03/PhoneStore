@@ -18,6 +18,8 @@ public class Cart {
     @Column(name = "Quantity")
     private int quantity;
 
+    @Column(name = "isSelected")
+    private boolean isSelected;
     @ManyToOne
     @JoinColumn(name = "customerId", nullable = false)
     @JsonBackReference

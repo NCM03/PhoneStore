@@ -4,6 +4,7 @@ import fa.training.phonestore.entity.Product;
 import fa.training.phonestore.entity.ProductImage;
 import fa.training.phonestore.entity.ProductInfo;
 import fa.training.phonestore.repository.ProductImagineRepository;
+import fa.training.phonestore.repository.ProductInfoRepositoryNotPageble;
 import fa.training.phonestore.repository.ProductRepository;
 import fa.training.phonestore.repository.ProductInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,13 @@ public class DetailController {
     private ProductInfoRepository productInfoRepository;
     @Autowired
     private ProductImagineRepository productImagineRepository;
+    @Autowired
+    private ProductInfoRepositoryNotPageble productInfoRepositoryNotPageble;
 
     @RequestMapping("/detailProduct/{id}")
     public String home(Model model, @PathVariable("id") int id) {
         Product product = productRepository.findByProductId(id);
-        List<ProductInfo> productInfo = productInfoRepository.findByProduct_ProductId(id);
+        List<ProductInfo> productInfo = productInfoRepositoryNotPageble.findByProduct_ProductId(id);
         List<ProductImage> productImage = productImagineRepository.findProductImagesByProductID(id);
         model.addAttribute("Product", product);
         model.addAttribute("ProductInfo", productInfo);

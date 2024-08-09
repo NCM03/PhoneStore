@@ -21,7 +21,7 @@ public class ProductInfoServiceImp implements  ProductInfoService {
 
     @Override
     public List<ProductInfo> findByProduct_ProductId(int productId) {
-        return productInfoRepository.findByProduct_ProductId(productId);
+        return productInfoRepositoryNotPageble.findByProduct_ProductId(productId);
     }
 
     @Override

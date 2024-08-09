@@ -73,6 +73,7 @@ public class ManageProductServiceImp implements ManageProductService {
             oldProductInfo.setQuantity(newProductInfo.getQuantity());
             oldProductInfo.setDescription(newProductInfo.getDescription());
             oldProductInfo.setPrice(newProductInfo.getPrice());
+            oldProductInfo.getProductInfoStatus().setStatusId(newProductInfo.getProductInfoStatus().getStatusId());
 //            oldProductInfo.setProductInfoStatus(oldProductStatus);
             // Lưu sản phẩm đã được cập nhật vào cơ sở dữ liệu
             productInfoRepositoryNotPageble.save(oldProductInfo);

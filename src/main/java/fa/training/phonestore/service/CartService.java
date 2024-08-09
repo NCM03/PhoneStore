@@ -8,4 +8,6 @@ import java.util.List;
 public interface CartService {
     void addToCart(Cart cart);
     List<ProductInfo> getProductInfoByCart(int customerID);
+    Cart getCartByCartId(int cartID);
+    void save(Cart cart);
 }

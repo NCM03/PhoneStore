@@ -11,6 +11,9 @@ import java.util.List;
 
 @Repository
 public interface ProductInfoRepositoryNotPageble extends JpaRepository<ProductInfo, Integer> {
+    @Query(value = "SELECT p FROM ProductInfo p WHERE p.productInfoStatus.statusId = 1 and p.product.productId = :productId")
+    List<ProductInfo> findByProduct_ProductId(@Param("productId") int productId);
+
     @Query(value = "SELECT p.productInfoId FROM ProductInfo p WHERE p.color LIKE  %?1% AND p.ram = ?2 AND p.capacity = ?3")
      ProductInfo getProductInfoId(int color, int ram, int capacity);
 

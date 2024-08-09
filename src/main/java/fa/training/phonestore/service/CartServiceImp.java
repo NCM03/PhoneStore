@@ -21,4 +21,14 @@ public class CartServiceImp implements CartService {
     public List<ProductInfo> getProductInfoByCart(int customerID) {
         return cartRepository.getCartByCustomerId(customerID);
     }
+
+    @Override
+    public Cart getCartByCartId(int cartID) {
+        return cartRepository.findCartByCartId(cartID);
+    }
+
+    @Override
+    public void save(Cart cart) {
+        cartRepository.save(cart);
+    }
 }

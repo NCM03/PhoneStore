@@ -3,27 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="Ogani Template" name="description">
+    <meta content="Ogani, unica, creative, html" name="keywords">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Ogani | Template</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
-    <link rel="stylesheet" href="/css/bootstrap-grid.css" type="text/css">
-    <link rel="stylesheet" href="/css/bootstrap-reboot.css" type="text/css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-grid.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap-reboot.css" rel="stylesheet" type="text/css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/elegant-icons.css" rel="stylesheet" type="text/css">
+    <link href="/css/nice-select.css" rel="stylesheet" type="text/css">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/owl.carousel.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/slicknav.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="/img/logo.png" alt=""></a>
+        <a href="#"><img alt="" src="/img/logo.png"></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
@@ -47,7 +47,7 @@
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">
-            <img src="/img/language.png" alt="">
+            <img alt="" src="/img/language.png">
             <div>English</div>
             <span class="arrow_carrot-down"></span>
             <ul>
@@ -89,18 +89,12 @@
         </ul>
     </div>
 </div>
-<!-- Humberger End -->
 
-<!-- Header Section Begin -->
 <div th:include="~{menu :: header}"></div>
-<!-- Header Section End -->
 
-<!-- Hero Section Begin -->
-
-<!-- Hero Section End -->
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+<section class="breadcrumb-section set-bg" data-setbg="/img/banner.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -115,227 +109,217 @@
         </div>
     </div>
 </section>
+<br>
 <!-- Breadcrumb Section End -->
 
 <!-- Shoping Cart Section Begin -->
-<section class="shoping-cart spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <label style="border: 1px solid black; border-radius: 5px; padding: 5px; width: 100%">
-                    <input type="radio"> chọn tất cả
-                    <button style="float: right; border-color:white ">
-                    <i class="fas fa-trash"></i>
-                    </button>
-                </label>
-                <div class="shoping__cart__table">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th class="shoping__product">Sản phẩm</th>
-                            <th>Giá</th>
-                            <th>Số lượng</th>
-                            <th>Tổng</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="productInfo: ${productInfo}">
-                            <td class="shoping__cart__item">
-                                <img   th:src="@{/img/ProductImg/__${productInfo.getProductImages()[0].getImageURL()}__}" alt="">
-                                <h5 th:text="${productInfo.getProductInfoName()}"></h5>
-                            </td>
-                            <td th:text="${productInfo.getPrice()}" class="shoping__cart__price">
-                                $55.00
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" th:value="${productInfo.getCart()[0].getQuantity()}">
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">
-                                $110.00
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <img src="/img/cart/cart-2.jpg" alt="">
-                                <h5>Fresh Garden Vegetable</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                $39.00
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">
-                                $39.99
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="shoping__cart__item">
-                                <img src="/img/cart/cart-3.jpg" alt="">
-                                <h5>Organic Bananas</h5>
-                            </td>
-                            <td class="shoping__cart__price">
-                                $69.00
-                            </td>
-                            <td class="shoping__cart__quantity">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="shoping__cart__total">
-                                $69.99
-                            </td>
-                            <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-            <div class="col-lg-4">
-                <div class="shoping__checkout">
-                    <h5>Cart Total</h5>
-
-                    <ul>
-                        <li>Tổng tiền: <span id="total">454.98 VNĐ</span></li>
-                        <hr>
-                        <li>Nhập mã khuyến mãi (nếu có):
-                            <input type="text" id="coupon" placeholder="Enter your coupon code">
-                        </li>
-                        <li>Khuyến mãi: <span id="discount">454.98 VNĐ</span></li>
-                        <li>Phí vận chuyển:<span id="shipping">20.0 VNĐ</span></li>
-                        <hr>
-                        <li>Thành tiền: <span id="final-total"></span></li>
-                    </ul>
-
-                    <script>
-                        // Lấy giá trị của các phần tử
-                        const totalElement = document.getElementById('total');
-                        const discountElement = document.getElementById('discount');
-                        const shippingElement = document.getElementById('shipping');
-                        const finalTotalElement = document.getElementById('final-total');
-
-                        // Chuyển đổi giá trị từ chuỗi sang số
-                        const total = parseFloat(totalElement.textContent.replace(' VNĐ', ''));
-                        const discount = parseFloat(discountElement.textContent.replace(' VNĐ', ''));
-                        const shipping = parseFloat(shippingElement.textContent.replace(' VNĐ', ''));
-
-                        // Tính toán thành tiền
-                        const finalTotal = total + shipping - discount;
-
-                        // Cập nhật nội dung của phần tử Thành tiền
-                        finalTotalElement.textContent = `${finalTotal.toFixed(2)} VNĐ`;
-                    </script>
-                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+<div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <div class="shoping__cart__btns">
-                <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                    Upadate Cart</a>
-            </div>
-        </div>
+        <div class="col-lg-8">
+            <!--            <label style="border: 1px solid black; border-radius: 5px; padding: 5px; width: 100%">-->
+            <!--                <input type="radio"> chọn tất cả-->
+            <!--                <button style="float: right; border-color:white ">-->
+            <!--                    <i class="fas fa-trash"></i>-->
+            <!--                </button>-->
+            <!--            </label>-->
+            <div class="shoping__cart__table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="shoping__product">Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="productInfo: ${productInfo}">
 
-</section>
-<!-- Shoping Cart Section End -->
+                        <td>
+                            <input type="checkbox" th:if="!${productInfo.getCart()[0].isSelected()}">
+                            <input type="checkbox" th:if="${productInfo.getCart()[0].isSelected()}" checked>
 
-<!-- Footer Section Begin -->
-<footer class="footer spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="footer__about">
-                    <div class="footer__about__logo">
-                        <a href="/"><img src="/img/logo.png" alt=""></a>
-                    </div>
-                    <ul>
-                        <li>Address: 60-49 Road 11378 New York</li>
-                        <li>Phone: +65 11.188.888</li>
-                        <li>Email: hello@colorlib.com</li>
-                    </ul>
-                </div>
+                        </td>
+                        <td class="shoping__cart__item">
+                            <img alt=""
+                                 style=" width: 100px;"
+                                 th:src="@{/img/ProductImg/__${productInfo.getProductImages()[0].getImageURL()}__}">
+                            <h5 th:text="${productInfo.getProductInfoName()}"></h5>
+                        </td>
+                        <td class="shoping__cart__price" th:data-price="${productInfo.getPrice()}">
+                        </td>
+                        <td class="shoping__cart__quantity">
+                            <div class="quantity-control"
+                                 style="width:100px;margin-left: 15% ; display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <button aria-label="Decrease" class="quantity-btn" onclick="decreaseQuantity(this)">-
+                                </button>
+
+                                <input class="quantity-input" onchange="changeQuantity(this.textContent)"
+                                       th:data-id="${productInfo.getCart()[0].getCartId()}"
+                                       th:value="${productInfo.getCart()[0].getQuantity()}"
+                                       type="number" >
+                                <button aria-label="Increase" class="quantity-btn" onclick="increaseQuantity(this)">+
+                                </button>
+                            </div>
+                        </td>
+                        <td class="shoping__cart__total">
+                        </td>
+                        <td class="shoping__cart__item__close">
+                            <button  class="btn-danger" onclick="confirmDelete()" ><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                <div class="footer__widget">
-                    <h6>Useful Links</h6>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">About Our Shop</a></li>
-                        <li><a href="#">Secure Shopping</a></li>
-                        <li><a href="#">Delivery infomation</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Our Sitemap</a></li>
-                    </ul>
-                    <ul>
-                        <li><a href="#">Who We Are</a></li>
-                        <li><a href="#">Our Services</a></li>
-                        <li><a href="#">Projects</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Innovation</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="footer__widget">
-                    <h6>Join Our Newsletter Now</h6>
-                    <p>Get E-mail updates about our latest shop and special offers.</p>
-                    <form action="#">
-                        <input type="text" placeholder="Enter your mail">
-                        <button type="submit" class="site-btn">Subscribe</button>
-                    </form>
-                    <div class="footer__widget__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-pinterest"></i></a>
-                    </div>
-                </div>
-            </div>
+
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="footer__copyright">
-                    <div class="footer__copyright__text">
-                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                            All rights reserved | This template is made with <i class="fa fa-heart"
-                                                                                aria-hidden="true"></i> by <a
-                                    href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-                    </div>
-                    <div class="footer__copyright__payment"><img src="/img/payment-item.png" alt=""></div>
-                </div>
+        <div class="col-lg-4">
+            <div class="shoping__checkout">
+                <h5>Cart Total</h5>
+
+                <ul>
+                    <li>Tổng tiền: <span id="total"></span></li>
+                    <hr>
+                    <li>Nhập mã khuyến mãi (nếu có):
+                        <input id="coupon" placeholder="Enter your coupon code" type="text">
+                    </li>
+                    <li>Khuyến mãi: <span id="discount"></span></li>
+                    <li>Phí vận chuyển:<span id="shipping"></span></li>
+                    <hr>
+                    <li>Thành tiền: <span id="final-total"></span></li>
+                </ul>
+
+
+                <a class="primary-btn" href="#">Thanh toán</a>
             </div>
         </div>
     </div>
-</footer>
-<!-- Footer Section End -->
+</div>
+</div>
 
+<script>
+    function confirmDelete() {
+        var confirmed = confirm("Bạn có chắc chắn muốn xóa không?");
+        if (confirmed) {
+            alert("Đã xóa thành công!");
+        } else {
+            alert("Hủy bỏ thao tác xóa.");
+        }
+    }
+    function getPrice() {
+        const priceElements = document.querySelectorAll(".shoping__cart__price");
+        priceElements.forEach(function (priceElement) {
+            const priceValue = priceElement.getAttribute("data-price");
+            const formattedPrice = formatPrice(priceValue);
+            priceElement.textContent = formattedPrice;
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        getAllCart();
+        getPrice();
+    })
+
+    function getAllCart() {
+        // Lấy tất cả các hàng trong giỏ hàng
+        const cartRows = document.querySelectorAll("tr");
+        var totalInvoice = 0;
+        var finalTotal = 0;
+        cartRows.forEach(function (row) {
+            const priceElement = row.querySelector(".shoping__cart__price");
+            const quantityElement = row.querySelector(".quantity-input");
+            const totalElement = row.querySelector(".shoping__cart__total");
+
+            if (priceElement && quantityElement && totalElement) {
+
+                const priceValue = parseFloat(priceElement.getAttribute("data-price"));
+                const quantityValue = parseInt(quantityElement.value);
+                console.log(priceValue);
+                const totalPrice = priceValue * quantityValue;
+                totalInvoice += totalPrice;
+
+                // Định dạng tổng giá trị và hiển thị
+                const formattedTotal = formatPriceToTal(totalPrice);
+                totalElement.textContent = formattedTotal;
+            }
+        });
+        finalTotal += totalInvoice;
+        document.getElementById('total').textContent = formatPriceToTal(totalInvoice) + " VNĐ";
+        document.getElementById('shipping').textContent = formatPriceToTal(30000) + " VNĐ";
+        document.getElementById('discount').textContent = 0 + " VNĐ";
+        document.getElementById('final-total').textContent = formatPriceToTal(finalTotal) + " VNĐ";
+    }
+
+    function decreaseQuantity(button) {
+        var input = button.nextElementSibling;
+        var currentValue = parseInt(input.value, 10);
+        if (!isNaN(currentValue) && currentValue > 1) {
+            input.value = currentValue - 1;
+        }
+        var cartId = input.getAttribute("data-id");
+        getAllCart();
+        getPrice();
+        $.ajax({
+            url: '/cart/changeQuantity/' + input.value +'/' + cartId,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+        });
+    }
+
+    function increaseQuantity(button) {
+        var input = button.previousElementSibling;
+        var currentValue = parseInt(input.value, 10);
+        if (!isNaN(currentValue)) {
+            input.value = currentValue + 1;
+        }
+        var cartId = input.getAttribute("data-id");
+        getAllCart();
+        getPrice();
+        $.ajax({
+            url: '/cart/changeQuantity/' + input.value +'/' + cartId,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+        });
+    }
+
+    // getAllCart ();
+    // getPrice ();
+
+
+    // getAllCart ();
+    // getPrice ();
+
+    function changeQuantity(val) {
+        getAllCart();
+        getPrice();
+    }
+
+    function formatPriceToTal(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function formatPrice(price) {
+        let truncatedPrice = price.toString().slice(0, -3);
+        return truncatedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+</script>
+<style>
+    /* Ẩn spinner trên Chrome, Safari, Edge, và Opera */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Ẩn spinner trên Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
 <!-- Js Plugins -->
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -345,7 +329,7 @@
 <script src="/js/mixitup.min.js"></script>
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
-<script src="https://kit.fontawesome.com/a1f1039e75.js" crossorigin="anonymous"></script>
+<script crossorigin="anonymous" src="https://kit.fontawesome.com/a1f1039e75.js"></script>
 
 </body>
 

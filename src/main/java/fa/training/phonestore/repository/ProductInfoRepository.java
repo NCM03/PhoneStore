@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface ProductInfoRepository extends PagingAndSortingRepository<ProductInfo, Integer> {
 
-    List<ProductInfo> findByProduct_ProductId(int productId);
+
     @Override
     Page<ProductInfo> findAll(Pageable pageable);
 

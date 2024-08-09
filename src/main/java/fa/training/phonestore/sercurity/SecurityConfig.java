@@ -24,7 +24,6 @@ public class SecurityConfig {
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeRequests()
                 .requestMatchers("/Account/Admin", "/Account/take-Activities", "/Account/GetAllAccount").hasAuthority("admin")
-
                 .requestMatchers("/Login", "/Logout", "/ValidAuthenticate"
                         , "/Account/checkUsername", "/Account/Register"
                         , "/getPassword", "forgotpassword", "/GetBackPass", "/Account/reset-password", "/**").permitAll()

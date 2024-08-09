@@ -3637,3 +3637,70 @@ ol {
 		color: #555;
 	}
 }
+.quantity-control {
+    max-width: 120px; /* Đặt chiều rộng tối đa */
+    border: 1px solid #ccc; /* Viền bên ngoài */
+    border-radius: 5px; /* Bo góc */
+    overflow: hidden; /* Giới hạn các phần tử bên trong không vượt quá div */
+}
+
+.quantity-btn {
+    background-color: #f0f0f0; /* Màu nền của nút */
+    border: none; /* Loại bỏ viền mặc định */
+    padding: 10px; /* Khoảng cách nội dung bên trong */
+    cursor: pointer; /* Thay đổi con trỏ chuột khi hover */
+    font-size: 16px; /* Kích thước chữ */
+    width: 40px; /* Chiều rộng cố định */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+}
+
+.quantity-btn:hover {
+    background-color: #e0e0e0; /* Màu nền khi hover */
+}
+
+.quantity-input {
+    width: 100%; /* Chiều rộng chiếm toàn bộ không gian còn lại */
+    text-align: center; /* Canh giữa chữ */
+    border: none; /* Loại bỏ viền mặc định */
+    font-size: 16px; /* Kích thước chữ */
+    padding: 10px 0; /* Khoảng cách nội dung bên trong */
+}
+/* Ẩn checkbox gốc */
+.custom-checkbox {
+    display: none;
+}
+
+/* Tạo hình tròn cho label */
+.custom-checkbox-label {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+
+.custom-checkbox-label input:checked + .custom-checkbox-checkmark {
+    background-color: #2196F3; /* Màu nền khi được chọn */
+}
+
+.custom-checkbox-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* Tạo hình tròn */
+    background-color: #ccc; /* Màu nền khi không được chọn */
+    transition: background-color 0.2s ease;
+}
+
+.custom-checkbox-label input:checked + .custom-checkbox-checkmark::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    transform: translate(-50%, -50%);
+}
