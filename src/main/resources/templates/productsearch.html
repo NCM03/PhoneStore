@@ -58,8 +58,8 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="/index">Home</a></li>
-                <li><a href="./productsearch.html">Shop</a></li>
+                <li><a href="/index">Home</a></li>
+                <li class="active"><a href="./productsearch.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
@@ -231,147 +231,96 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-5">
-                    <div class="sidebar">
-                        <div class="sidebar__item">
-                            <h4>Price</h4>
-                            <div class="price-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                     th:attr="data-min='300' , data-max='53000'" >
-                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                </div>
-                                <div class="range-slider">
-                                    <div class="price-input">
-                                        <input type="text" id="minamount">
-                                        <input type="text" id="maxamount">
+                    <div class="sidebar" id="filter">
+                        <form id="filterForm" th:action="@{/shop-grid}" method="get">
+                            <div class="sidebar__item">
+                                <h4>Price</h4>
+                                <div class="price-range-wrap">
+                                    <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                         th:attr="data-min='300000' , data-max='53000000'" >
+                                        <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                    </div>
+                                    <div class="range-slider">
+                                        <div class="price-input">
+                                            <input type="text" id="minamount" name="pricemin" th:value="${param.pricemin}">
+                                            <input type="text" id="maxamount" name="pricemax" th:value="${param.pricemax}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="sidebar__item sidebar__item__color--option">
-                            <h4>Capacity</h4>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="1TB" checked="">
-                                    1TB
-                                </label>
-                                <form th:id="">
-
-                                </form>
+                            <div class="sidebar__item" >
+                                <h4>Capacity</h4>
+                                <select name="capacity" id="capacity">
+                                    <option value="" disabled selected>Choose Capacity</option>
+                                    <option value="1">1TB</option>
+                                    <option value="512">512GB</option>
+                                    <option value="256">256GB</option>
+                                    <option value="128">128GB</option>
+                                    <option value="64">64GB</option>
+                                </select>
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="512GB" checked="">
-                                    512GB
-                                </label>
+                            <div class="sidebar__item" style="padding-top: 40px">
+                                <h4>RAM</h4>
+                                <select name="ram" id="ram">
+                                    <option value="" disabled selected>Choose Ram</option>
+                                    <option value="12">12GB</option>
+                                    <option value="8">8GB</option>
+                                    <option value="6">6GB</option>
+                                    <option value="4">4GB</option>
+                                </select>
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="256GB" checked="">
-                                    256GB
-                                </label>
+                            <div style="margin-top: 100px">
+                                <button type="submit" class="site-btn">Tìm Kiếm</button>
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="128GB" checked="">
-                                    128GB
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios5" value="64GB" checked="">
-                                    64GB
-                                </label>
-                            </div>
-                        </div>
-                        <div class="sidebar__item">
-                            <h4>RAM</h4>
-                            <div class="sidebar__item__size">
-                                <label for="12GB">
-                                    12GB
-                                    <input type="radio" name="optionsRadios" id="12GB" >
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="8GB">
-                                    8GB
-                                    <input type="radio" id="8GB">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="6GB">
-                                    6GB
-                                    <input type="radio" id="6GB">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="4GB">
-                                    4GB
-                                    <input type="radio" id="4GB">
-                                </label>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">
                     <div class="filter__item">
                         <div class="row">
-                            <div class="col-lg-4 col-md-5">
-                                <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4">
+                            <div class="col-lg-8 col-md-6">
                                 <div class="filter__found">
-                                    <h6><span>
-                                        <a th:text="${searchPage.size()}"> </a>
-                                    </span> Products found</h6>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-3">
-                                <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
+                                    <h6><span id="productCount"><a style="padding-left: 300px" th:text="${productAll.getTotalElements()}"></a> Product Found </span></h6>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row featured__filter">
-                        <div class="col-lg-4 col-md-6 col-sm-6 " th:each="products :${searchProduct}">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" >
-                                    <img style="width: 200px;height: 200px; margin: 29px; padding: 0px" th:src="@{/img/ProductImg/__${products.getProductImages().get(0).getImageURL()}__}" alt="">
+                    <div class="row featured__filter" id="productContainer">
+                        <div class="col-lg-4 col-md-6 col-sm-6 " th:each="products :${productAll}">
+                            <div class="product__discount__item">
+                                <div class="product__discount__item__pic set-bg"
+                                     th:attr="data-setbg=@{/img/ProductImg/__${products.getProductImages().get(0).getImageURL()}__}" >
+                                    <div class="product__discount__percent">-<a th:text="${products.getDisCount()}">%</a></div>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#" th:text="${products.getProductInfoName()}"></a></h6>
-                                    <h5><a th:text="${products.getPrice()}"></a></h5>
+                                <div class="product__discount__item__text">
+                                    <span></span>
+                                    <h5><a href="#" th:text="${products.getProductInfoName()}"></a></h5>
+                                    <div class="product__item__price"><a th:text="${products.getPrice() - (products.getPrice()*products.getDisCount()/100)}" th:value="${products.getPrice()*products.getDisCount()}">₫</a>
+                                        <span><a th:text="${products.getPrice()}">₫</a></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="product__pagination" >
-                        <a th:if="${currentPage != 0}"
-                           th:href="@{'?keyword='+${keys}+'&page='+${currentPage - 1}}">
+                    <div class="product__pagination" id="paginationContainer">
+                        <a th:if="${currentPages != 0}"
+                           th:href="@{'?pages='+${currentPages - 1}}">
                             <i class="fa fa-long-arrow-left"></i>
                         </a>
-                        <span th:each="i : ${#numbers.sequence(0,searchProduct.getTotalPages() - 1)}"
-                              th:classappend="${currentPage == i ? 'active' : ''}">
+                        <span th:each="i : ${#numbers.sequence(0,productAll.getTotalPages() - 1)}"
+                              th:classappend="${currentPages == i ? 'active' : ''}">
                             <a th:if="${i >= 0}"
-                               th:href="@{'?keyword='+${keys}+'&page='+${i}}"
-                               th:value="${keys}"
+                               th:href="@{'?pages='+${i}} "
                                th:text="${i + 1}"></a>
                         </span>
-                        <a th:if="${searchProduct.getTotalPages()-1 != currentPage}"
-                           th:href="@{'?keyword='+${keys}+'&page='+${currentPage + 1}}">
+                        <a th:if="${productAll.getTotalPages() -1 != currentPages}"
+                           th:href="@{'?pages='+${currentPages+1}}">
                             <i class="fa fa-long-arrow-right"></i>
                         </a>
                     </div>
@@ -394,9 +343,57 @@
     <script src="/js/mixitup.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/main.js"></script>
+    <script>
+        document.getElementById('optionsRadios1').addEventListener('input', function() {
+            const capacity = this.value;
+            fetch(`/search?capacity=${capacity}`)
+                .then(response => response.json())
+                .then(data => {
+                    const results = document.getElementById('results');
+                    results.innerHTML = data.map(item => `<li>${item.name}</li>`).join('');
+                });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#filterForm').on('change', 'input, select', function() {
+                var form = $('#filterForm');
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'GET',
+                    data: form.serialize(),
+                    success: function(response) {
+                        $('#productContainer').html($(response).find('#productContainer').html());
+                        $('.product__pagination').html($(response).find('.product__pagination').html());
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Thiết lập jQuery UI Slider
+            var minAmount = parseInt($('#minamount').val()) || 300000;
+            var maxAmount = parseInt($('#maxamount').val()) || 53000000;
 
+            $(".price-range").slider({
+                range: true,
+                min: 300000,
+                max: 53000000,
+                values: [minAmount, maxAmount],
+                slide: function(event, ui) {
+                    $("#minamount").val(ui.values[0]);
+                    $("#maxamount").val(ui.values[1]);
+                },
+                stop: function(event, ui) {
+                    filterProductsByPrice(ui.values[0], ui.values[1]);
+                }
+            });
 
-
+            $("#minamount").val($(".price-range").slider("values", 0) );
+            $("#maxamount").val($(".price-range").slider("values", 1) );
+        });
+    </script>
 </body>
 
 </html>

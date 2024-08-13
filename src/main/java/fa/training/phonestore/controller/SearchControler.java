@@ -16,30 +16,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @RestController
-@RequestMapping("/search/")
+@RequestMapping("")
 public class SearchControler {
     @Autowired
     ProductInfoService productInfoService;
     @Autowired
     CategoryRepository categoryRepository;
 
-//    @PostMapping({"/{keyword}"})
-//    public ModelAndView search(Model model,
-//                               @Param(value = "keyword") String keyword ,
-//                               @RequestParam(value = "page", required = false) int page,
-//                               @RequestParam(value = "size", required = false) int size){
-//        try{
-//            List<Category> categories = categoryRepository.findAll();
-//            model.addAttribute("list", categories);
-//            Page<ProductInfo> searchProduct = productInfoService.getSearchList(keyword,page,size);
-//            if(page > 0){
-//                model.addAttribute("searchProduct", searchProduct);
-//                return new ModelAndView("productsearch");
-//            }
-//        }
-//        catch (Exception e){
-//            return new ModelAndView("403");
-//        }
-//        return new ModelAndView("403");
+//    @GetMapping("/filter")
+//    public Page<ProductInfo> filter(@RequestParam int page, @RequestParam int size) {
+//
 //    }
 }

@@ -38,9 +38,9 @@
                         </div>
                         <ul>
                             <li th:each="category : ${list}" value="categoryID" >
-                                <a th:href="@{Category/(id = ${category.getBrandId()})} " th:text="${category.getName()}"
-                                   th:value="${category.getBrandId()}">
-                                </a></li>
+                                <a th:href="@{/Brand/(id=${category.getBrandId()})}" onclick="category" th:text="${category.getName()}">
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                                 <label>
                                     <input type="text" name="keyword" id="keyword" th:value="${keyword}" required>
                                 </label>
-                                <button type="submit" class="site-btn">SEARCH</button>
+                                <button type="submit" class="site-btn">Tìm kiếm</button>
                             </form>
                         </div>
                         <div class="hero__search__phone">

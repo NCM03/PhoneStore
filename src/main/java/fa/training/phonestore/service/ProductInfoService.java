@@ -15,9 +15,10 @@ public interface ProductInfoService {
     Optional<ProductInfo> findById(int id);
     List<ProductInfo> findAll();
     Page<ProductInfo> findAll(Pageable pageable);
-    List<ProductInfo> findAllByProductContainsIgnoreCase(String name,Pageable pageable);
+    Page<ProductInfo> findAllProductInfosByBrand(int brandid,int page, int size);
     List<ProductInfo> getHomeLastestProduct();
     List<ProductInfo> getSearchProduct(String keyword);
     Page<ProductInfo> getSearchList(String keyword,int page, int size);
     List<ProductInfo> getProductInfoDiscount();
+    Page<ProductInfo> findAllByProductInfoNameAndCapacityAndRamAndPrice(String name,Integer capacity,Integer ram,Integer pricemin,Integer pricemax,Integer brandID, int page, int size);
 }

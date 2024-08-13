@@ -40,8 +40,8 @@ public class ProductInfoServiceImp implements  ProductInfoService {
     }
 
     @Override
-    public List<ProductInfo> findAllByProductContainsIgnoreCase(String name, Pageable pageable) {
-        return productInfoRepository.findAllByProductContainsIgnoreCase(name, pageable);
+    public Page<ProductInfo> findAllProductInfosByBrand(int brandid,int page, int size) {
+        return productInfoRepository.findAllByBrand(brandid,PageRequest.of(page, size));
     }
 
     @Override
@@ -62,5 +62,10 @@ public class ProductInfoServiceImp implements  ProductInfoService {
     @Override
     public List<ProductInfo> getProductInfoDiscount() {
         return productInfoRepositoryNotPageble.getProductInfoDiscount();
+    }
+
+    @Override
+    public Page<ProductInfo> findAllByProductInfoNameAndCapacityAndRamAndPrice(String name, Integer capacity, Integer ram, Integer pricemin, Integer pricemax,Integer brandID, int page, int size) {
+        return productInfoRepository.findAllByProductInfoNameAndCapacityAndRamAndPrice(name,capacity,ram,pricemin,pricemax,brandID,PageRequest.of(page, size));
     }
 }

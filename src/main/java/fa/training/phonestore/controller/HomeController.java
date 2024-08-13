@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.io.Console;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -48,19 +49,24 @@ public class HomeController {
     }
 
     @GetMapping({"/search/{keyword}"})
-    public String search(@Param(value = "keyword") String keyword ,
+    public String search(@RequestParam(required = false, value = "keyword") String keyword,
+                         @RequestParam(required = false, value = "capacity") Integer capacity,
+                         @RequestParam(required = false, value = "ram") Integer ram,
+                         @RequestParam(required = false, value = "pricemin") Integer pricemin,
+                         @RequestParam(required = false, value = "pricemax") Integer pricemax,
+                         @RequestParam(required = false, value = "brandID") Integer brandID,
                          @RequestParam(defaultValue = "0", value = "page") int page,
                          @RequestParam(defaultValue = "6", value = "size") int size,
                          Model model) {
         List<Brand> brands = brandService.findAll();
-        //List<Product> product = productRepository.findAll();
         model.addAttribute("list", brands);
-        //model.addAttribute("productAll", product);
         List<ProductInfo> searchPage = productInfoService.getSearchProduct(keyword);
-        Page<ProductInfo> searchProduct = productInfoService.getSearchList(keyword, page, size);
-        model.addAttribute("currentPage", page);
+        Page<ProductInfo> searchProduct = productInfoService.findAllByProductInfoNameAndCapacityAndRamAndPrice(keyword,capacity,ram,pricemin,pricemax,brandID,page,size);
+        List<ProductInfo> discount = productInfoService.getProductInfoDiscount();
+        model.addAttribute("discount", discount);
+        model.addAttribute("currentPages", page);
         model.addAttribute("keys", keyword);
-        model.addAttribute("searchProduct", searchProduct);
+        model.addAttribute("productAll", searchProduct);
         model.addAttribute("searchPage", searchPage);
         return "productsearch";
     }
@@ -73,25 +79,29 @@ public class HomeController {
     }
 
     @GetMapping({"/shop-grid"})
-    public String shop(@RequestParam(defaultValue = "0", value = "pages") int page,
+    public String shop(@RequestParam(required = false, value = "keyword") String keyword,
+                       @RequestParam(required = false, value = "capacity") Integer capacity,
+                       @RequestParam(required = false, value = "ram") Integer ram,
+                       @RequestParam(required = false, value = "pricemin") Integer pricemin,
+                       @RequestParam(required = false, value = "pricemax") Integer pricemax,
+                       @RequestParam(required = false, value = "brandID") Integer brandID,
+                       @RequestParam(defaultValue = "0", value = "pages") int page,
                        @RequestParam(defaultValue = "9", value = "size") int size,
                        Model model) {
         List<Brand> brands = brandService.findAll();
-        Page<ProductInfo> product = productInfoService.findAll(PageRequest.of(page,size));
-        List<ProductInfo> productInfos = productInfoService.findAll();
+        Page<ProductInfo> product = productInfoService.findAllByProductInfoNameAndCapacityAndRamAndPrice(keyword,capacity,ram,pricemin,pricemax,brandID,page,size);
         List<ProductInfo> discount = productInfoService.getProductInfoDiscount();
         model.addAttribute("discount", discount);
         model.addAttribute("list", brands);
-        model.addAttribute("productInfos", productInfos);
         model.addAttribute("productAll", product);
         model.addAttribute("currentPages", page);
         return "shop-grid";
     }
 
-    @PostMapping({"/Category/{id}"})
-    public String searchCategory(@RequestParam(value = "id") int categoryID ,
-                                 @RequestParam(defaultValue = "0", value = "page") int page,
-                                 @RequestParam(defaultValue = "9", value = "size") int size,
+    @GetMapping ({"/Brand/id"})
+    public String searchCategory(@PathVariable(value = "id") int categoryID ,
+                                 @RequestParam(required = false,defaultValue = "0", value = "page") int page,
+                                 @RequestParam(required = false,defaultValue = "9", value = "size") int size,
                                  Model model) {
         List<Category> categories = categoryService.findAll();
         Page<Product> searchProduct = productService.findByCategory(categoryID,page,size);
@@ -100,25 +110,4 @@ public class HomeController {
         model.addAttribute("searchProduct", searchProduct);
         return "productsearch";
     }
-
-//    @PostMapping({"/search/{keyword}"})
-//    public String search(RedirectAttributes redirectAttributes,
-//                                 Model model,
-//                                 @Param(value = "keyword") String keyword ,
-//                                 @RequestParam(value = "page", required = false) int page,
-//                                 @RequestParam(value = "size", required = false) int size){
-//        try{
-//            List<Category> categories = categoryService.findAll();
-//            model.addAttribute("list", categories);
-//            Page<ProductInfo> searchProduct = productInfoService.getSearchList(keyword,page,size);
-//            if(page > 0){
-//                model.addAttribute("searchProduct", searchProduct);
-//                return "productsearch";
-//            }
-//        }
-//        catch (Exception e){
-//            return null;
-//        }
-//        return null;
-//    }
 }
